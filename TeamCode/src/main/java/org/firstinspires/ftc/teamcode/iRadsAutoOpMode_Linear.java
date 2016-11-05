@@ -82,7 +82,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
 
             // Robot behavior goes here:
-
+            motorUpdate();
 
 
 
@@ -118,5 +118,13 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("Y-value", visualNav.getY());
         telemetry.addData("Heading", visualNav.getHeading());
         telemetry.update();
+    }
+
+    public void motorUpdate()
+    {
+        double left = -gamepad1.left_stick_y;
+        double right = -gamepad1.right_stick_y;
+
+        
     }
 } // Class
