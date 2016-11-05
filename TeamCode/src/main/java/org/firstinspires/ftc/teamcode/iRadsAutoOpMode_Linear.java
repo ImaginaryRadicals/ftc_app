@@ -63,34 +63,22 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     Hardware_iRads robot = new Hardware_iRads();   // use the class created to define iRads hardware
 
     @Override
-    public void runOpMode() {
-
-        // Initialization
-//        robot.init(hardwareMap); // Initialize Hardware (5 motors/encoders, 1 servo)
-        this.visualNav.telemetry = this.telemetry;  // Helps output navigation messages.
-        this.visualNav.runtime = this.runtime;      // Helps create navigation timestamps.
-        this.visualNav.init(); // Initialize Visual Navigation
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
-
-
+    public void runOpMode()
+    {
+        initialize();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         /** Start tracking the data sets we care about. */
-        this.visualNav.visualTargets.activate();
+        visualNav.visualTargets.activate();
         telemetry.addData("Status", "visualTargets Activate");
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            visualNav.updateTracks(VisualNavigation.DisplayMode.SHOW_OUTPUT); // vuforiaTrackables loop
-            // output time since last location update.
-            telemetry.addData("trackAge", this.visualNav.getTrackAge());
-            telemetry.update();
+        while (opModeIsActive())
+        {
+            visionUpdate();
 
 
             // Robot behavior goes here:
@@ -98,13 +86,37 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
 
 
-
         } // while(opModeIsActive())
     } // runOpMode()
 
-    String format(OpenGLMatrix transformationMatrix) {
-        return transformationMatrix.formatAsTransform();
-    } // format(transformationMatrix)
+    // Initialization
+    public void initialize()
+    {
+        // If we can't find the hardware, print the hardware map error message and continue
+        try
+        {
+            robot.init(hardwareMap); // Initialize Hardware (5 motors/encoders, 1 servo)
+        }
+        catch (IllegalArgumentException e)
+        {
+            telemetry.addData("Hardware map error", e.getMessage());
+        }
+        visualNav.telemetry = telemetry;  // Helps output navigation messages.
+        visualNav.runtime = runtime;      // Helps create navigation timestamps.
+        visualNav.init(); // Initialize Visual Navigation
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+    }
 
-
+    public void visionUpdate()
+    {
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        visualNav.updateTracks(VisualNavigation.DisplayMode.SHOW_OUTPUT); // vuforiaTrackables loop
+        // output time since last location update.
+        telemetry.addData("trackAge", String.format("%.3f",this.visualNav.getTrackAge()));
+        telemetry.addData("X-value", visualNav.getX());
+        telemetry.addData("Y-value", visualNav.getY());
+        telemetry.addData("Heading", visualNav.getHeading());
+        telemetry.update();
+    }
 } // Class
