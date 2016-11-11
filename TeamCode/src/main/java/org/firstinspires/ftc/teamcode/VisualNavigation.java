@@ -77,7 +77,7 @@ public class VisualNavigation {
     public ElapsedTime runtime = null; // Set by calling OpMode.
     public double lastLocationUpdateTime = -1; // update when lastLocation is updated.
     public Telemetry telemetry = null; // Set by calling OpMode.
-
+    public boolean isNew = false;
     public enum DisplayMode {SHOW_OUTPUT, NO_OUTPUT}
 
 
@@ -378,6 +378,7 @@ public class VisualNavigation {
 
             OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
             if (robotLocationTransform != null) {
+                isNew=true;
                 this.setLastLocation(robotLocationTransform); // updates lastLocationUpdateTime automatically.
             }
         } // for each trackable
@@ -405,6 +406,5 @@ public class VisualNavigation {
     public String format(OpenGLMatrix transformationMatrix) {
         return transformationMatrix.formatAsTransform(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
     } // format(transformationMatrix)
-
 
 }
