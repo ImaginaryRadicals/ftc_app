@@ -137,11 +137,16 @@ public class VisualNavigation {
 
 
 
+    public void initialize(ElapsedTime runtime, Telemetry telemetry) {
+        this.runtime = runtime;
+        this.telemetry = telemetry;
+        initialize();
+    }
 
 
 
     /* Initialize Vuforia Navigation */
-    public void init() {
+    public void initialize() {
 
         /**
          * Start up Vuforia, telling it the id of the view that we wish to use as the parent for

@@ -102,9 +102,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         {
             telemetry.addData("Hardware map error", e.getMessage());
         }
-        visualNav.telemetry = telemetry;  // Helps output navigation messages.
-        visualNav.runtime = runtime;      // Helps create navigation timestamps.
-        visualNav.init(); // Initialize Visual Navigation
+        visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
