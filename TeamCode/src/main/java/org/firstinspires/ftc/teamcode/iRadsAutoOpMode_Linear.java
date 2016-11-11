@@ -61,6 +61,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private VisualNavigation visualNav = new VisualNavigation();
     private EncoderNavigation encoderNav= new EncoderNavigation();
     private ElapsedTime runtime = new ElapsedTime();
+    private NextMotorState nextMotorState = new NextMotorState(); // Holds motor/servo cmds before sending.
     Hardware_iRads robot = new Hardware_iRads();   // use the class created to define iRads hardware
 
     @Override
@@ -85,6 +86,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
 
             // Robot behavior goes here:
+            calculateNextMotorState();
             motorUpdate();
 
 
@@ -106,6 +108,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
+        nextMotorState.initialize(robot);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
@@ -127,15 +130,18 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     }
 
     public void calculateNextMotorState() {
-
-
+        nextMotorState.leftDriveMotor  = -gamepad1.left_stick_y;
+        nextMotorState.rightDriveMotor = -gamepad1.right_stick_y;
     }
 
     public void motorUpdate()
     {
-        double left = -gamepad1.left_stick_y;
-        double right = -gamepad1.right_stick_y;
-
-        
+        // nextMotorState.updateMotors();
+        robot.leftDriveMotor.setPower(nextMotorState.leftDriveMotor);
+        robot.rightDriveMotor.setPower(nextMotorState.rightDriveMotor);
+        robot.leftLaunchMotor.setPower(nextMotorState.leftLaunchMotor);
+        robot.rightLaunchMotor.setPower(nextMotorState.rightLaunchMotor);
+        robot.liftMotor.setPower(nextMotorState.liftMotor);
+        robot.buttonPusher.setPosition(nextMotorState.buttonPusher);
     }
 } // Class
