@@ -64,6 +64,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private NextMotorState nextMotorState = new NextMotorState(); // Holds motor/servo cmds before sending.
     Hardware_iRads robot = new Hardware_iRads();   // use the class created to define iRads hardware
 
+    double launchPower = 1.0; // Initial power of launcher.
+
     @Override
     public void runOpMode()
     {
@@ -130,9 +132,50 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     }
 
     public void calculateNextMotorState() {
+
+        // Left and Right sticks control tank drive.
         nextMotorState.leftDriveMotor  = -gamepad1.left_stick_y;
         nextMotorState.rightDriveMotor = -gamepad1.right_stick_y;
-    }
+
+        // Use gamepad buttons to move the fork lift up (Y) and down (A)
+        if (gamepad1.y) {
+            nextMotorState.liftMotor = 1.0;  // Lift up, full speed
+        } else if (gamepad1.a) {
+            nextMotorState.liftMotor = -1.0; // Lift down, full speed
+        } else {
+            nextMotorState.liftMotor = 0.0;  // Lift stop.
+        }
+
+        // Adjust launchPower with d-pad up/down
+        if (gamepad1.dpad_up) {
+            launchPower += .05;
+        } else if (gamepad1.dpad_down) {
+            launchPower -= .05;
+        }
+        // Bound launchPower
+        if (launchPower > 1.0) {
+            launchPower = 1.0;
+        } else if (launchPower < 0) {
+            launchPower = 0.0;
+        }
+
+        // hold left_trigger to activate launcher.
+        if (gamepad1.left_trigger > 0.5) {
+            nextMotorState.leftLaunchMotor  = launchPower;
+            nextMotorState.rightLaunchMotor = launchPower;
+        }
+        else {
+            nextMotorState.leftLaunchMotor  = 0;
+            nextMotorState.rightLaunchMotor = 0;
+        }
+
+
+        // Send telemetry message to signify robot running;
+        telemetry.addData("left",  "%.2f", nextMotorState.leftDriveMotor);
+        telemetry.addData("right", "%.2f", nextMotorState.rightDriveMotor);
+        telemetry.addData("LaunchSpeed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
+
+    } // calculateNextMotorState()
 
     public void motorUpdate()
     {
