@@ -59,6 +59,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
     private VisualNavigation visualNav = new VisualNavigation();
+    private EncoderNavigation encoderNav= new EncoderNavigation();
     private ElapsedTime runtime = new ElapsedTime();
     Hardware_iRads robot = new Hardware_iRads();   // use the class created to define iRads hardware
 
@@ -104,6 +105,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         visualNav.telemetry = telemetry;  // Helps output navigation messages.
         visualNav.runtime = runtime;      // Helps create navigation timestamps.
         visualNav.init(); // Initialize Visual Navigation
+        encoderNav.initialize(robot,runtime,telemetry);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }

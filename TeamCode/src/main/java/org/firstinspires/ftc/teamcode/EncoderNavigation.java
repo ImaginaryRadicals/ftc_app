@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 /**
  * Created by Ashley on 11/10/2016.
  */
@@ -8,6 +12,8 @@ public class EncoderNavigation {
 
 
     public Hardware_iRads robot = null; // Robot Hardware class
+    public ElapsedTime runtime = null; // Set by calling OpMode.
+    public Telemetry telemetry = null; // Set by calling OpMode.
 
     public enum RotationMode {SAME_DIRECTION, OPPOSITE_DIRECTION};
     public enum RotationCenter {LEFT_SIDE, RIGHT_SIDE, CENTERED};
@@ -38,8 +44,11 @@ public class EncoderNavigation {
 
     }
 
-    public void initialize(Hardware_iRads robot) {
+    public void initialize(Hardware_iRads robot, ElapsedTime runtime, Telemetry telemetry) {
         this.robot = robot;
+        this.runtime = runtime;
+        this.telemetry  = telemetry;
+
     }
 
 
