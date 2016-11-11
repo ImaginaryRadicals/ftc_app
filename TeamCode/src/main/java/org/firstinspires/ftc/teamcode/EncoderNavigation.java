@@ -56,31 +56,27 @@ public class EncoderNavigation {
         this.stepsLeft = stepsLeft;
         this.stepsRight = stepsRight;
         //this.outputTimestamp = runtime.time();
-        this.outputTimestamp = System.nanoTime()/Math.pow(10,9);
+        this.outputTimestamp = runtime.time();
         calculateResults();
     }
 
     // Return age of encoder position in seconds.
     public double getAge() {
-        return (System.nanoTime()/Math.pow(10,9) - this.outputTimestamp);
+        return (runtime.time() - this.outputTimestamp);
     }
 
     public void printResults() {
-        System.out.println( "" ); // newline
-        System.out.println( "Status" );
-        System.out.println( String.format("INPUTS: stepsLeft: %d, stepsRight: %d",stepsLeft,stepsRight) );
-        System.out.println( String.format("%.0f mm from center.",radiusFromCenter_mm) );
-        System.out.println(rotationMode);
-        System.out.println(rotationCenter); // sign of radiusFromCenter has same info. Redundant.
-
-        System.out.println( String.format("%.0f mm arcLength deltaHeading",arcDistance_mm) );
-        System.out.println( String.format("%.1f deg deltaHeading",deltaHeading_deg) ); // positive CCW
-        System.out.println( String.format("%.1f mm RobotX.",deltaRobotX_mm) );
-        System.out.println( String.format("%.1f mm RobotY.",deltaRobotY_mm) );
+        telemetry.addData("Steps", String.format("Left: %d, Right: %d",stepsLeft,stepsRight) );
+        telemetry.addData("Radius", String.format("%.0f mm from center.",radiusFromCenter_mm) );
+//        telemetry.addData("rotationMode",rotationMode);
+//        telemetry.addData("rotationCenter",rotationCenter); // sign of radiusFromCenter has same info. Redundant.
+        telemetry.addData("arcLength", String.format("%.0f mm ",arcDistance_mm) );
+        telemetry.addData("deltaHeading", String.format("%.1f deg ",deltaHeading_deg) ); // positive CCW
+        telemetry.addData("RobotX", String.format("%.1f mm",deltaRobotX_mm) );
+        telemetry.addData("RobotY", String.format("%.1f mm",deltaRobotY_mm) );
 
         // transform to game from Robot coordinates to Game Areana coordinates for: X,Y,Heading,
         //given initial robot position in game X,Y,Heading.
-
     }
 
     public void calculateResults()
@@ -134,7 +130,7 @@ public class EncoderNavigation {
             r_center_mm = (r2_mm-r1_mm)/2;
         }
         else {
-            System.out.println("Wrong rotationMode value.");
+            telemetry.addData("ERROR","Wrong rotationMode value.");
         }
 
         // output to radiusFromCenter_mm object member
@@ -149,7 +145,7 @@ public class EncoderNavigation {
                 radiusFromCenter_mm = r_center_mm;
                 break;
             default:
-                System.out.println("DEFAULT return switch. Shouldn't happen.");
+                telemetry.addData("ERROR","DEFAULT return switch. Shouldn't happen.");
                 radiusFromCenter_mm = r_center_mm;
                 break;
         } // switch

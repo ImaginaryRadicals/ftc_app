@@ -80,6 +80,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         while (opModeIsActive())
         {
             visionUpdate();
+            encoderUpdate();
+            telemetry.update();
 
 
             // Robot behavior goes here:
@@ -117,7 +119,16 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("X-value", visualNav.getX());
         telemetry.addData("Y-value", visualNav.getY());
         telemetry.addData("Heading", visualNav.getHeading());
-        telemetry.update();
+    }
+
+    public void encoderUpdate() {
+        encoderNav.setSteps(0,100);
+        encoderNav.printResults();
+    }
+
+    public void calculateNextMotorState() {
+
+
     }
 
     public void motorUpdate()
