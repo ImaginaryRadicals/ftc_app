@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -153,14 +154,10 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             launchPower -= .05;
         }
         // Bound launchPower
-        if (launchPower > 1.0) {
-            launchPower = 1.0;
-        } else if (launchPower < 0) {
-            launchPower = 0.0;
-        }
+        launchPower = Range.clip(launchPower, 0.0, 1.0);
 
-        // hold left_trigger to activate launcher.
-        if (gamepad1.left_trigger > 0.5) {
+        // hold left_bumper to activate launcher.
+        if (gamepad1.left_bumper) {
             nextMotorState.leftLaunchMotor  = launchPower;
             nextMotorState.rightLaunchMotor = launchPower;
         }
