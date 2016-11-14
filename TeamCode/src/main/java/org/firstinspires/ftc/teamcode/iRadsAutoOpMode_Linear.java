@@ -83,9 +83,10 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
+            // Navigation Code.
             visionUpdate();
             encoderUpdate();
-            telemetry.update();
+
 
 
             // Robot behavior goes here:
@@ -93,6 +94,9 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             motorUpdate();
 
 
+
+            // Update at end of loop to display all telemetry data.
+            telemetry.update();
 
         } // while(opModeIsActive())
     } // runOpMode()
@@ -111,7 +115,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
-        nextMotorState.initialize(robot);
+        encoderNav.setPosition(1000,1000,90);
+        nextMotorState.initialize(robot,telemetry);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
@@ -128,8 +133,15 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     }
 
     public void encoderUpdate() {
-        encoderNav.setSteps(0,100);
-        encoderNav.printResults();
+
+        encoderNav.setSteps();
+        telemetry.addData("eX",encoderNav.getX());
+        telemetry.addData("eY",encoderNav.getY());
+        telemetry.addData("eHeading",encoderNav.getHeading());
+        telemetry.addData("absLocAge",encoderNav.getAbsoluteLocalizationAge());
+        telemetry.addData("absLocDistance",encoderNav.getAbsolutePositionDistance_mm());
+        telemetry.addData("locConfidence",encoderNav.getConfidence());
+//        encoderNav.printResults();
     }
 
     public void calculateNextMotorState() {

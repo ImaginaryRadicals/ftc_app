@@ -20,6 +20,23 @@ public class EncoderNavigation {
     public enum RobotDirection {FORWARD, REVERSE}; //
 //    public enum BodyRotation {CCW, CW, NO);
 
+
+    // TimeStamps and MetaData
+    // Absolute Position (setPosition, getPositionAge, getPositionDistance,
+    private double absoluteX_mm = 0;
+    private double absoluteY_mm = 0;
+    private double absoluteHeading_deg = 0;
+    private double absolutePositionConfidence = 0;
+    private double absolutePositionTimeStamp = 0;
+    private double absolutePositionDistance_mm = 0; // Distance traveled since absolute localization.
+
+    private boolean isRelativeCalculated = false;
+    private double  currentPositionConfidence = 0;
+
+    private int lastEncoderPositionLeft = 0;
+    private int lastEncoderPositionRight = 0;
+
+
     // Aggregated Inputs:
     private int stepsLeft = 0;
     private int stepsRight = 0;
@@ -48,21 +65,102 @@ public class EncoderNavigation {
         this.robot = robot;
         this.runtime = runtime;
         this.telemetry  = telemetry;
+        // Initialize Encoder Positions.
+        stepsLeft = robot.leftDriveMotor.getCurrentPosition();
+        stepsRight = robot.rightDriveMotor.getCurrentPosition();
+    }
 
+    // Read encoder steps directly.
+    public void setSteps() {
+        stepsLeft = robot.leftDriveMotor.getCurrentPosition() - lastEncoderPositionLeft;
+        stepsRight = robot.rightDriveMotor.getCurrentPosition() - lastEncoderPositionRight;
+        setSteps(stepsLeft,stepsRight);
+    }
+
+    public void setSteps(int stepsLeft, int stepsRight) {
+        isRelativeCalculated = false;
+        this.stepsLeft = stepsLeft;
+        this.stepsRight = stepsRight;
+        this.outputTimestamp = runtime.time();
+
+        // Keep encoder last position current.
+        lastEncoderPositionLeft = robot.leftDriveMotor.getCurrentPosition();
+        lastEncoderPositionRight = robot.rightDriveMotor.getCurrentPosition();
+
+        // Crude estimate of drive distance.
+        absolutePositionDistance_mm = ( Math.abs(stepsLeft) + Math.abs(stepsRight) ) /2 *
+                robot.DRIVE_WHEEL_MM_PER_ROT / robot.DRIVE_WHEEL_STEPS_PER_ROT;
+
+        calculateRelativeResults();
+        calculateAbsoluteResults();
+        calculatePositionConfidence();
     }
 
 
-    public void setSteps(int stepsLeft, int stepsRight) {
-        this.stepsLeft = stepsLeft;
-        this.stepsRight = stepsRight;
-        //this.outputTimestamp = runtime.time();
-        this.outputTimestamp = runtime.time();
-        calculateResults();
+    private void calculatePositionConfidence() {
+        // arbitrary weights set based on
+        currentPositionConfidence = absolutePositionConfidence
+                - 1.0 * getAbsoluteLocalizationAge()
+                - .01 * absolutePositionDistance_mm;
+    }
+
+
+    private void calculateAbsoluteResults() {
+        if (!isRelativeCalculated) calculateRelativeResults();
+
+        // When Robot Heading = 0, its Y-axis is aligned with the game field's X-axis.
+        // Note that this Robot Coordinate system definition is unique to this class.
+        double PHASE_ROTATION_DEG = -90.0;
+
+        // 2D Coordinate transformation.
+        absoluteX_mm = absoluteX_mm
+                + deltaRobotX_mm * Math.cos((absoluteHeading_deg + PHASE_ROTATION_DEG)* Math.PI/180.0)
+                - deltaRobotY_mm * Math.sin((absoluteHeading_deg + PHASE_ROTATION_DEG)* Math.PI/180.0);
+
+        absoluteY_mm = absoluteY_mm
+                + deltaRobotX_mm * Math.sin((absoluteHeading_deg + PHASE_ROTATION_DEG)* Math.PI/180.0)
+                + deltaRobotY_mm * Math.cos((absoluteHeading_deg + PHASE_ROTATION_DEG)* Math.PI/180.0);
+
+        // Heading updated last because it is used for the transformation.
+        absoluteHeading_deg = absoluteHeading_deg + deltaHeading_deg;
+    }
+
+
+
+    // setPosition, generally using the visionNavigation class.
+    public void setPosition(double absoluteX_mm, double absoluteY_mm, double absoluteHeading_deg) {
+
+        setPosition(absoluteX_mm, absoluteY_mm, absoluteHeading_deg,100);
+    }
+
+    public void setPosition(double absoluteX_mm,double absoluteY_mm, double absoluteHeading_deg,
+                            double absolutePositionConfidence) {
+
+        setPosition(absoluteX_mm,absoluteY_mm,absoluteHeading_deg,
+                absolutePositionConfidence, runtime.time());
+    }
+
+    public void setPosition(double absoluteX_mm, double absoluteY_mm, double absoluteHeading_deg,
+                            double absolutePositionConfidence, double absolutePositionTimeStamp) {
+
+        isRelativeCalculated = false;
+        this.absoluteX_mm = absoluteX_mm;
+        this.absoluteY_mm = absoluteY_mm;
+        this.absoluteHeading_deg = absoluteHeading_deg;
+        this.absolutePositionConfidence = absolutePositionConfidence;
+        this.absolutePositionTimeStamp = absolutePositionTimeStamp;
+
+        this.absolutePositionDistance_mm = 0; // reset distance
+        setSteps(0,0); // clear delta values and recalculate.
     }
 
     // Return age of encoder position in seconds.
-    public double getAge() {
+    public double getEncoderStepAge() {
         return (runtime.time() - this.outputTimestamp);
+    }
+
+    public double getAbsoluteLocalizationAge() {
+        return (runtime.time() - this.absolutePositionTimeStamp);
     }
 
     public void printResults() {
@@ -79,7 +177,8 @@ public class EncoderNavigation {
         //given initial robot position in game X,Y,Heading.
     }
 
-    public void calculateResults()
+
+    private void calculateRelativeResults()
     {
         double r1_mm = 0; //radius small
         double r2_mm = 0; //radius large
@@ -187,8 +286,33 @@ public class EncoderNavigation {
         } // switch rotationCenter
 
 
-    } // getRadius()
+        isRelativeCalculated = true;
+    } // calculateRelativeResults()
 
 
+    // GETTERS
 
+    public double getX() {
+        return absoluteX_mm;
+    }
+
+    public double getY() {
+        return absoluteY_mm;
+    }
+
+    public double getHeading() {
+        return absoluteHeading_deg;
+    }
+
+    public double getAbsolutePositionDistance_mm() {
+        return absolutePositionDistance_mm;
+    }
+
+    public double getConfidence() {
+        return currentPositionConfidence;
+    }
+
+    public double getAge() {
+        return getAbsoluteLocalizationAge();
+    }
 } // EncoderNavigation
