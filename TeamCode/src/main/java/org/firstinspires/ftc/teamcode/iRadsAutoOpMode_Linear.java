@@ -133,8 +133,13 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     }
 
     public void encoderUpdate() {
-
-        encoderNav.setSteps();
+        // Attempt to update encoder position from visualNav:
+        if ( (visualNav.isNew) && (visualNav.getTrackAge() < 0.5) ) {
+            visualNav.isNew = false; // Encoder already used this solution.
+            encoderNav.setPosition(visualNav.getX(),visualNav.getY(),visualNav.getHeading());
+        } else {
+            encoderNav.setSteps();
+        }
         telemetry.addData("eX",encoderNav.getX());
         telemetry.addData("eY",encoderNav.getY());
         telemetry.addData("eHeading",encoderNav.getHeading());
