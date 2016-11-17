@@ -116,7 +116,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
         encoderNav.setPosition(1000,1000,90);
-        nextMotorState.initialize(robot,telemetry);
+        nextMotorState.initialize(robot);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
