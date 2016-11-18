@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode;
  * Class for collecting motor and servo commands before they are issued.
  */
 
+import static org.firstinspires.ftc.teamcode.Hardware_iRads.INITIAL_LAUNCHER_TRIGGER_POS;
 
 public class NextMotorState {
 
@@ -17,7 +18,7 @@ public class NextMotorState {
     public double  rightLaunchMotor    = 0;
     public double  liftMotor           = 0;
     // Servos:
-    public double  launchTrigger       = 0;
+    public double  launchTrigger       = Hardware_iRads.INITIAL_LAUNCHER_TRIGGER_POS;
 
     /* Constructor */
     public NextMotorState() {}
