@@ -17,7 +17,7 @@ public class NextMotorState {
     public double  rightLaunchMotor    = 0;
     public double  liftMotor           = 0;
     // Servos:
-    public double  buttonPusher        = 0;
+    public double  launchTrigger       = 0;
 
     /* Constructor */
     public NextMotorState() {}
@@ -33,7 +33,7 @@ public class NextMotorState {
         robot.leftLaunchMotor.setPower(leftLaunchMotor);
         robot.rightLaunchMotor.setPower(rightLaunchMotor);
         robot.liftMotor.setPower(liftMotor);
-        robot.buttonPusher.setPosition(buttonPusher);
+        robot.launchTrigger.setPosition(launchTrigger);
 
     }
 

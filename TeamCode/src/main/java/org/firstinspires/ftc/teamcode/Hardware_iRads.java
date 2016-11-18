@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Motor channel:  Right launch motor:       "rightLaunchMotor"
  * Motor channel:  Cap ball lift motor:      "liftMotor"
  * Servos:
- * Servo channel:  Servo to push button:     "buttonPusher"
+ * Servo channel:  Servo to launch ball:     "launchTrigger"
  */
 public class Hardware_iRads
 {
@@ -32,7 +32,7 @@ public class Hardware_iRads
     public DcMotor  rightLaunchMotor    = null;
     public DcMotor  liftMotor           = null;
     // Servos:
-    public Servo    buttonPusher        = null;
+    public Servo    launchTrigger        = null;
 
 
     public static final double MID_SERVO            =  0.5 ;
@@ -106,8 +106,8 @@ public class Hardware_iRads
 
 
         // Define and initialize ALL installed servos.
-        buttonPusher = hwMap.servo.get("buttonPusher");
-        buttonPusher.setPosition(MID_SERVO);
+        launchTrigger = hwMap.servo.get("launchTrigger");
+        launchTrigger.setPosition(MID_SERVO);
 
     }
 
