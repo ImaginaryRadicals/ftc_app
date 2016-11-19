@@ -199,6 +199,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         robot.leftLaunchMotor.setPower(nextMotorState.leftLaunchMotor);
         robot.rightLaunchMotor.setPower(nextMotorState.rightLaunchMotor);
         robot.liftMotor.setPower(nextMotorState.liftMotor);
-        robot.buttonPusher.setPosition(nextMotorState.buttonPusher);
+        robot.launchTrigger.setPosition(nextMotorState.launchTrigger);
     }
 } // Class
