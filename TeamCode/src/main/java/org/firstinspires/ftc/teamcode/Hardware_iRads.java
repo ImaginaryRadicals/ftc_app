@@ -38,6 +38,7 @@ public class Hardware_iRads
 
     public static final double MID_SERVO            =  0.5 ;
     public static final double INITIAL_LAUNCHER_TRIGGER_POS = 1.00;
+    public static final double ELEVATED_LAUNCHER_TRIGGER_POS = 0.8;
 
     public static final double LAUNCH_WHEEL_DIAMETER_INCHES =  4;
     public static final double DRIVE_WHEEL_DIAMETER_INCHES  =  4;
