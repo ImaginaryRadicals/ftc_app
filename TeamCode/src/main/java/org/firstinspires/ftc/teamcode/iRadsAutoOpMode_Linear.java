@@ -183,6 +183,14 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             nextMotorState.rightLaunchMotor = 0;
         }
 
+        // hold right_bumper to activate launch Trigger.
+        if (gamepad1.right_bumper) {
+            nextMotorState.launchTrigger  = 0.8;
+        }
+        else {
+            nextMotorState.launchTrigger  = 1.0;
+        }
+
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", nextMotorState.leftDriveMotor);
