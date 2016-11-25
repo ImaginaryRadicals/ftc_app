@@ -56,6 +56,9 @@ public class Hardware_iRads
     public static final int LIFT_MAX_SPEED_TPS      =  1680 ; // Ticks per second
     public static final int MAX_LAUNCH_SPEED_TPS    =   280 ; // Ticks per second
 
+    public static final double LAUNCHER_ANGLE_RADIANS   =  3.25;  // 75 degrees.  This is just a guess.  We will need to measure properly.
+    public static final double LAUNCHER_HEIGHT          = .75; // again, just a guess
+
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
