@@ -66,6 +66,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     Hardware_iRads robot = new Hardware_iRads();   // use the class created to define iRads hardware
 
     double launchPower = 1.0; // Initial power of launcher.
+    double expoGain = 5.0;  // 1 = no expo
+
 
     @Override
     public void runOpMode()
@@ -152,9 +154,9 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     public void calculateNextMotorState() {
 
         // Left and Right sticks control tank drive.
-        nextMotorState.leftDriveMotor  = -gamepad1.left_stick_y;
-        nextMotorState.rightDriveMotor = -gamepad1.right_stick_y;
-
+        nextMotorState.leftDriveMotor = Utility.expo(-gamepad1.left_stick_y, expoGain);
+        nextMotorState.rightDriveMotor = Utility.expo(-gamepad1.right_stick_y, expoGain);
+        
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
         if (gamepad1.y) {
             nextMotorState.liftMotor = 1.0;  // Lift up, full speed
