@@ -66,8 +66,8 @@ public class EncoderNavigation {
         this.runtime = runtime;
         this.telemetry  = telemetry;
         // Initialize Encoder Positions.
-        stepsLeft = robot.leftDriveMotor.getCurrentPosition();
-        stepsRight = robot.rightDriveMotor.getCurrentPosition();
+        lastEncoderPositionLeft = robot.leftDriveMotor.getCurrentPosition();
+        lastEncoderPositionRight = robot.rightDriveMotor.getCurrentPosition();
     }
 
     // Read encoder steps directly.
