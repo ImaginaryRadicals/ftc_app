@@ -59,11 +59,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private VisualNavigation visualNav = new VisualNavigation();
-    private EncoderNavigation encoderNav= new EncoderNavigation();
-    private ElapsedTime runtime = new ElapsedTime();
-    private NextMotorState nextMotorState = new NextMotorState(); // Holds motor/servo cmds before sending.
-    Hardware_iRads robot = new Hardware_iRads();   // use the class created to define iRads hardware
+    private VisualNavigation visualNav      = new VisualNavigation();
+    private EncoderNavigation encoderNav    = new EncoderNavigation();
+    private ElapsedTime runtime             = new ElapsedTime();
+    private NextMotorState nextMotorState   = new NextMotorState(); // Holds motor/servo cmds before sending.
+    Hardware_iRads robot                    = new Hardware_iRads();   // use the class created to define iRads hardware
+    private Signal sigDpadUp                = new Signal();
+    private Signal sigDpadDown              = new Signal();
 
     double launchPower = 1.0; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
@@ -167,9 +169,9 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
 
         // Adjust launchPower with d-pad up/down
-        if (gamepad1.dpad_up) {
+        if (sigDpadUp.risingEdge(gamepad1.dpad_up)) {
             launchPower += .05;
-        } else if (gamepad1.dpad_down) {
+        } else if (sigDpadDown.risingEdge(gamepad1.dpad_down)) {
             launchPower -= .05;
         }
         // Bound launchPower
