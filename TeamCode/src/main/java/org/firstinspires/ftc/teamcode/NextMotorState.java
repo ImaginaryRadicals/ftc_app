@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 /**
  * Created by Ashley on 11/11/2016.
  * Class for collecting motor and servo commands before they are issued.
@@ -8,6 +10,8 @@ package org.firstinspires.ftc.teamcode;
 public class NextMotorState {
 
     public Hardware_iRads robot = null;
+    public Telemetry telemetry = null;
+
 
     // DcMotors:
     public double  leftDriveMotor      = 0;
@@ -25,6 +29,11 @@ public class NextMotorState {
         this.robot = robot;
     }
 
+    public void initialize(Hardware_iRads robot, Telemetry telemetry){
+        this.telemetry = telemetry;
+        initialize(robot);
+    }
+
     public void updateMotors() {
 
         robot.leftDriveMotor.setPower(leftDriveMotor);
@@ -33,7 +42,15 @@ public class NextMotorState {
         robot.rightLaunchMotor.setPower(rightLaunchMotor);
         robot.liftMotor.setPower(liftMotor);
         robot.launchTrigger.setPosition(launchTrigger);
+    }
 
+    public void print(){
+        telemetry.addData("leftDriveMotor", leftDriveMotor);
+        telemetry.addData("rightDriveMotor",rightDriveMotor);
+        telemetry.addData("leftLaunchMotor", leftLaunchMotor);
+        telemetry.addData("rightLaunchMotor", rightLaunchMotor);
+        telemetry.addData("liftMotor", liftMotor);
+        telemetry.addData("launchTrigger", launchTrigger);
     }
 
 } // class
