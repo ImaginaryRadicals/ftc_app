@@ -20,4 +20,9 @@ public class Signal {
             return false;
         }
     }
+
+    public boolean risingEdge(boolean newState) {
+        updateState(newState);
+        return risingEdge();
+    }
 }
