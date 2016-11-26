@@ -56,7 +56,7 @@ public class Hardware_iRads
     public static final int MAX_DRIVE_SPEED_TPS     =  1680 ; // Ticks per second
     public static final int LIFT_MAX_SPEED_TPS      =  1680 ; // Ticks per second
     public static final int LAUNCH_WHEEL_RPM        =  500;   // Max RPM
-    public static final int MAX_LAUNCH_SPEED_TPS    =   (int) LAUNCH_WHEEL_STEPS_PER_ROT * LAUNCH_WHEEL_RPM * 60 ; // Ticks per second
+    public static final int MAX_LAUNCH_SPEED_TPS    =   (int) LAUNCH_WHEEL_STEPS_PER_ROT * LAUNCH_WHEEL_RPM / 60 ; // Ticks per second
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
