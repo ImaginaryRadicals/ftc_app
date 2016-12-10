@@ -116,6 +116,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         catch (IllegalArgumentException e)
         {
             telemetry.addData("Hardware map error", e.getMessage());
+            robot.hardwareEnabled = false;
         }
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
@@ -205,12 +206,9 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     public void motorUpdate()
     {
-        // nextMotorState.updateMotors();
-        robot.leftDriveMotor.setPower(nextMotorState.leftDriveMotor);
-        robot.rightDriveMotor.setPower(nextMotorState.rightDriveMotor);
-        robot.leftLaunchMotor.setPower(nextMotorState.leftLaunchMotor);
-        robot.rightLaunchMotor.setPower(nextMotorState.rightLaunchMotor);
-        robot.liftMotor.setPower(nextMotorState.liftMotor);
-        robot.launchTrigger.setPosition(nextMotorState.launchTrigger);
+        if (robot.hardwareEnabled) {
+            nextMotorState.updateMotors();
+        }
+
     }
 } // Class

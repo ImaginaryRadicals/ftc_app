@@ -59,14 +59,26 @@ public class EncoderNavigation {
         this.runtime = runtime;
         this.telemetry  = telemetry;
         // Initialize Encoder Positions.
-        lastEncoderPositionLeft = robot.leftDriveMotor.getCurrentPosition();
-        lastEncoderPositionRight = robot.rightDriveMotor.getCurrentPosition();
+        if (robot.hardwareEnabled) {
+            lastEncoderPositionLeft = robot.leftDriveMotor.getCurrentPosition();
+            lastEncoderPositionRight = robot.rightDriveMotor.getCurrentPosition();
+        }
+        else {
+            lastEncoderPositionLeft = 0;
+            lastEncoderPositionRight = 0;
+        }
     }
 
     // Read encoder steps directly.
     public void setSteps() {
-        stepsLeft = robot.leftDriveMotor.getCurrentPosition() - lastEncoderPositionLeft;
-        stepsRight = robot.rightDriveMotor.getCurrentPosition() - lastEncoderPositionRight;
+        if (robot.hardwareEnabled) {
+            stepsLeft = robot.leftDriveMotor.getCurrentPosition() - lastEncoderPositionLeft;
+            stepsRight = robot.rightDriveMotor.getCurrentPosition() - lastEncoderPositionRight;
+        }
+        else {
+            stepsLeft = 0;
+            stepsRight = 0;
+        }
         setSteps(stepsLeft,stepsRight);
     }
 
@@ -77,8 +89,10 @@ public class EncoderNavigation {
         this.outputTimestamp = runtime.time();
 
         // Keep encoder last position current.
-        lastEncoderPositionLeft = robot.leftDriveMotor.getCurrentPosition();
-        lastEncoderPositionRight = robot.rightDriveMotor.getCurrentPosition();
+        if (robot.hardwareEnabled) {
+            lastEncoderPositionLeft = robot.leftDriveMotor.getCurrentPosition();
+            lastEncoderPositionRight = robot.rightDriveMotor.getCurrentPosition();
+        }
 
         // Crude estimate of drive distance.
         absolutePositionDistance_mm = ( Math.abs(stepsLeft) + Math.abs(stepsRight) ) /2 *
