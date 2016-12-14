@@ -80,6 +80,8 @@ public class VisualNavigation {
     public boolean isNew = false;
     public enum DisplayMode {SHOW_OUTPUT, NO_OUTPUT}
 
+    public boolean debugTransforms = true; // Debugging transformation matrices
+
 
     
 
@@ -270,6 +272,9 @@ public class VisualNavigation {
                         AngleUnit.DEGREES, 90, 0, 0));
         wheelTarget.setLocation(wheelTargetLocationOnField);
         RobotLog.ii(TAG, "Wheel Target=%s", format(wheelTargetLocationOnField));
+        if (debugTransforms) {
+            telemetry.addData("wheelTransform", format(wheelTargetLocationOnField));
+        }
 
        /*
         * To place the Stones Target on the Blue Audience wall:
@@ -287,6 +292,9 @@ public class VisualNavigation {
                         AngleUnit.DEGREES, 90, 0, 0));
         legoTarget.setLocation(legoTargetLocationOnField);
         RobotLog.ii(TAG, "Lego Target=%s", format(legoTargetLocationOnField));
+        if (debugTransforms) {
+            telemetry.addData("legoTransform", format(legoTargetLocationOnField));
+        }
 
 
         // Gears, near center, red wall
@@ -300,6 +308,9 @@ public class VisualNavigation {
                         AngleUnit.DEGREES, 90, 90, 0));
         gearTarget.setLocation(gearTargetLocationOnField);
         RobotLog.ii(TAG, "Gear Target=%s", format(gearTargetLocationOnField));
+        if (debugTransforms) {
+            telemetry.addData("gearTransform", format(gearTargetLocationOnField));
+        }
 
         // Tools, near audience, red wall
         OpenGLMatrix toolTargetLocationOnField = OpenGLMatrix
@@ -312,6 +323,9 @@ public class VisualNavigation {
                         AngleUnit.DEGREES, 90, 90, 0));
         toolTarget.setLocation(toolTargetLocationOnField);
         RobotLog.ii(TAG, "Tool Target=%s", format(toolTargetLocationOnField));
+        if (debugTransforms) {
+            telemetry.addData("toolTransform", format(toolTargetLocationOnField));
+        }
 
         /**
          * Create a transformation matrix describing where the phone is on the robot. Here, we
@@ -331,6 +345,9 @@ public class VisualNavigation {
                         AxesReference.EXTRINSIC, AxesOrder.YZY,
                         AngleUnit.DEGREES, -90, 0, 0));
         RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
+        if (debugTransforms) {
+            telemetry.addData("phoneTransform", format(phoneLocationOnRobot));
+        }
 
         /**
          * Let the trackable listeners we care about know where the phone is. We know that each
