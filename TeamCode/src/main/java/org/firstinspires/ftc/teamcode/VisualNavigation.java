@@ -265,7 +265,7 @@ public class VisualNavigation {
         OpenGLMatrix wheelTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
-                .translation(mmFTCFieldWidth*(1/12), mmFTCFieldWidth/2, this.targetHeight)
+                .translation( (float) (1.0/12.0)*mmFTCFieldWidth, (float) (1.0/2.0)*mmFTCFieldWidth, this.targetHeight)
                 .multiplied(Orientation.getRotationMatrix(
                         /* First, in the fixed (field) coordinate system, we rotate 90deg in X, then 90 in Z */
                         AxesReference.EXTRINSIC, AxesOrder.XZX,
@@ -285,7 +285,7 @@ public class VisualNavigation {
         OpenGLMatrix legoTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the Blue Audience wall.
                 Our translation here is a positive translation in Y.*/
-                .translation(-mmFTCFieldWidth*(3/12), mmFTCFieldWidth/2, this.targetHeight)
+                .translation( (float) -(3.0/12.0)*mmFTCFieldWidth, (float) (1.0/2.0)*mmFTCFieldWidth, this.targetHeight)
                 .multiplied(Orientation.getRotationMatrix(
                         /* First, in the fixed (field) coordinate system, we rotate 90deg in X */
                         AxesReference.EXTRINSIC, AxesOrder.XZX,
@@ -301,7 +301,7 @@ public class VisualNavigation {
         OpenGLMatrix gearTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
-                .translation(-mmFTCFieldWidth/2, -mmFTCFieldWidth*(1/12), this.targetHeight)
+                .translation( (float) -(1.0/2.0)*mmFTCFieldWidth, (float) -(1.0/12.0)*mmFTCFieldWidth, this.targetHeight)
                 .multiplied(Orientation.getRotationMatrix(
                         /* First, in the fixed (field) coordinate system, we rotate 90deg in X, then 90 in Z */
                         AxesReference.EXTRINSIC, AxesOrder.XZX,
@@ -316,7 +316,7 @@ public class VisualNavigation {
         OpenGLMatrix toolTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
-                .translation(-mmFTCFieldWidth/2, mmFTCFieldWidth*(3/12), this.targetHeight)
+                .translation( (float) -(1.0/2.0)*mmFTCFieldWidth, (float) (3.0/12.0)*mmFTCFieldWidth, this.targetHeight)
                 .multiplied(Orientation.getRotationMatrix(
                         /* First, in the fixed (field) coordinate system, we rotate 90deg in X, then 90 in Z */
                         AxesReference.EXTRINSIC, AxesOrder.XZX,
