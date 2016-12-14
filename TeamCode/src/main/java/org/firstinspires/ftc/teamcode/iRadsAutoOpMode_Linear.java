@@ -87,6 +87,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
+            telemetry.addData("Camera", "Front screen side");
+
             // Navigation Code.
             visionUpdate();
             encoderUpdate();
