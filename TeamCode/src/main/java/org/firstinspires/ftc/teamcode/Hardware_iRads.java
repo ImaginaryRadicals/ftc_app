@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.Vector;
+
 /**
  * This is NOT an opmode.
  *
@@ -63,6 +65,8 @@ public class Hardware_iRads
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
+    private Vector pastPeriods  = new Vector();
+
 
     /* Constructor */
     public Hardware_iRads(){
@@ -148,10 +152,12 @@ public class Hardware_iRads
 
     public double periodSec(){
 
-        double lastTime = period.time();
+        pastPeriods.add(period.time());
         period.reset();
-        return lastTime;
-
+        if (pastPeriods.size()>= 30) {
+            pastPeriods.remove(0);
+        }
+        return VectorMath.average(pastPeriods);
     }
 }
 
