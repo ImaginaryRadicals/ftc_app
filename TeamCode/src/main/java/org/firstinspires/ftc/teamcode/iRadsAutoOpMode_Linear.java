@@ -201,6 +201,18 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             nextMotorState.launchTrigger  = robot.INITIAL_LAUNCHER_TRIGGER_POS;
         }
 
+        // use a and y to open and close the flippers y to open a to close
+
+        if (gamepad1.a) {
+            nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_CLOSED;
+            nextMotorState.leftFlipper   = robot.LEFT_FLIPPER_CLOSED;
+        }
+        else {
+            nextMotorState.rightFlipper  = robot.INITIAL_RIGHT_FLIPPER_POS;
+            nextMotorState.leftFlipper  = robot.INITIAL_LEFT_FLIPPER_POS;
+        }
+
+
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", nextMotorState.leftDriveMotor);

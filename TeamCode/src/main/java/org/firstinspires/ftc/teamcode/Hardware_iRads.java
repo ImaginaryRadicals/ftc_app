@@ -35,14 +35,23 @@ public class Hardware_iRads
     public DcMotor  rightLaunchMotor    = null;
     public DcMotor  liftMotor           = null;
     // Servos:
-    public Servo    launchTrigger        = null;
-
+    public Servo    launchTrigger       = null;
+    public Servo    leftFlipper         = null;
+    public Servo    rightFlipper        = null;
 
     public static boolean hardwareEnabled = true; // set false if hardware errors are encountered
 
     public static final double MID_SERVO            =  0.5 ;
     public static final double INITIAL_LAUNCHER_TRIGGER_POS = 1.00;
     public static final double ELEVATED_LAUNCHER_TRIGGER_POS = 0.8;
+
+    // public doubles for the left and right flipper
+    public static final double INITIAL_LEFT_FLIPPER_POS = 0.8;
+    public static final double INITIAL_RIGHT_FLIPPER_POS = 0.9;
+    public static final double LEFT_FLIPPER_OPEN = 1.0;
+    public static final double LEFT_FLIPPER_CLOSED = 0.6;
+    public static final double RIGHT_FLIPPER_OPEN = 1.0;
+    public static final double RIGHT_FLIPPER_CLOSED = 0.6;
 
     public static final double LAUNCH_WHEEL_DIAMETER_INCHES =  4;
     public static final double DRIVE_WHEEL_DIAMETER_INCHES  =  4;
@@ -122,6 +131,13 @@ public class Hardware_iRads
         // Define and initialize ALL installed servos.
         launchTrigger = hwMap.servo.get("launchTrigger");
         launchTrigger.setPosition(INITIAL_LAUNCHER_TRIGGER_POS);
+
+        leftFlipper = hwMap.servo.get("leftFlipper");
+        leftFlipper.setPosition(INITIAL_LEFT_FLIPPER_POS);
+
+        rightFlipper = hwMap.servo.get("rightFlipper");
+        rightFlipper.setPosition(INITIAL_RIGHT_FLIPPER_POS);
+
 
     }
 

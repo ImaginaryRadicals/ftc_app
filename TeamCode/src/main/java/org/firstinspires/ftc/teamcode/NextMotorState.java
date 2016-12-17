@@ -21,6 +21,8 @@ public class NextMotorState {
     public double  liftMotor           = 0;
     // Servos:
     public double  launchTrigger       = Hardware_iRads.INITIAL_LAUNCHER_TRIGGER_POS;
+    public double  leftFlipper         = Hardware_iRads.INITIAL_LEFT_FLIPPER_POS;
+    public double  rightFlipper        = Hardware_iRads.INITIAL_RIGHT_FLIPPER_POS;
 
     /* Constructor */
     public NextMotorState() {}
