@@ -71,6 +71,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     double expoGain = 5.0;  // 1 = no expo
     double periodSec;
 
+    boolean flippers_closed_state = false;
+
 
     @Override
     public void runOpMode()
@@ -203,13 +205,26 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
         // use a and y to open and close the flippers y to open a to close
 
+        if (gamepad1.y)
+        {
+            flippers_closed_state = !flippers_closed_state;
+        }
+
         if (gamepad1.a) {
             nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_CLOSED;
             nextMotorState.leftFlipper   = robot.LEFT_FLIPPER_CLOSED;
         }
         else {
-            nextMotorState.rightFlipper  = robot.INITIAL_RIGHT_FLIPPER_POS;
-            nextMotorState.leftFlipper  = robot.INITIAL_LEFT_FLIPPER_POS;
+            if (flippers_closed_state)
+            {
+                nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_CLOSED;
+                nextMotorState.leftFlipper   = robot.LEFT_FLIPPER_CLOSED;
+            }
+            else
+            {
+                nextMotorState.rightFlipper  = robot.INITIAL_RIGHT_FLIPPER_POS;
+                nextMotorState.leftFlipper  = robot.INITIAL_LEFT_FLIPPER_POS;
+            }
         }
 
 
