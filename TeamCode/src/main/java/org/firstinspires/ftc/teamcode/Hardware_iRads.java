@@ -145,5 +145,13 @@ public class Hardware_iRads
         // Reset the cycle clock for the next pass.
         period.reset();
     }
+
+    public double periodSec(){
+
+        double lastTime = period.time();
+        period.reset();
+        return lastTime;
+
+    }
 }
 

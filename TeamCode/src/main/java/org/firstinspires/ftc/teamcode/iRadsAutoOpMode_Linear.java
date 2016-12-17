@@ -69,6 +69,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     double launchPower = 1.0; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
+    double periodSec;
 
 
     @Override
@@ -87,6 +88,10 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
+            // Update Period timer
+            periodSec = robot.periodSec();
+            telemetry.addData("Period", periodSec);
+
             // Navigation Code.
             visionUpdate();
             encoderUpdate();
