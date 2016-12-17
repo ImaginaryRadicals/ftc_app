@@ -67,6 +67,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private Signal sigDpadUp                = new Signal();
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
+    private Signal sigDpadBack              = new Signal();
 
     double launchPower = 1.0; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
@@ -235,6 +236,14 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("LaunchSpeed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
         telemetry.addData("Left Flipper", "%.2f", nextMotorState.leftFlipper);
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
+
+        // Autonomous mode toggled by back button
+        boolean runningAutonomously = false;
+        if (sigDpadBack.risingEdge(gamepad1.back) && runningAutonomously) {
+            runningAutonomously = false;
+        } else if (sigDpadBack.risingEdge(gamepad1.back) && !runningAutonomously) {
+            runningAutonomously = true;
+        }
 
     } // calculateNextMotorState()
 
