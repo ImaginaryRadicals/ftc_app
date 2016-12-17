@@ -205,12 +205,12 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
         // use a and y to open and close the flippers y to open a to close
 
-        if (gamepad1.y)
+        if (gamepad1.b)
         {
             flippers_closed_state = !flippers_closed_state;
         }
 
-        if (gamepad1.a) {
+        if (gamepad1.x) {
             nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_CLOSED;
             nextMotorState.leftFlipper   = robot.LEFT_FLIPPER_CLOSED;
         }

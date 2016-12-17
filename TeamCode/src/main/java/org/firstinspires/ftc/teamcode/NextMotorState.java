@@ -44,6 +44,8 @@ public class NextMotorState {
         robot.rightLaunchMotor.setPower(rightLaunchMotor);
         robot.liftMotor.setPower(liftMotor);
         robot.launchTrigger.setPosition(launchTrigger);
+        robot.launchTrigger.setPosition(leftFlipper);
+        robot.launchTrigger.setPosition(rightFlipper);
     }
 
     public void print(){
@@ -53,6 +55,9 @@ public class NextMotorState {
         telemetry.addData("rightLaunchMotor", rightLaunchMotor);
         telemetry.addData("liftMotor", liftMotor);
         telemetry.addData("launchTrigger", launchTrigger);
+        telemetry.addData("leftTrigger", leftFlipper);
+        telemetry.addData("rightTrigger", rightFlipper);
+
     }
 
 } // class
