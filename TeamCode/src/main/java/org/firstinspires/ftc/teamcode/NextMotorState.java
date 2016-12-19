@@ -44,8 +44,8 @@ public class NextMotorState {
         robot.rightLaunchMotor.setPower(rightLaunchMotor);
         robot.liftMotor.setPower(liftMotor);
         robot.launchTrigger.setPosition(launchTrigger);
-        robot.launchTrigger.setPosition(leftFlipper);
-        robot.launchTrigger.setPosition(rightFlipper);
+        robot.leftFlipper.setPosition(leftFlipper);
+        robot.rightFlipper.setPosition(rightFlipper);
     }
 
     public void print(){
