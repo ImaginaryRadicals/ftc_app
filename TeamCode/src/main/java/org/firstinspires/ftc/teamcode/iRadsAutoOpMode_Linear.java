@@ -66,6 +66,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     Hardware_iRads robot                    = new Hardware_iRads();   // use the class created to define iRads hardware
     private Signal sigDpadUp                = new Signal();
     private Signal sigDpadDown              = new Signal();
+    private Signal sigDpadB                 = new Signal();
 
     double launchPower = 1.0; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
@@ -205,7 +206,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
         // use a and y to open and close the flippers y to open a to close
 
-        if (gamepad1.b)
+        if (sigDpadB.risingEdge(gamepad1.b))
         {
             flippers_closed_state = !flippers_closed_state;
         }
