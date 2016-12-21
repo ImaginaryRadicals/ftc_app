@@ -74,6 +74,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     double launchPower = 1.0; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
     double periodSec;
+    double autonomousGoalHeading = 0.0; // The robot will turn to this value in the auto mode
+    double autonomousGoalHeadingTolerance = 5.0;
 
     boolean flippers_closed_state = false;
     boolean runningAutonomously = false;
@@ -285,12 +287,16 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     public void calculateNextAutonomousMotorState() {
         telemetry.addData("Hey guys", "Running Autonomously!");
 
-        if(encoderNav.getHeading() < 0) {
+        if(encoderNav.getHeading() < (autonomousGoalHeading - autonomousGoalHeadingTolerance)) {
+
             nextMotorState.leftDriveMotor = -0.5;
             nextMotorState.rightDriveMotor = 0.5;
-        } else if(encoderNav.getHeading() > 0) {
+
+        } else if(encoderNav.getHeading() > autonomousGoalHeading + autonomousGoalHeadingTolerance) {
+
             nextMotorState.leftDriveMotor = 0.5;
             nextMotorState.rightDriveMotor = -0.5;
+
         } else {
             telemetry.addData("Alert", "Heading is 0 degrees.");
         }
