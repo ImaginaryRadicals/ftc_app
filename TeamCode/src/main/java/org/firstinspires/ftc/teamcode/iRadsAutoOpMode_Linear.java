@@ -204,7 +204,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             nextMotorState.launchTrigger  = robot.INITIAL_LAUNCHER_TRIGGER_POS;
         }
 
-        // use a and y to open and close the flippers y to open a to close
+        // use b button to toggle between open and closed, hold x button to open
 
         if (sigDpadB.risingEdge(gamepad1.b))
         {
@@ -229,11 +229,12 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
 
 
-
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", nextMotorState.leftDriveMotor);
         telemetry.addData("right", "%.2f", nextMotorState.rightDriveMotor);
         telemetry.addData("LaunchSpeed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
+        telemetry.addData("Left Flipper", "%.2f", nextMotorState.leftFlipper);
+        telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
 
     } // calculateNextMotorState()
 
