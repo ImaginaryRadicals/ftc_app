@@ -58,7 +58,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 //@Disabled
 public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
-    /* Declare OpMode members. */
+
     private VisualNavigation visualNav      = new VisualNavigation();
     private EncoderNavigation encoderNav    = new EncoderNavigation();
     private ElapsedTime runtime             = new ElapsedTime();
@@ -74,7 +74,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     double periodSec;
 
     boolean flippers_closed_state = false;
-
+    boolean runningAutonomously = false;
 
     @Override
     public void runOpMode()
@@ -103,7 +103,21 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
 
             // Robot behavior goes here:
-            calculateNextMotorState();
+            //   toggle autonomous
+            if (sigDpadBack.risingEdge(gamepad1.back) && runningAutonomously) {
+                runningAutonomously = false;
+            } else if (sigDpadBack.risingEdge() && !runningAutonomously) {
+                telemetry.addData("runningAutonomously", "true");
+                runningAutonomously = true;
+            }
+
+            if (runningAutonomously) {
+                telemetry.addData("nextMotorState", "Autonomous");
+                calculateNextAutonomousMotorState();
+            } else {
+                telemetry.addData("nextMotorState", "Manual");
+                calculateNextMotorState();
+            }
             motorUpdate();
 
 
@@ -237,15 +251,21 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("Left Flipper", "%.2f", nextMotorState.leftFlipper);
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
 
-        // Autonomous mode toggled by back button
-        boolean runningAutonomously = false;
-        if (sigDpadBack.risingEdge(gamepad1.back) && runningAutonomously) {
-            runningAutonomously = false;
-        } else if (sigDpadBack.risingEdge(gamepad1.back) && !runningAutonomously) {
-            runningAutonomously = true;
-        }
-
     } // calculateNextMotorState()
+
+    public void calculateNextAutonomousMotorState() {
+        telemetry.addData("Hey guys", "Running Autonomously!");
+
+        if(encoderNav.getHeading() < 0) {
+            nextMotorState.leftDriveMotor = -0.5;
+            nextMotorState.rightDriveMotor = 0.5;
+        } else if(encoderNav.getHeading() > 0) {
+            nextMotorState.leftDriveMotor = 0.5;
+            nextMotorState.rightDriveMotor = -0.5;
+        } else {
+            telemetry.addData("Alert", "Heading is 0 degrees.");
+        }
+    }
 
     public void motorUpdate()
     {
