@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -64,6 +65,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private ElapsedTime runtime             = new ElapsedTime();
     private NextMotorState nextMotorState   = new NextMotorState(); // Holds motor/servo cmds before sending.
     Hardware_iRads robot                    = new Hardware_iRads();   // use the class created to define iRads hardware
+    InteractiveInit interactiveInit; // Initialized in "initialize()" method.
     private Signal sigDpadUp                = new Signal();
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
@@ -128,8 +130,20 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
-        encoderNav.setPosition(1000,1000,90);
+        interactiveInit = new InteractiveInit(telemetry,gamepad1,this);
+        interactiveInit.menuInputLoop();  // Runtime Initialization Modification.
+        if (robot.hardwareEnabled) {
+            if (interactiveInit.launchControl == InteractiveInit.LaunchControl.PID) {
+                robot.leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.rightLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            } else if (interactiveInit.launchControl == InteractiveInit.LaunchControl.POWER) {
+                robot.leftLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.rightLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+        } // robot.hardwareEnabled == true
+        encoderNav.setPosition(interactiveInit.startX,interactiveInit.startY,interactiveInit.startHeading);
         nextMotorState.initialize(robot, telemetry);
+        interactiveInit.displayMenu(); // Show locked parameters.
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }

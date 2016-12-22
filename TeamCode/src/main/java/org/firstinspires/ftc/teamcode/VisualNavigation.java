@@ -80,8 +80,13 @@ public class VisualNavigation {
     public boolean isNew = false;
     public enum DisplayMode {SHOW_OUTPUT, NO_OUTPUT}
 
-
-    
+    // Beacon Visual Target location matrices
+    // Made static to be more accessible to other classes.
+    // Consequently, this class should be a Singleton.
+    static OpenGLMatrix wheelTargetLocationOnField;
+    static OpenGLMatrix legoTargetLocationOnField;
+    static OpenGLMatrix gearTargetLocationOnField;
+    static OpenGLMatrix toolTargetLocationOnField;
 
     /* Constructor */
     public VisualNavigation() {
@@ -260,7 +265,7 @@ public class VisualNavigation {
          * - Finally, we translate it back along the X axis towards the red audience wall.
          */
         // Wheels, near center, blue wall
-        OpenGLMatrix wheelTargetLocationOnField = OpenGLMatrix
+        wheelTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
                 .translation( (float) (1.0/12.0)*mmFTCFieldWidth, (float) (1.0/2.0)*mmFTCFieldWidth, this.targetHeight)
@@ -277,7 +282,7 @@ public class VisualNavigation {
         * - Finally, we translate it along the Y axis towards the blue audience wall.
         */
         //Legos, near audience, blue wall
-        OpenGLMatrix legoTargetLocationOnField = OpenGLMatrix
+        legoTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the Blue Audience wall.
                 Our translation here is a positive translation in Y.*/
                 .translation( (float) -(3.0/12.0)*mmFTCFieldWidth, (float) (1.0/2.0)*mmFTCFieldWidth, this.targetHeight)
@@ -290,7 +295,7 @@ public class VisualNavigation {
 
 
         // Gears, near center, red wall
-        OpenGLMatrix gearTargetLocationOnField = OpenGLMatrix
+        gearTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
                 .translation( (float) -(1.0/2.0)*mmFTCFieldWidth, (float) -(1.0/12.0)*mmFTCFieldWidth, this.targetHeight)
@@ -302,7 +307,7 @@ public class VisualNavigation {
         RobotLog.ii(TAG, "Gear Target=%s", format(gearTargetLocationOnField));
 
         // Tools, near audience, red wall
-        OpenGLMatrix toolTargetLocationOnField = OpenGLMatrix
+        toolTargetLocationOnField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
                 .translation( (float) -(1.0/2.0)*mmFTCFieldWidth, (float) (3.0/12.0)*mmFTCFieldWidth, this.targetHeight)
