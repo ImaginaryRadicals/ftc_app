@@ -57,7 +57,7 @@ public class Hardware_iRads
     public static final double DRIVE_WHEEL_DIAMETER_INCHES  =  4;
 
     public static final double MM_PER_IN = 25.4f;
-    public static final double WHEELBASE_WIDTH_IN = 18;
+    public static final double WHEELBASE_WIDTH_IN = 13;
     public static final double WHEELBASE_WIDTH_MM  = WHEELBASE_WIDTH_IN  * MM_PER_IN;
     public static final double DRIVE_WHEEL_RADIUS_MM = DRIVE_WHEEL_DIAMETER_INCHES /2.0 * MM_PER_IN;
     public static final double DRIVE_WHEEL_MM_PER_ROT = DRIVE_WHEEL_RADIUS_MM * 2 *  Math.PI;
