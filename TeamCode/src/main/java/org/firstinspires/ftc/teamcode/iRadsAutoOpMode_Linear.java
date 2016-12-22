@@ -272,9 +272,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             nextMotorState.leftDriveMotor = maxSpeed * errorSignal;
             nextMotorState.rightDriveMotor = -maxSpeed * errorSignal;
 
-        } else if(encoderNav.getHeading() > - autonomousGoalHeadingTolerance
-                || encoderNav.getHeading() < autonomousGoalHeadingTolerance) {
-            telemetry.addData("Alert", "Heading is 0 degrees.");
+        } else {
+            telemetry.addData("Alert", "Heading is 0 correct.");
         }
     }
 
