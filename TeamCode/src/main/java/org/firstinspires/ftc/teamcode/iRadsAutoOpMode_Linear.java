@@ -255,10 +255,10 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     public void calculateNextAutonomousMotorState() {
         telemetry.addData("Hey guys", "Running Autonomously!");
-        double autonomousGoalHeading = 180.0; // The robot will turn to this value in the auto mode
+        double autonomousGoalHeading = 90.0; // The robot will turn to this value in the auto mode
         double autonomousGoalHeadingTolerance = 0.0;
         double maxSpeed = 0.5;
-        double angleStartRampDown = 45; // Degrees from goalHeading.
+        double angleStartRampDown = 10; // Degrees from goalHeading.
         double errorSignal = Math.abs(encoderNav.getHeading() - autonomousGoalHeading) / angleStartRampDown;
         errorSignal = Range.clip(errorSignal, 0, 1);
 
