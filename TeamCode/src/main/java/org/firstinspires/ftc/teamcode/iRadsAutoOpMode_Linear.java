@@ -223,8 +223,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             }
             else
             {
-                nextMotorState.rightFlipper  = robot.INITIAL_RIGHT_FLIPPER_POS;
-                nextMotorState.leftFlipper  = robot.INITIAL_LEFT_FLIPPER_POS;
+                nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_OPEN;
+                nextMotorState.leftFlipper  = robot.RIGHT_FLIPPER_OPEN;
             }
         }
 

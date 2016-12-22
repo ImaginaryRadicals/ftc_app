@@ -137,6 +137,7 @@ public class Hardware_iRads
 
         rightFlipper = hwMap.servo.get("rightFlipper");
         rightFlipper.setPosition(INITIAL_RIGHT_FLIPPER_POS);
+        rightFlipper.setDirection(Servo.Direction.REVERSE);
 
 
     }
