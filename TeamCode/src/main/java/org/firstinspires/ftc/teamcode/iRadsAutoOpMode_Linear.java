@@ -130,6 +130,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
+        nextMotorState.initialize(robot, telemetry);
+        // Interactive Initialization Menu implementation.
         interactiveInit = new InteractiveInit(telemetry,gamepad1,this);
         interactiveInit.menuInputLoop();  // Runtime Initialization Modification.
         if (robot.hardwareEnabled) {
@@ -142,9 +144,12 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             }
         } // robot.hardwareEnabled == true
         encoderNav.setPosition(interactiveInit.startX,interactiveInit.startY,interactiveInit.startHeading);
-        nextMotorState.initialize(robot, telemetry);
         interactiveInit.displayMenu(); // Show locked parameters.
         telemetry.addData("Status", "Initialized");
+        if (interactiveInit.debugMode == InteractiveInit.DebugMode.ON) {
+            telemetry.addLine();
+            visualNav.debugDisplay();
+        }
         telemetry.update();
     }
 

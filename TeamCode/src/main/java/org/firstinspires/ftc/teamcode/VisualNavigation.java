@@ -87,6 +87,7 @@ public class VisualNavigation {
     static OpenGLMatrix legoTargetLocationOnField;
     static OpenGLMatrix gearTargetLocationOnField;
     static OpenGLMatrix toolTargetLocationOnField;
+    static OpenGLMatrix phoneLocationOnRobot;
 
     /* Constructor */
     public VisualNavigation() {
@@ -330,7 +331,7 @@ public class VisualNavigation {
          * axis towards the origin. A positive rotation about Z (ie: a rotation parallel to the the X-Y
          * plane) is then CCW, as one would normally expect from the usual classic 2D geometry.
          */
-        OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
+        phoneLocationOnRobot = OpenGLMatrix
                 .translation(mmBotWidth/2,0,0)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.YZY,
@@ -369,6 +370,16 @@ public class VisualNavigation {
 
 
     } // init()
+
+
+    public void debugDisplay() {
+        // Display transform location of targets and phone, use with telemetry.update().
+        telemetry.addData("wheelTransform", format(wheelTargetLocationOnField));
+        telemetry.addData("legoTransform", format(legoTargetLocationOnField));
+        telemetry.addData("gearTransform", format(gearTargetLocationOnField));
+        telemetry.addData("toolTransform", format(toolTargetLocationOnField));
+        telemetry.addData("phoneTransform", format(phoneLocationOnRobot));
+    }
 
 
 
