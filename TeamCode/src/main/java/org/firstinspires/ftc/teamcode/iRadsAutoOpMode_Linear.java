@@ -146,9 +146,19 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         encoderNav.setPosition(interactiveInit.startX,interactiveInit.startY,interactiveInit.startHeading);
         interactiveInit.displayMenu(); // Show locked parameters.
         telemetry.addData("Status", "Initialized");
+        // Debug initialization display:
         if (interactiveInit.debugMode == InteractiveInit.DebugMode.ON) {
             telemetry.addLine();
-            visualNav.debugDisplay();
+            // Show all visual target goal names and coordinates.
+            for (int i = 0; i<interactiveInit.goalX.size(); i++) {
+                // Visual Target, robot position goal
+                telemetry.addLine(interactiveInit.beaconTargets.get(i).toString());
+                telemetry.addData("goalX",interactiveInit.goalX.get(i));
+                telemetry.addData("goalY",interactiveInit.goalY.get(i));
+                telemetry.addData("goalHeading",interactiveInit.goalHeading.get(i));
+            }
+            telemetry.addLine();
+            visualNav.debugDisplay(); // Show navigation transformations.
         }
         telemetry.update();
     }

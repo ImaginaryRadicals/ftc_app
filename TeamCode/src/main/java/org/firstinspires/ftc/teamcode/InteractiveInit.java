@@ -49,13 +49,6 @@ public class InteractiveInit {
     Telemetry telemetry;
     Gamepad gamepad1;
     LinearOpMode opMode;
-    public double startX = 0;
-    public double startY = 0;
-    public double startHeading = 0;
-    public ArrayList<Double> goalX = new ArrayList<>();
-    public ArrayList<Double> goalY = new ArrayList<>();
-    public ArrayList<Double> goalHeading = new ArrayList<>();
-    public double startDelaySec = 0;
     private boolean interactiveMode = true;
     private double cursorSpace = 4; // Margin for cursor
     private Signal sigDpadUp = new Signal();
@@ -63,6 +56,16 @@ public class InteractiveInit {
     private Signal sigDpadRight = new Signal();
     private Signal sigDpadLeft = new Signal();
     private Signal sigButtonA = new Signal();
+    public enum BeaconTarget { GEAR, TOOL, LEGO, WHEEL}
+    // public output properties
+    public double startX = 0;
+    public double startY = 0;
+    public double startHeading = 0;
+    public ArrayList<Double> goalX = new ArrayList<>();
+    public ArrayList<Double> goalY = new ArrayList<>();
+    public ArrayList<Double> goalHeading = new ArrayList<>();
+    public double startDelaySec = 0;
+    public ArrayList<Enum> beaconTargets = new ArrayList<>();
 
 
     /**
@@ -247,6 +250,7 @@ public class InteractiveInit {
             goalX.clear();
             goalY.clear();
             goalHeading.clear();
+            beaconTargets.clear();
         switch (team) {
             case RED_TEAM:
                 switch (beaconGoal) {
@@ -255,21 +259,25 @@ public class InteractiveInit {
                         goalX.add((double) VisualNavigation.gearTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.gearTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.gearTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.GEAR);
                         break; // end NEAR
                     case FAR:
                         // Tools
                         goalX.add((double) VisualNavigation.toolTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.toolTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.toolTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.TOOL);
                         break; // end FAR
                     case BOTH:
                         // Gears and Tools
                         goalX.add((double) VisualNavigation.gearTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.gearTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.gearTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.GEAR);
                         goalX.add((double) VisualNavigation.toolTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.toolTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.toolTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.TOOL);
                         break; // end BOTH
                 }
                 break; // end RED_TEAM
@@ -280,21 +288,25 @@ public class InteractiveInit {
                         goalX.add((double) VisualNavigation.wheelTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.wheelTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.wheelTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.WHEEL);
                         break; // end NEAR
                     case FAR:
                         // Legos
                         goalX.add((double) VisualNavigation.legoTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.legoTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.legoTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.LEGO);
                         break; // end FAR
                     case BOTH:
                         // Wheels and Legos
                         goalX.add((double) VisualNavigation.wheelTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.wheelTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.wheelTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.WHEEL);
                         goalX.add((double) VisualNavigation.legoTargetLocationOnField.getTranslation().get(0));
                         goalY.add((double) VisualNavigation.legoTargetLocationOnField.getTranslation().get(1));
                         goalHeading.add(getRobotHeading(VisualNavigation.legoTargetLocationOnField));
+                        beaconTargets.add(BeaconTarget.LEGO);
                         break; // end BOTH
                 }
                 break; // end BLUE_TEAM
@@ -327,9 +339,9 @@ public class InteractiveInit {
         // Returns the robot heading required to face into (oposite) of the
         // Specified visual target normal axis.
         double visualTargetOrientation = (double) Orientation.getOrientation(
-                targetOpenGLMatrix, AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
-        // May need to be rotated by 180 to be from the robot's perspective.
-        return visualTargetOrientation;
+                targetOpenGLMatrix, AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle;
+        // Rotate into Robot's perspective:
+        return 90 + visualTargetOrientation;
     } // getRobotHeading()
 
 } // InteractiveInit class
