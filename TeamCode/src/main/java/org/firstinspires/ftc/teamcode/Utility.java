@@ -46,33 +46,39 @@ public class Utility {
 
 
     public double getMotorTickRate() {
-        // "Inputs"
-        DcMotor motorInQuestion = this.dcMotor;
+
         double currentTime = runtime.time();
-
-        double currentEncoderPosition = motorInQuestion.getCurrentPosition();
-        double deltaEncoderPositions = currentEncoderPosition - lastEncoderPosition;
-        double deltaElapsedTime = currentTime - lastTime;
-        double instTickRate;
         double avgTickRate;
-        int avgSamples = 30;
 
-        if (deltaElapsedTime != 0) { // Avoid divide by zero.
-            instTickRate = deltaEncoderPositions / deltaElapsedTime;
-        } else {
-            instTickRate = 0;
-        }
+        if(currentTime > lastTime + updatePeriod) {
 
-        pastMotorRates.add(instTickRate);
+            DcMotor motorInQuestion = this.dcMotor;
+            double currentEncoderPosition = motorInQuestion.getCurrentPosition();
+            double deltaEncoderPositions = currentEncoderPosition - lastEncoderPosition;
+            double deltaElapsedTime = currentTime - lastTime;
+            double instTickRate;
+            int avgSamples = 30;
 
-        if (pastMotorRates.size() >= avgSamples) {
-            pastMotorRates.remove(0);
-        }
+            // Calculate instantaneous rate. Don't divide by zero.
+            if (deltaElapsedTime != 0) {
+                instTickRate = deltaEncoderPositions / deltaElapsedTime;
+            } else {
+                instTickRate = 0;
+            }
 
-        lastEncoderPosition = currentEncoderPosition;
-        lastTime = currentTime;
+            // Add new instantaneous rate to pastMotorRates vector. Keep vector length below limit.
+            pastMotorRates.add(instTickRate);
+            if (pastMotorRates.size() >= avgSamples) {
+                pastMotorRates.remove(0);
+            }
+
+            lastEncoderPosition = currentEncoderPosition;
+            lastTime = currentTime;
+        } // if updatePeriod elapsed
 
         avgTickRate = VectorMath.average(pastMotorRates);
         return avgTickRate;
-    }
-}
+
+    } // getMotorTickRate()
+
+} // Utility class
