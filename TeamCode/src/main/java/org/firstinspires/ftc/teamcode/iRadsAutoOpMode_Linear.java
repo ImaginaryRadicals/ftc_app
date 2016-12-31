@@ -71,7 +71,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
     private Signal sigDpadBack              = new Signal();
-    private Vector encoderTicksPerSecond    = new Vector();
+    private Utility utilLaunchSpeed         = new Utility();
 
     double launchPower = 1.0; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
@@ -282,7 +282,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
         telemetry.addData("Ideal Launch Speed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
         if (robot.hardwareEnabled) {
-            telemetry.addData("Actual Launch Speed", "%.2f", Utility.getMotorTickRate(robot.leftLaunchMotor, robot.periodSec()));
+            telemetry.addData("Actual Launch Speed", "%.2f", utilLaunchSpeed.getMotorTickRate(robot.leftLaunchMotor, robot.periodSec()));
         }
 
     } // calculateNextMotorState()

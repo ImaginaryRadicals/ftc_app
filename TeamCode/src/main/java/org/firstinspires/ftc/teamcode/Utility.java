@@ -10,10 +10,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Utility {
 
-    static Vector pastMotorRates = new Vector();
-
-    public static double lastEncoderPosition = 0;
-    public static double lastElapsedTime = 0;
+    Vector pastMotorRates = new Vector();
+    double lastEncoderPosition = 0;
+    double lastElapsedTime = 0;
 
     static double expo(double input, double gain) {
         // y = (x^3 * (k-1) + x ) / k
@@ -24,7 +23,7 @@ public class Utility {
 
     }
 
-    public static double getMotorTickRate(DcMotor motorInQuestion, double elapsedTime) {
+    public double getMotorTickRate(DcMotor motorInQuestion, double elapsedTime) {
 
         double currentEncoderPosition = motorInQuestion.getCurrentPosition();
         double motorTickRate = 0;
