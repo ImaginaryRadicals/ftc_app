@@ -32,7 +32,10 @@ public class Utility {
 
         double deltaEncoderPositions = currentEncoderPosition - lastEncoderPosition;
         double deltaElapsedTime = currentElapsedTime - lastElapsedTime;
-        double rate = deltaEncoderPositions / deltaElapsedTime;
+        double rate = 0;
+        if (deltaElapsedTime != 0) { // Avoid divide by zero.
+            rate = deltaEncoderPositions / deltaElapsedTime;
+        }
 
         pastMotorRates.add(rate);
 
