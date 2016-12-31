@@ -17,6 +17,8 @@ public class Utility {
 
     // Instance properties
     Vector pastMotorRates = new Vector();
+    Vector pastMotorTicks = new Vector();
+    Vector pastMotorTimes = new Vector();
     double lastEncoderPosition = 0;
     double lastTime = 0;
     DcMotor dcMotor;
@@ -57,7 +59,7 @@ public class Utility {
             double deltaEncoderPositions = currentEncoderPosition - lastEncoderPosition;
             double deltaElapsedTime = currentTime - lastTime;
             double instTickRate;
-            int avgSamples = 30;
+            int avgSamples = 50;
 
             // Calculate instantaneous rate. Don't divide by zero.
             if (deltaElapsedTime != 0) {
@@ -72,11 +74,24 @@ public class Utility {
                 pastMotorRates.remove(0);
             }
 
+            // Add new time values to Vector. (Secondary calculation strategy.)
+            pastMotorTimes.add(currentTime);
+            if (pastMotorTimes.size() >= avgSamples) {
+                pastMotorTimes.remove(0);
+            }
+
+            // Add new encoder ticks values to Vector. (Secondary calculation strategy.)
+            pastMotorTicks.add(currentEncoderPosition);
+            if (pastMotorTicks.size() >= avgSamples) {
+                pastMotorTicks.remove(0);
+            }
+
             lastEncoderPosition = currentEncoderPosition;
             lastTime = currentTime;
         } // if updatePeriod elapsed
 
-        avgTickRate = VectorMath.average(pastMotorRates);
+        //avgTickRate = VectorMath.average(pastMotorRates);
+        avgTickRate = VectorMath.span(pastMotorTicks) / VectorMath.span(pastMotorTimes);
         return avgTickRate;
 
     } // getMotorTickRate()

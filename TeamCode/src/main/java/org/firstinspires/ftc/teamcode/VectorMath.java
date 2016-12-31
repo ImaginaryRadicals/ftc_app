@@ -48,4 +48,16 @@ public class VectorMath
 
         return ret;
     }
+
+    // Get the span of the vector, i.e. lastValue - firstValue.
+    static public double span(Vector<Double> v) {
+        if (v.size() > 0)
+        {
+            return v.get(v.size()-1) - v.get(0);
+        }
+        else
+        {
+            return 0.0;
+        }
+    }
 }
