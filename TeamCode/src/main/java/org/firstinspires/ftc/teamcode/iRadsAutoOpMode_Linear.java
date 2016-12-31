@@ -65,13 +65,14 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private EncoderNavigation encoderNav    = new EncoderNavigation();
     private ElapsedTime runtime             = new ElapsedTime();
     private NextMotorState nextMotorState   = new NextMotorState(); // Holds motor/servo cmds before sending.
-    Hardware_iRads robot                    = new Hardware_iRads();   // use the class created to define iRads hardware
-    InteractiveInit interactiveInit; // Initialized in "initialize()" method.
+    private Hardware_iRads robot            = new Hardware_iRads();   // use the class created to define iRads hardware
+    private InteractiveInit interactiveInit; // Initialized in "initialize()" method.
+    private Utility utilLeftLaunchSpeed; // Initialized in "initialize()" method.
     private Signal sigDpadUp                = new Signal();
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
     private Signal sigDpadBack              = new Signal();
-    private Utility utilLaunchSpeed         = new Utility();
+
 
     double launchPower = 1.0; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
@@ -147,7 +148,9 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
+        
         nextMotorState.initialize(robot, telemetry);
+        if(robot.hardwareEnabled) utilLeftLaunchSpeed = new Utility(runtime, robot.leftLaunchMotor, .01);
         // Interactive Initialization Menu implementation.
         interactiveInit = new InteractiveInit(telemetry,gamepad1,this);
         interactiveInit.menuInputLoop();  // Runtime Initialization Modification.
@@ -282,7 +285,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
         telemetry.addData("Ideal Launch Speed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
         if (robot.hardwareEnabled) {
-            telemetry.addData("Actual Launch Speed", "%.2f", utilLaunchSpeed.getMotorTickRate(robot.leftLaunchMotor, robot.periodSec()));
+            telemetry.addData("Actual Launch Speed", "%.2f", utilLeftLaunchSpeed.getMotorTickRate());
         }
 
     } // calculateNextMotorState()
