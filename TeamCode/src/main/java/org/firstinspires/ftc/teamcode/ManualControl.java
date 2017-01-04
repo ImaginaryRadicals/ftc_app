@@ -14,7 +14,7 @@ public class ManualControl {
     static void setSingleStickXY(double xStick, double yStick) {
         yStick = -yStick; // flip y axis. -1 was forward.
         double magnitude = Math.sqrt( Math.pow(xStick,2)  + Math.pow(yStick,2)  );
-        double angleDeg = Math.atan2(yStick,xStick) - 90;
+        double angleDeg = Math.atan2(yStick,xStick)*180/Math.PI - 90;
 
 
 
