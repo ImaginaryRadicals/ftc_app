@@ -9,12 +9,15 @@ public class ManualControl {
     // Class outputs
     static double leftDriveMotorPower = 0;
     static double rightDriveMotorPower = 0;
+    static double magnitude;
+    static double angleDeg;
+
 
     // singleStick control
     static void setSingleStickXY(double xStick, double yStick) {
         yStick = -yStick; // flip y axis. -1 was forward.
-        double magnitude = Math.sqrt( Math.pow(xStick,2)  + Math.pow(yStick,2)  );
-        double angleDeg = Math.atan2(yStick,xStick)*180/Math.PI - 90;
+        magnitude = Math.sqrt( Math.pow(xStick,2)  + Math.pow(yStick,2)  );
+        angleDeg = Math.atan2(yStick,xStick)*180/Math.PI - 90;
 
 
 
@@ -41,7 +44,8 @@ public class ManualControl {
 
         } else {
             // Error
-            throw new RuntimeException();
+            //throw new RuntimeException();
+
         }
 
 

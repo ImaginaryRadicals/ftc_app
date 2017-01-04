@@ -221,6 +221,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             ManualControl.setSingleStickXY(gamepad1.left_stick_x,gamepad1.left_stick_y);
             nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
+            telemetry.addData("magnitude",ManualControl.magnitude);
+            telemetry.addData("AngleDeg",ManualControl.angleDeg);
         }
         
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
