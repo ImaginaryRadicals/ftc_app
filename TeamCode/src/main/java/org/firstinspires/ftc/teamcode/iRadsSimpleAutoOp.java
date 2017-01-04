@@ -52,7 +52,7 @@ import org.firstinspires.ftc.teamcode.Hardware_iRads;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Template: Linear OpMode", group="iRads")  // @Autonomous(...) is the other common choice
+@Autonomous(name="iRads Simple AutoOp", group="iRads")  // @Autonomous(...) is the other common choice
 //@Disabled
 public class iRadsSimpleAutoOp extends LinearOpMode {
 
