@@ -89,6 +89,10 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         // drive forward while warming up the launcher
         driveForward(1000);
         setLaunchPower(1);
+        //tells the robot to keep doing what it is doing until the drive motors are finished
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(500);
+        }
 
         /*launch 2 balls (or "particles").  For safety, we will lift the launch trigger 3 times in
         case a ball gets trapped*/
@@ -97,9 +101,17 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
             robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
         }
         setLaunchPower(0);
+        //tells the robot to keep doing what it is doing until the launch trigger reaches its target position
+        while (robot.launchTrigger.getPosition() != robot.ELEVATED_LAUNCHER_TRIGGER_POS){
+            sleep(500);
+        }
 
         // drive forward again to knock off the cap ball and park on its platform
         driveForward(1000);
+        //tells the robot to keep doing what it is doing until the drive motors are finished
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(500);
+        }
     }
 
     public void initialize() {
