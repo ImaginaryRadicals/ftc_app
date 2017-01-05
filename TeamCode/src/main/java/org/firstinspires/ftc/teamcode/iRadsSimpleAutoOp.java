@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Hardware_iRads;
 
@@ -127,6 +128,8 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     }
 
     void driveForward(double distance_mm){
+
+        resetEncoders();
         robot.leftDriveMotor.setTargetPosition(
                 mmToTicks(distance_mm)
         );
@@ -138,5 +141,13 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     void setLaunchPower(double launchPower) {
         robot.rightLaunchMotor.setPower(launchPower);
         robot.leftLaunchMotor.setPower(launchPower);
+    }
+
+    void resetEncoders() {
+        robot.leftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
     }
 }
