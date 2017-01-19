@@ -41,17 +41,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Hardware_iRads;
 
 /**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a PushBot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
+ * This autonomous opmode will drive forward a specified distance, shoot 2 particles, and drive the
+ * rest of the way to knock off the cap ball.  Note: the launch trigger will pump 3x.  This is so
+ * that if one of the balls isn't launched properly, we can recover.
+ * */
 
 @Autonomous(name="iRads Simple AutoOp", group="iRads")  // @Autonomous(...) is the other common choice
 //@Disabled
@@ -59,8 +52,6 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    // DcMotor leftMotor = null;
-    // DcMotor rightMotor = null;
 
     Hardware_iRads robot = new Hardware_iRads();
 
@@ -68,18 +59,6 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
-        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
-         * step (using the FTC Robot Controller app on the phone).
-         */
-        // leftMotor  = hardwareMap.dcMotor.get("left_drive");
-        // rightMotor = hardwareMap.dcMotor.get("right_drive");
-
-        // eg: Set the drive motor directions:
-        // "Reverse" the motor that runs backwards when connected directly to the battery
-        // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -89,7 +68,6 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
 
         // drive forward while warming up the launcher
         driveForward(240);
-
         setLaunchPower(1);
 
         //tells the robot to keep doing what it is doing until the drive motors are finished
@@ -97,8 +75,10 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
             sleep(50);
         }
 
+        //stop for a little while longer so that the launch motors can finish getting up to speed
         sleep(500);
 
+        //launch the two particles and pull power from the launch motors
         launchBalls();
         setLaunchPower(0);
 
@@ -113,16 +93,17 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
 
     public void initialize() {
         robot.init(hardwareMap);
-
         resetEncoders();
-
-        //other settings here
     }
 
     int mmToTicks(double driveDistance_mm) {
-        driveDistance_mm *= .65; /*Don't ask why.  In testing, the robot drove 1.5 times the distance
+        driveDistance_mm *= .65;
+        /*Don't ask why.  In testing, the robot drove 1.5 times the distance
         intended, and the reciprocal of 1.5 is roughly .65.  This is probably due to lack of
-        traction, in which case this factor of 6.5 will prove roughly accurate.*/
+        traction, in which case this factor of 6.5 will prove roughly accurate.  After multiplying
+        by this factor, the robot goes to its desired position +- 1cm.*/
+
+        //convert mm to ticks
         double driveDistance_ticks = driveDistance_mm  * robot.DRIVE_WHEEL_STEPS_PER_ROT / robot.DRIVE_WHEEL_MM_PER_ROT;
         return (int) driveDistance_ticks;
     }
@@ -131,8 +112,12 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
 
         resetEncoders();
 
+        /*It is important that the power is set before the target position.  If it is not, the robot
+        * will attempt to reach its target position at a speed of zero, which is not that efficient.
+        * */
         robot.rightDriveMotor.setPower(1);
         robot.leftDriveMotor.setPower(1);
+
         robot.leftDriveMotor.setTargetPosition(
                 mmToTicks(distance_mm)
         );
@@ -158,6 +143,7 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         /*launch 2 balls (or "particles").  For safety, we will lift the launch trigger 3 times in
         case a ball gets trapped*/
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        //sleep between each change in position.  If we don't the trigger will just quiver in place.
         sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
         sleep(500);
