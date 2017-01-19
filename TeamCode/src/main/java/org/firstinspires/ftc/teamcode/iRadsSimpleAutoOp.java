@@ -94,12 +94,8 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
 
         sleep(5000);
 
-        /*launch 2 balls (or "particles").  For safety, we will lift the launch trigger 3 times in
-        case a ball gets trapped*/
-        for(int i = 0; i < 3; i++) {
-            robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
-            robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
-        }
+        launchBalls();
+
         setLaunchPower(0);
         //tells the robot to keep doing what it is doing until the launch trigger reaches its target position
 
@@ -146,5 +142,18 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+    }
+
+    void launchBalls(){
+        /*launch 2 balls (or "particles").  For safety, we will lift the launch trigger 3 times in
+        case a ball gets trapped*/
+        robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+
+        robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+
+        robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
     }
 }
