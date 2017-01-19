@@ -88,34 +88,41 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         initialize();
 
         // drive forward while warming up the launcher
-        driveForward(1000);
-        setLaunchPower(1);
-        //tells the robot to keep doing what it is doing until the drive motors are finished
+        driveForward(240);
 
-        sleep(5000);
+        setLaunchPower(1);
+
+        //tells the robot to keep doing what it is doing until the drive motors are finished
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
+        }
+
+        sleep(500);
 
         launchBalls();
-
         setLaunchPower(0);
-        //tells the robot to keep doing what it is doing until the launch trigger reaches its target position
-
-        sleep(5000);
 
         // drive forward again to knock off the cap ball and park on its platform
-        driveForward(1000);
-        //tells the robot to keep doing what it is doing until the drive motors are finished
+        driveForward(1510);
 
-        sleep(5000);
+        //tells the robot to keep doing what it is doing until the drive motors are finished
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
+        }
     }
 
     public void initialize() {
         robot.init(hardwareMap);
 
+        resetEncoders();
+
         //other settings here
     }
 
-    int mmToTicks(double mm) {
-        double driveDistance_mm = 1000;
+    int mmToTicks(double driveDistance_mm) {
+        driveDistance_mm *= .65; /*Don't ask why.  In testing, the robot drove 1.5 times the distance
+        intended, and the reciprocal of 1.5 is roughly .65.  This is probably due to lack of
+        traction, in which case this factor of 6.5 will prove roughly accurate.*/
         double driveDistance_ticks = driveDistance_mm  * robot.DRIVE_WHEEL_STEPS_PER_ROT / robot.DRIVE_WHEEL_MM_PER_ROT;
         return (int) driveDistance_ticks;
     }
@@ -123,6 +130,9 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     void driveForward(double distance_mm){
 
         resetEncoders();
+
+        robot.rightDriveMotor.setPower(1);
+        robot.leftDriveMotor.setPower(1);
         robot.leftDriveMotor.setTargetPosition(
                 mmToTicks(distance_mm)
         );
@@ -148,12 +158,17 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         /*launch 2 balls (or "particles").  For safety, we will lift the launch trigger 3 times in
         case a ball gets trapped*/
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+        sleep(500);
 
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+        sleep(500);
 
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
     }
 }
