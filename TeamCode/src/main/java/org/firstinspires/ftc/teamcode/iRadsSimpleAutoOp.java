@@ -66,24 +66,21 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
 
         initialize();
 
-        // drive forward while warming up the launcher
-        driveForward(240);
         setLaunchPower(1);
 
-        //tells the robot to keep doing what it is doing until the drive motors are finished
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
-        }
+        sleep(3000);
 
         //stop for a little while longer so that the launch motors can finish getting up to speed
         sleep(500);
 
-        //launch the two particles and pull power from the launch motors
+        //launch the two particles and pull power from the launch motors and close the flippers
         launchBalls();
         setLaunchPower(0);
+        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
+        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         // drive forward again to knock off the cap ball and park on its platform
-        driveForward(1510);
+        driveForward(1500);
 
         //tells the robot to keep doing what it is doing until the drive motors are finished
         while (robot.leftDriveMotor.isBusy()){
