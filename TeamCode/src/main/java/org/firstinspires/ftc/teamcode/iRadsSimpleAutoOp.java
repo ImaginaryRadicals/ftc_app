@@ -148,19 +148,20 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
         sleep(500);
 
-        //Open the flippers and then close them to prevent the second particle from escaping.
+        //Open the flippers so we can shoot...
 
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
-        sleep(500);
-
-        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
-        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
         sleep(500);
         
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
         sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+        sleep(500);
+
+        // ...and then close them to prevent the second particle from escaping
+        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
+        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
         sleep(500);
 
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
