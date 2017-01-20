@@ -140,30 +140,24 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     }
 
     void launchBalls(){
-        /*launch 2 balls (or "particles").  For safety, we will lift the launch trigger 3 times in
-        case a ball gets trapped*/
-        robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
-        //sleep between each change in position.  If we don't the trigger will just quiver in place.
-        sleep(500);
-        robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
-        sleep(500);
-
-        //Open the flippers so we can shoot...
+        //Open the flippers so we can shoot
 
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
         sleep(500);
-        
+
+        //launch once
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
         sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
         sleep(500);
 
-        // ...and then close them to prevent the second particle from escaping
+        // Close the flippers to prevent the second particle from escaping
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
         sleep(1000);
 
+        //launch a second time
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
         sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
