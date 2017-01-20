@@ -255,7 +255,14 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
         // hold right_bumper to activate launch Trigger.
         if (gamepad1.right_bumper) {
+            nextMotorState.leftFlipper = robot.LEFT_FLIPPER_OPEN;
+            nextMotorState.rightFlipper = robot.RIGHT_FLIPPER_OPEN;
+            
             nextMotorState.launchTrigger  = robot.ELEVATED_LAUNCHER_TRIGGER_POS;
+
+            sleep(30);
+            nextMotorState.leftFlipper = robot. LEFT_FLIPPER_CLOSED;
+            nextMotorState.rightFlipper = robot.RIGHT_FLIPPER_CLOSED;
         }
         else {
             nextMotorState.launchTrigger  = robot.INITIAL_LAUNCHER_TRIGGER_POS;
