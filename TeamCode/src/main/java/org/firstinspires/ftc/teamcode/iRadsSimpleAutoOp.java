@@ -83,7 +83,7 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         // drive forward again to knock off the cap ball and park on its platform
-        driveForward(1500);
+        driveForward(2000);
 
         //tells the robot to keep doing what it is doing until the drive motors are finished
         while (robot.leftDriveMotor.isBusy()){
