@@ -124,7 +124,6 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     }
 
     void setLaunchPower(double launchPower) {
-        robot.rightLaunchMotor.setMaxSpeed(1100);
         robot.rightLaunchMotor.setPower(launchPower);
         robot.leftLaunchMotor.setPower(launchPower);
     }
