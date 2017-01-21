@@ -128,8 +128,8 @@ public class Hardware_iRads
         rightLaunchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // Set the max speed of the launch motors so that we don't go over 6 feet
-        leftLaunchMotor.setMaxSpeed(1100);
-        rightLaunchMotor.setMaxSpeed(1100);
+        leftLaunchMotor.setMaxSpeed(1150);
+        rightLaunchMotor.setMaxSpeed(1150);
 
 
         // Define and initialize ALL installed servos.
