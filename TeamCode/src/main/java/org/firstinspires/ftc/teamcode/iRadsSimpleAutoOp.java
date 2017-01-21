@@ -55,6 +55,8 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
 
     Hardware_iRads robot = new Hardware_iRads();
 
+    private Utility utilLeftLaunchSpeed = new Utility(runtime, robot.leftLaunchMotor, 0.01); // Initialized in "initialize()" method.
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -69,7 +71,10 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
 
-        setLaunchPower(1);
+        double tick_rate = utilLeftLaunchSpeed.getMotorTickRate();
+        double rate_ratio = tick_rate / 1100;
+        setLaunchPower(tick_rate / rate_ratio);
+
 
         sleep(3000);
 
