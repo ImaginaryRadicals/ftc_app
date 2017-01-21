@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -290,6 +291,14 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
                 nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_OPEN;
                 nextMotorState.leftFlipper  = robot.RIGHT_FLIPPER_OPEN;
             }
+        }
+
+        if (gamepad1.start && robot.rightDriveMotor.getDirection() == DcMotorSimple.Direction.REVERSE) {
+            robot.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+            robot.leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        } else if (gamepad1.start && robot.rightDriveMotor.getDirection() == DcMotorSimple.Direction.FORWARD){
+            robot.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            robot.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         }
 
 
