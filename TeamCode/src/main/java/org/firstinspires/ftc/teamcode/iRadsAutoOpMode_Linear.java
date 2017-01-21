@@ -73,6 +73,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
     private Signal sigDpadBack              = new Signal();
+    private Signal sigDpadStart             = new Signal();
 
 
     double launchPower = 1.0; // Initial power of launcher.
@@ -81,6 +82,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     boolean flippers_closed_state = false;
     boolean runningAutonomously = false;
+    boolean reverseDrive        = false;
 
     @Override
     public void runOpMode()
@@ -214,12 +216,23 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     public void calculateNextMotorState() {
 
+        if (sigDpadStart.risingEdge(gamepad1.start)) {
+            reverseDrive = !reverseDrive;
+        }
+
         if (gamepad1.left_trigger > 0.5) { // Tank drive if left trigger pulled
             // Left and Right sticks control tank drive.
             nextMotorState.leftDriveMotor = Utility.expo(-gamepad1.left_stick_y, expoGain);
             nextMotorState.rightDriveMotor = Utility.expo(-gamepad1.right_stick_y, expoGain);
         } else { // Left (single)stick control, defalt.
-            ManualControl.setSingleStickXY(gamepad1.left_stick_x,gamepad1.left_stick_y);
+
+            //reverse the drive direction if reverseDrive is true (if the driver presses "start")
+            if (reverseDrive) {
+                ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+            } else {
+                ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            }
+
             nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
             telemetry.addData("magnitude",ManualControl.magnitude);
@@ -292,15 +305,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
                 nextMotorState.leftFlipper  = robot.RIGHT_FLIPPER_OPEN;
             }
         }
-
-        if (gamepad1.start && robot.rightDriveMotor.getDirection() == DcMotorSimple.Direction.REVERSE) {
-            robot.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-            robot.leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        } else if (gamepad1.start && robot.rightDriveMotor.getDirection() == DcMotorSimple.Direction.FORWARD){
-            robot.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-            robot.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        }
-
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", nextMotorState.leftDriveMotor);
