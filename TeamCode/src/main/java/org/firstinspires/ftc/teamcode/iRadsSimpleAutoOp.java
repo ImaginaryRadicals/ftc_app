@@ -71,10 +71,6 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         setLaunchPower(1);
-        sleep(2000);
-        double tick_rate = utilLeftLaunchSpeed.getMotorTickRate();
-        double rate_ratio = tick_rate / 1100;
-        setLaunchPower(tick_rate / rate_ratio);
 
 
         sleep(3000);
@@ -146,8 +142,10 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     }
 
     void launchBalls(){
-        //Open the flippers so we can shoot
+        robot.leftLaunchMotor.setMaxSpeed(1100);
+        robot.rightLaunchMotor.setMaxSpeed(1100);
 
+        //Open the flippers so we can shoot
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
         sleep(500);
