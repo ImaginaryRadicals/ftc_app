@@ -228,7 +228,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
             //reverse the drive direction if reverseDrive is true (if the driver presses "start")
             if (reverseDrive) {
-                ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+                ManualControl.setSingleStickXY(-gamepad1.left_stick_x, gamepad1.left_stick_y);
             } else {
                 ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
             }
