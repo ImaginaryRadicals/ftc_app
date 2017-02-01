@@ -6,7 +6,7 @@ package org.firstinspires.ftc.teamcode;
 
 import java.lang.Math;
 
-public class iRads_Utilities {
+public class Kinematics {
 
     public static final double MM_PER_INCH          = 25.4;
     //The x and the y coordinates of a target are identical
