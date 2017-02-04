@@ -110,11 +110,16 @@ public class Hardware_iRads
         // Set all motors to run with encoders.
         // Use RUN_WITHOUT_ENCODERS if encoders are NOT installed.
         // Use RUN_USING_ENCODERS if encoders ARE installed.
-        leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
+        /*leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
         leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
         rightLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);*/
+        leftDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Set ENCODER mode max speed (in Ticks per second)
         leftDriveMotor.setMaxSpeed(MAX_DRIVE_SPEED_TPS);
