@@ -33,12 +33,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.Hardware_iRads;
 
 /**
  * This autonomous opmode will drive forward a specified distance, shoot 2 particles, and drive the
@@ -46,9 +43,9 @@ import org.firstinspires.ftc.teamcode.Hardware_iRads;
  * that if one of the balls isn't launched properly, we can recover.
  * */
 
-@Autonomous(name="iRads Simple AutoOp", group="iRads")  // @Autonomous(...) is the other common choice
+@Autonomous(name="iRads Simple AutoOp (10 sec)", group="iRads")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class iRadsSimpleAutoOp extends LinearOpMode {
+public class iRadsSimpleAutoOp_10sec extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -70,8 +67,9 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
-        setLaunchPower(1);
+        sleep(10000);
 
+        setLaunchPower(1);
 
         sleep(3000);
 

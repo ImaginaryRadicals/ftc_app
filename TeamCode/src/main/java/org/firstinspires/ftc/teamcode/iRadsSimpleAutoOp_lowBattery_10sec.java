@@ -33,12 +33,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.Hardware_iRads;
 
 /**
  * This autonomous opmode will drive forward a specified distance, shoot 2 particles, and drive the
@@ -46,9 +43,9 @@ import org.firstinspires.ftc.teamcode.Hardware_iRads;
  * that if one of the balls isn't launched properly, we can recover.
  * */
 
-@Autonomous(name="iRads Simple AutoOp", group="iRads")  // @Autonomous(...) is the other common choice
+@Autonomous(name="iRads Simple AutoOp (low battery, 10 sec)", group="iRads")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class iRadsSimpleAutoOp extends LinearOpMode {
+public class iRadsSimpleAutoOp_lowBattery_10sec extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -70,6 +67,8 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
+        sleep(10000);
+
         setLaunchPower(1);
 
 
@@ -85,7 +84,7 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         // drive forward again to knock off the cap ball and park on its platform
-        driveForward(2000);
+        driveForward(1500);
 
         //tells the robot to keep doing what it is doing until the drive motors are finished
         while (robot.leftDriveMotor.isBusy()){
@@ -142,8 +141,11 @@ public class iRadsSimpleAutoOp extends LinearOpMode {
     }
 
     void launchBalls(){
-        robot.leftLaunchMotor.setMaxSpeed(1150);
-        robot.rightLaunchMotor.setMaxSpeed(1150);
+        robot.leftLaunchMotor.setMaxSpeed(1050);
+        robot.rightLaunchMotor.setMaxSpeed(1050);
+        
+        robot.leftLaunchMotor.setMaxSpeed(1100);
+        robot.rightLaunchMotor.setMaxSpeed(1100);
 
         //Open the flippers so we can shoot
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
