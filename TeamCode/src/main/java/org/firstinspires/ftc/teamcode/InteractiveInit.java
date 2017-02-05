@@ -66,6 +66,7 @@ public class InteractiveInit {
     public ArrayList<Double> goalHeading = new ArrayList<>();
     public double startDelaySec = 0;
     public ArrayList<Enum> beaconTargets = new ArrayList<>();
+    public double necessaryLaunchSpeed = 0;
 
 
     /**
@@ -74,7 +75,7 @@ public class InteractiveInit {
     // *** PARAMETERS/MENU SETUP *** //
 
     // Parameter List
-    private enum Menu { Team, Position, LaunchControl, BeaconGoal, StartDelay, DebugMode}
+    private enum Menu { Team, Position, LaunchControl, BeaconGoal, StartDelay, DebugMode, distanceFromGoal }
 
     // Parameter options
     enum Team { RED_TEAM, BLUE_TEAM}
@@ -83,6 +84,7 @@ public class InteractiveInit {
     enum BeaconGoal { NEAR, FAR, BOTH}
     enum StartDelay { ZERO, FOUR, EIGHT, TWELVE} // Integer numeric would be nice!
     enum DebugMode { ON, OFF}
+    enum DistanceFromGoal { NEAR, FAR }
 
 
     // Initial values
@@ -94,6 +96,7 @@ public class InteractiveInit {
     BeaconGoal beaconGoal = BeaconGoal.NEAR;
     StartDelay startDelay = StartDelay.ZERO;
     DebugMode debugMode = DebugMode.ON;
+    DistanceFromGoal distanceFromGoal = DistanceFromGoal.NEAR;
 
     // "menuOptions" must match "enum Menu" and updateOutputs()
     Enum[] menuOptions = {team, position, launchControl, beaconGoal, startDelay, debugMode};
@@ -331,6 +334,13 @@ public class InteractiveInit {
             default:
                 startDelaySec = 0;
                 break;
+        }
+
+        //calculate proper launcher max speed based on distance from goal
+        if (distanceFromGoal == DistanceFromGoal.NEAR) {
+            necessaryLaunchSpeed = 1050;
+        } else {
+            necessaryLaunchSpeed = 1150;
         }
 
     } // updateOutputs()
