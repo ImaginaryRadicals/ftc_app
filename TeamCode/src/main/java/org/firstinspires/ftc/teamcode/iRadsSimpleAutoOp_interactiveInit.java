@@ -68,6 +68,10 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
+        //sleep for the total length of the driver-input delay
+        //it is possible that it might sleep so long that we go past 30 sec in the autonomous
+        sleep( (int) interactiveInit.startDelaySec);
+
         setLaunchPower(1);
 
 
@@ -186,8 +190,15 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
     }
 
     void launchBalls(){
-        robot.leftLaunchMotor.setMaxSpeed(1150);
-        robot.rightLaunchMotor.setMaxSpeed(1150);
+
+        //set proper max speeds based on InteractiveInit input
+        if (interactiveInit.distanceFromGoal == InteractiveInit.DistanceFromGoal.NEAR) {
+            robot.leftLaunchMotor.setMaxSpeed(1050);
+            robot.rightLaunchMotor.setMaxSpeed(1050);
+        } else {
+            robot.leftLaunchMotor.setMaxSpeed(1150);
+            robot.rightLaunchMotor.setMaxSpeed(1150);
+        }
 
         //Open the flippers so we can shoot
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
@@ -210,4 +221,5 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
         sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
     }
+
 }

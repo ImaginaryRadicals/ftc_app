@@ -238,9 +238,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             telemetry.addData("magnitude",ManualControl.magnitude);
             telemetry.addData("AngleDeg",ManualControl.angleDeg);
         }
-        // Output drive motor values to see if we are hitting 1 or -1
-        telemetry.addData("leftDriveMotor", nextMotorState.rightDriveMotor);
-        telemetry.addData("rightDriveMotor", nextMotorState.rightDriveMotor);
         
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
         if (gamepad1.y) {
