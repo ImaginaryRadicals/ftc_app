@@ -99,7 +99,7 @@ public class InteractiveInit {
     DistanceFromGoal distanceFromGoal = DistanceFromGoal.NEAR;
 
     // "menuOptions" must match "enum Menu" and updateOutputs()
-    Enum[] menuOptions = {team, position, launchControl, beaconGoal, startDelay, debugMode};
+    Enum[] menuOptions = {team, position, launchControl, beaconGoal, startDelay, debugMode, distanceFromGoal};
 
     // *** END PARAMETERS/MENU SETUP *** //
 
