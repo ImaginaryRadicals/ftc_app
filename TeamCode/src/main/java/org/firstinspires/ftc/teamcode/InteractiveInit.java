@@ -143,9 +143,13 @@ public class InteractiveInit {
         this.opMode = opMode;
 
         Double start_delay_seconds = new Double(0.0);
+        Double another_double = new Double(0.0);
         String nonsense = new String("nonsense");
+        Boolean a_bool_option = new Boolean(false);
         double_options.add(new VarOption<Double>(start_delay_seconds, "start_delay_seconds", 0.0, 5.0, 8.0, 10.0));
+        double_options.add(new VarOption<Double>(another_double, "another_double", 0.0, 5.0, 8.0, 10.0));
         string_options.add(new VarOption<String>(nonsense, "performance", "dismal", "pretty good", "awesome"));
+        boolean_options.add(new VarOption<Boolean>(a_bool_option, "a_bool_option", false, true));
     }
 
     /*
@@ -153,7 +157,7 @@ public class InteractiveInit {
      * based on class variable "PARAMETERS".
      * Should make menu modification simple.
      */
-    public void displayMenu() {
+    private void displayMenu() {
         // Format dependent upon class variable 'interactiveMode'.
         int n = numOptions();
         String[] cursorMargin = new String[n];
@@ -177,6 +181,12 @@ public class InteractiveInit {
         // Iterate over double_options
         for(int i = 0; i < double_options.size(); ++i) {
             telemetry.addData(cursorMargin[i] + double_options.get(i).selected().toString(), double_options.get(i));
+        }
+        for(int i = 0; i < string_options.size(); ++i) {
+            telemetry.addData(cursorMargin[i] + string_options.get(i).selected().toString(), string_options.get(i));
+        }
+        for(int i = 0; i < boolean_options.size(); ++i) {
+            telemetry.addData(cursorMargin[i] + boolean_options.get(i).selected().toString(), boolean_options.get(i));
         }
 
         if(interactiveMode) {

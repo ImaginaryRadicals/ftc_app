@@ -73,7 +73,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
     private Signal sigDpadBack              = new Signal();
-    private Signal sigDpadStart             = new Signal();
 
 
     double launchPower = 1.0; // Initial power of launcher.
@@ -82,7 +81,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     boolean flippers_closed_state = false;
     boolean runningAutonomously = false;
-    boolean reverseDrive        = false;
 
     @Override
     public void runOpMode()
@@ -222,28 +220,29 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     public void calculateNextMotorState() {
 
-        if (sigDpadStart.risingEdge(gamepad1.start)) {
-            reverseDrive = !reverseDrive;
+        // Set the Drive Mode Using "Tank Mode," "Single Stick," or "Reverse Single Stick".
+
+        //Backwards Driving
+        if (gamepad1.right_trigger > 0.5) {
+            // Set x and y values to negative.
+            ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        } else
+            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+
+        {
+            // Left (single)stick control, defalt.
+            nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
+            nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
+            telemetry.addData("magnitude", ManualControl.magnitude);
+            telemetry.addData("AngleDeg", ManualControl.angleDeg);
         }
 
         if (gamepad1.left_trigger > 0.5) { // Tank drive if left trigger pulled
             // Left and Right sticks control tank drive.
             nextMotorState.leftDriveMotor = Utility.expo(-gamepad1.left_stick_y, expoGain);
             nextMotorState.rightDriveMotor = Utility.expo(-gamepad1.right_stick_y, expoGain);
-        } else { // Left (single)stick control, defalt.
-
-            //reverse the drive direction if reverseDrive is true (if the driver presses "start")
-            if (reverseDrive) {
-                ManualControl.setSingleStickXY(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-            } else {
-                ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            }
-
-            nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
-            nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
-            telemetry.addData("magnitude",ManualControl.magnitude);
-            telemetry.addData("AngleDeg",ManualControl.angleDeg);
         }
+
         
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
         if (gamepad1.y) {
