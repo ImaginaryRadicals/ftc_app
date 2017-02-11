@@ -62,7 +62,7 @@ public class VectorMath
     }
 
     // Derivative
-    // x is the independant variable, y is dependent. Returns derivative for unequally spaced points. xest is the x value at which to evaluate the derivative.
+    // x is the independent variable, y is dependent. Returns derivative for unequally spaced points. xest is the x value at which to evaluate the derivative.
     // x and y vectors don't need to be the same length if they have three elements or more each
     static public double derivative(Vector<Double> x, Vector<Double> y, double xest) {
 
@@ -91,5 +91,25 @@ public class VectorMath
     static public double derivative(Vector<Double> x, Vector<Double> y) {
 
         return derivative(x, y, x.lastElement());
+    }
+
+    // x is the independent variable, y is dependent. Returns the integral estimate.
+    static public double integral(Vector<Double> x, Vector<Double> y) {
+        // Uses the composite trapezoidal rule to calculate the integral for unequally spaced data.
+        if (x.size() != y.size()) {
+            throw new RuntimeException("ERROR: Vectors to be integrated are of differing size") ;
+        }
+
+        if (x.size() < 2)
+            return 0.0;
+
+        int n = x.size();
+        int end = n - 1; // must end one step short because we are looking ahead one step in the loop
+        double I = 0.0;
+
+        for (int i = 0; i < end; ++i)
+            I += (x.elementAt(i + 1) - x.elementAt(i)) * (y.elementAt(i + i) + y.elementAt(i)) / 2.0;
+
+        return I;
     }
 }
