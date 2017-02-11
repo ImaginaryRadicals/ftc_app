@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -32,8 +29,13 @@ class VarOption<T>
             values.add(arg);
         }
 
-        value = values.get(0);
+        // We want to set the displayed value to the current state of the var (the variable we are going to set)
         current = values.listIterator();
+        while (current.hasNext()) {
+            value = current.next();
+            if (var == value)
+                break;
+        }
     }
 
     public T selected() {
@@ -69,7 +71,7 @@ public class InteractiveInit {
 
     Telemetry telemetry;
     Gamepad gamepad1;
-    LinearOpMode opMode;
+    iRadsSimpleAutoOp_interactiveInit opMode;
     private boolean interactiveMode = true;
 
     private Signal sigDpadUp = new Signal();
@@ -136,21 +138,15 @@ public class InteractiveInit {
         }
     }
 
-    Double start_delay_seconds = new Double(0.0);
-    Double another_double = new Double(0.0);
-    String nonsense = new String("nonsense");
-    Boolean a_bool_option = new Boolean(false);
-
-    public InteractiveInit(Telemetry telemetry, Gamepad gamepad1, LinearOpMode opMode)
+    public InteractiveInit(Telemetry telemetry, Gamepad gamepad1, iRadsSimpleAutoOp_interactiveInit opMode)
     {
         this.telemetry = telemetry;
         this.gamepad1 = gamepad1;
         this.opMode = opMode;
 
-        double_options.add(new VarOption<Double>(start_delay_seconds, "start_delay_seconds", 0.0, 5.0, 8.0, 10.0));
-        double_options.add(new VarOption<Double>(another_double, "another_double", 0.0, 5.0, 8.0, 10.0));
-        string_options.add(new VarOption<String>(nonsense, "performance", "dismal", "pretty good", "awesome"));
-        boolean_options.add(new VarOption<Boolean>(a_bool_option, "a_bool_option", false, true));
+        double_options.add(new VarOption<Double>(opMode.startDelaySec, "startDelaySec", 0.0, 5.0, 10.0));
+        string_options.add(new VarOption<String>(opMode.teamColor, "teamColor", "Red", "Blue"));
+        boolean_options.add(new VarOption<Boolean>(opMode.autoOpMode, "autoOpMode", false, true));
     }
 
     /*

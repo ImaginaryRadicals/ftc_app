@@ -63,6 +63,9 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
     Hardware_iRads robot = new Hardware_iRads();
     private InteractiveInit interactiveInit; // Initialized in "initialize()" method.
 
+    Double startDelaySec = new Double(0.0);
+    String teamColor = new String("Red");
+    Boolean autoOpMode = new Boolean(true);
 
     @Override
     public void runOpMode() {
@@ -80,15 +83,11 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
         //sleep for the total length of the driver-input delay
         //it is possible that it might sleep so long that we go past 30 sec in the autonomous
 
-        //sleep( (int) interactiveInit.startDelaySec);
+        sleep(startDelaySec.intValue());
 
         setLaunchPower(1);
 
-
-        sleep(3000);
-
-        //stop for a little while longer so that the launch motors can finish getting up to speed
-        sleep(500);
+        sleep(3500); //stop for a little while longer so that the launch motors can finish getting up to speed
 
         //launch the two particles and pull power from the launch motors and close the flippers
         launchBalls();
