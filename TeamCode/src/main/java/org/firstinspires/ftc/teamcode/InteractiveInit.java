@@ -110,13 +110,13 @@ public class InteractiveInit {
         {
             double_options.get(cursor_location).next();
         }
-        else if (cursor_location < string_options.size())
+        else if (cursor_location < double_options.size() + string_options.size())
         {
-            string_options.get(cursor_location).next();
+            string_options.get(cursor_location - double_options.size()).next();
         }
-        else if (cursor_location < boolean_options.size())
+        else if (cursor_location < double_options.size() + string_options.size() + boolean_options.size())
         {
-            boolean_options.get(cursor_location).next();
+            boolean_options.get(cursor_location - double_options.size() - string_options.size()).next();
         }
     }
 
@@ -126,15 +126,20 @@ public class InteractiveInit {
         {
             double_options.get(cursor_location).prev();
         }
-        else if (cursor_location < string_options.size())
+        else if (cursor_location < double_options.size() + string_options.size())
         {
-            string_options.get(cursor_location).prev();
+            string_options.get(cursor_location - double_options.size()).prev();
         }
-        else if (cursor_location < boolean_options.size())
+        else if (cursor_location < double_options.size() + string_options.size() + boolean_options.size())
         {
-            boolean_options.get(cursor_location).prev();
+            boolean_options.get(cursor_location - double_options.size() - string_options.size()).prev();
         }
     }
+
+    Double start_delay_seconds = new Double(0.0);
+    Double another_double = new Double(0.0);
+    String nonsense = new String("nonsense");
+    Boolean a_bool_option = new Boolean(false);
 
     public InteractiveInit(Telemetry telemetry, Gamepad gamepad1, LinearOpMode opMode)
     {
@@ -142,10 +147,6 @@ public class InteractiveInit {
         this.gamepad1 = gamepad1;
         this.opMode = opMode;
 
-        Double start_delay_seconds = new Double(0.0);
-        Double another_double = new Double(0.0);
-        String nonsense = new String("nonsense");
-        Boolean a_bool_option = new Boolean(false);
         double_options.add(new VarOption<Double>(start_delay_seconds, "start_delay_seconds", 0.0, 5.0, 8.0, 10.0));
         double_options.add(new VarOption<Double>(another_double, "another_double", 0.0, 5.0, 8.0, 10.0));
         string_options.add(new VarOption<String>(nonsense, "performance", "dismal", "pretty good", "awesome"));
@@ -183,10 +184,10 @@ public class InteractiveInit {
             telemetry.addData(cursorMargin[i] + double_options.get(i).selected().toString(), double_options.get(i));
         }
         for(int i = 0; i < string_options.size(); ++i) {
-            telemetry.addData(cursorMargin[i] + string_options.get(i).selected().toString(), string_options.get(i));
+            telemetry.addData(cursorMargin[i + double_options.size()] + string_options.get(i).selected().toString(), string_options.get(i));
         }
         for(int i = 0; i < boolean_options.size(); ++i) {
-            telemetry.addData(cursorMargin[i] + boolean_options.get(i).selected().toString(), boolean_options.get(i));
+            telemetry.addData(cursorMargin[i + double_options.size() + string_options.size()] + boolean_options.get(i).selected().toString(), boolean_options.get(i));
         }
 
         if(interactiveMode) {
@@ -222,7 +223,7 @@ public class InteractiveInit {
         if(gamepad1 != null && !opMode.opModeIsActive()) {
             if (sigDpadDown.risingEdge(gamepad1.dpad_down)) {
                 ++cursor_location;
-                if (cursor_location > numOptions())
+                if (cursor_location >= numOptions())
                     cursor_location = numOptions() - 1;
             } else if (sigDpadUp.risingEdge(gamepad1.dpad_up)) {
                 --cursor_location;
