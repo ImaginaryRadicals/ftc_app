@@ -139,7 +139,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     // Initialization
     public void initialize()
     {
-        /*
+
 
         // If we can't find the hardware, print the hardware map error message and continue
         try
@@ -151,6 +151,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             telemetry.addData("Hardware map error", e.getMessage());
             robot.hardwareEnabled = false;
         }
+
+        /*
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
 
