@@ -220,18 +220,25 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     public void calculateNextMotorState() {
 
-        // Set the Drive Mode Using "Tank Mode," "Single Stick," or "Reverse Single Stick".
+        //Drive Wheel Controls
 
-        //Backwards Driving
+        //Backwards One Stick Driving
         if (gamepad1.right_trigger > 0.5) {
             // Set x and y values to negative.
             ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
         } else
             ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
 
-        {
+        // Regular One Stick Driving
+        if (gamepad1.left_trigger > 0.5) {
+            // Left (single)stick control, Slow Mode.
+            nextMotorState.leftDriveMotor  = ManualControl.leftDriveMotorPower  *0.5;
+            nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower *0.5;
+            telemetry.addData("magnitude", ManualControl.magnitude);
+            telemetry.addData("AngleDeg", ManualControl.angleDeg);
+        } else {
             // Left (single)stick control, defalt.
-            nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
+            nextMotorState.leftDriveMotor  = ManualControl.leftDriveMotorPower;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
             telemetry.addData("magnitude", ManualControl.magnitude);
             telemetry.addData("AngleDeg", ManualControl.angleDeg);
