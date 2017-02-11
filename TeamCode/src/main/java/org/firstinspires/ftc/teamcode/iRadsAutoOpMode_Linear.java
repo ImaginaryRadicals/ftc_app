@@ -139,6 +139,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     // Initialization
     public void initialize()
     {
+        /*
+
         // If we can't find the hardware, print the hardware map error message and continue
         try
         {
@@ -151,7 +153,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
         visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
         encoderNav.initialize(robot,runtime,telemetry);
-        
+
         nextMotorState.initialize(robot, telemetry);
         if(robot.hardwareEnabled) utilLeftLaunchSpeed = new Utility(runtime, robot.leftLaunchMotor, .01);
         // Interactive Initialization Menu implementation.
@@ -184,6 +186,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             visualNav.debugDisplay(); // Show navigation transformations.
         }
         telemetry.update();
+
+        */
     }
 
     public void visionUpdate()

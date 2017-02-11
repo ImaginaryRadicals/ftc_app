@@ -161,13 +161,19 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
     void launchBalls(){
 
         //set proper max speeds based on InteractiveInit input
+
+        /*
+
         if (interactiveInit.distanceFromGoal == InteractiveInit.DistanceFromGoal.NEAR) {
             robot.leftLaunchMotor.setMaxSpeed(1050);
             robot.rightLaunchMotor.setMaxSpeed(1050);
-        } else {
+        } else */
+
+        {
             robot.leftLaunchMotor.setMaxSpeed(1150);
             robot.rightLaunchMotor.setMaxSpeed(1150);
         }
+
 
         //Open the flippers so we can shoot
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
