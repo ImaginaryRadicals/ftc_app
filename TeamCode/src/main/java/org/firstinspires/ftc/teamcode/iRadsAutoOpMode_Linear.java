@@ -73,7 +73,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
     private Signal sigDpadBack              = new Signal();
-    private Signal sigDpadStart             = new Signal();
 
 
     double launchPower = 1.0; // Initial power of launcher.
@@ -82,7 +81,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     boolean flippers_closed_state = false;
     boolean runningAutonomously = false;
-    boolean reverseDrive        = false;
 
     @Override
     public void runOpMode()
@@ -216,8 +214,9 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     public void calculateNextMotorState() {
 
-        if (sigDpadStart.risingEdge(gamepad1.start)) {
-            reverseDrive = !reverseDrive;
+
+        if (gamepad1.right_trigger > 0.5){
+            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         }
 
         if (gamepad1.left_trigger > 0.5) { // Tank drive if left trigger pulled
@@ -225,13 +224,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             nextMotorState.leftDriveMotor = Utility.expo(-gamepad1.left_stick_y, expoGain);
             nextMotorState.rightDriveMotor = Utility.expo(-gamepad1.right_stick_y, expoGain);
         } else { // Left (single)stick control, defalt.
-
-            //reverse the drive direction if reverseDrive is true (if the driver presses "start")
-            if (reverseDrive) {
-                ManualControl.setSingleStickXY(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-            } else {
-                ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            }
 
             nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
