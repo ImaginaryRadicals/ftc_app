@@ -215,13 +215,13 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     public void calculateNextMotorState() {
 
         // Set the Drive Mode Using "Tank Mode," "Single Stick," or "Reverse Single Stick".
+
+        //Backwards Driving
         if (gamepad1.right_trigger > 0.5) {
             // Set x and y values to negative.
             ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
         } else
             ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
-
-        
 
         {
             // Left (single)stick control, defalt.
@@ -231,13 +231,13 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             telemetry.addData("AngleDeg", ManualControl.angleDeg);
         }
 
-
         if (gamepad1.left_trigger > 0.5) { // Tank drive if left trigger pulled
             // Left and Right sticks control tank drive.
             nextMotorState.leftDriveMotor = Utility.expo(-gamepad1.left_stick_y, expoGain);
             nextMotorState.rightDriveMotor = Utility.expo(-gamepad1.right_stick_y, expoGain);
         }
 
+        
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
         if (gamepad1.y) {
             nextMotorState.liftMotor = 1.0;  // Lift up, full speed
