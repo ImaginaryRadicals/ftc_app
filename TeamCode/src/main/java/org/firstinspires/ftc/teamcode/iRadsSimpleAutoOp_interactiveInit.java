@@ -62,12 +62,11 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
 
     Hardware_iRads robot = new Hardware_iRads();
     private InteractiveInit interactiveInit; // Initialized in "initialize()" method.
-    private InteractiveInit interactiveInit = new InteractiveInit(telemetry, gamepad1, this);
 
-    private Utility utilLeftLaunchSpeed = new Utility(runtime, robot.leftLaunchMotor, 0.01); // Initialized in "initialize()" method.
 
     @Override
     public void runOpMode() {
+        initialize();
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -75,13 +74,13 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        initialize();
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         //sleep for the total length of the driver-input delay
         //it is possible that it might sleep so long that we go past 30 sec in the autonomous
-        sleep( (int) interactiveInit.startDelaySec);
+
+        //sleep( (int) interactiveInit.startDelaySec);
 
         setLaunchPower(1);
 
@@ -107,55 +106,13 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
     }
 
     public void initialize() {
+
         robot.init(hardwareMap);
         resetEncoders();
 
-        // Interactive init code:
-        interactiveInit = new InteractiveInit(telemetry,gamepad1,this);
-        interactiveInit.menuInputLoop();  // Runtime Initialization Modification.
+        interactiveInit = new InteractiveInit(telemetry, gamepad1, this);
 
-        if (robot.hardwareEnabled) {
-
-            if (interactiveInit.launchControl == InteractiveInit.LaunchControl.PID) {
-
-                //set the launch motors to run with encoders if PID is selected
-                robot.leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.rightLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            } else if (interactiveInit.launchControl == InteractiveInit.LaunchControl.POWER) {
-
-                //set the launch motors to run without encoders
-                robot.leftLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                robot.rightLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-            }
-        } // robot.hardwareEnabled == true
-
-        //encoderNav.setPosition(interactiveInit.startX, interactiveInit.startY, interactiveInit.startHeading);
-
-        interactiveInit.displayMenu(); // Show locked parameters.
-        telemetry.addData("Status", "Initialized");
-
-        // Debug initialization display:
-        if (interactiveInit.debugMode == InteractiveInit.DebugMode.ON) {
-
-            telemetry.addLine();
-
-            // Show all visual target goal names and coordinates.
-            for (int i = 0; i<interactiveInit.goalX.size(); i++) {
-
-                // Visual Target, robot position goal
-                telemetry.addLine(interactiveInit.beaconTargets.get(i).toString());
-                telemetry.addData("goalX",interactiveInit.goalX.get(i));
-                telemetry.addData("goalY",interactiveInit.goalY.get(i));
-                telemetry.addData("goalHeading",interactiveInit.goalHeading.get(i));
-
-            }
-
-            telemetry.addLine();
-
-            //visualNav.debugDisplay(); // Show navigation transformations.
-        }
+        interactiveInit.menuInputLoop();
     }
 
     int mmToTicks(double driveDistance_mm) {
