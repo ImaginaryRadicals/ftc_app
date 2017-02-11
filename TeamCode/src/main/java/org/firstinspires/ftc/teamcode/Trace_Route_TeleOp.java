@@ -83,45 +83,50 @@ public class Trace_Route_TeleOp extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
 
-
+            updateMotors();
+            
         }
     }
 
     private void initialize() {
-        robot.init(hardwareMap);
+
+        // If the phone can't find the hardware, it will print the hardware map error message and continue
+        try {
+
+            robot.init(hardwareMap); // Initialize Hardware
+
+        } catch (IllegalArgumentException e) {
+
+            telemetry.addData("Hardware map error", e.getMessage());
+            robot.hardwareEnabled = false;
+
+        }
+
         interactiveInit = new InteractiveInit(telemetry, gamepad1, this);
     }
 
     private void updateMotors() {
 
-        //drive backwards while holding the left trigger
-        if (gamepad1.right_trigger > 0.5)
-            manualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
-        else
-            manualControl.setSingleStickXY((gamepad1.left_stick_x * -1.0), (gamepad1.left_stick_y * -1.0));
+        updateLaunchMotors();
+        updateDriveMotors();
+        updateFlipperServos();
+        updateLaunchTriggerServo();
+        updateForkliftMotor();
 
-        //drive code
-        robot.leftDriveMotor.setPower(manualControl.leftDriveMotorPower);
-        robot.rightDriveMotor.setPower(manualControl.rightDriveMotorPower);
+    }
 
-        //forklift code
-        if (gamepad1.y) {
-            robot.liftMotor.setPower(1.0);  // Lift up, full speed
-        } else if (gamepad1.a) {
-            robot.liftMotor.setPower(-1.0); // Lower down, full speed
-        } else {
-            robot.liftMotor.setPower(0.0);  // Lift stop.
-        }
+    private void updateLaunchMotors() {
 
         // Adjust launchPower with d-pad up/down
-        if (sigDpadUp.risingEdge(gamepad1.dpad_up)) {
+        if (sigDpadUp.risingEdge(gamepad1.dpad_up))
             launchSpeed += 25;
-        } else if (sigDpadDown.risingEdge(gamepad1.dpad_down)) {
+        else if (sigDpadDown.risingEdge(gamepad1.dpad_down))
             launchSpeed -= 25;
-        }
+
         // Bound launchSpeed between 1300 and 900 ticks per second
         if (launchSpeed > 1300)
             launchSpeed = 1300;
@@ -130,15 +135,67 @@ public class Trace_Route_TeleOp extends LinearOpMode {
 
         // hold left_bumper to activate launcher.
         if (gamepad1.left_bumper) {
+
             robot.leftLaunchMotor.setPower(1);
             robot.rightLaunchMotor.setPower(1);
+
         } else {
+
             robot.leftLaunchMotor.setPower(0);
             robot.rightLaunchMotor.setPower(0);
+
         }
+
+    }
+
+    private void updateDriveMotors() {
+
+        //drive backwards while holding the left trigger
+        if (gamepad1.right_trigger > 0.5)
+            manualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        else
+            manualControl.setSingleStickXY((gamepad1.left_stick_x * -1.0), (gamepad1.left_stick_y * -1.0));
+
+        //set motor power accordingly
+        robot.leftDriveMotor.setPower(manualControl.leftDriveMotorPower);
+        robot.rightDriveMotor.setPower(manualControl.rightDriveMotorPower);
+
+    }
+
+    private void updateFlipperServos(){
+
+        // use b button to toggle between open and closed
+        if (sigDpadB.risingEdge(gamepad1.b))
+            flippers_closed_state = !flippers_closed_state;
+
+        //hold x button to open if the flippers are not already opened by b
+        if (gamepad1.x) {
+
+            robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
+            robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
+
+        } else {
+
+            if (flippers_closed_state) {
+
+                robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
+                robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
+
+            } else {
+
+                robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
+                robot.leftFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
+
+            }
+        }
+
+    }
+
+    private void updateLaunchTriggerServo() {
 
         // hold right_bumper to activate launch Trigger.
         if (gamepad1.right_bumper) {
+
             robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
             robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
 
@@ -148,33 +205,20 @@ public class Trace_Route_TeleOp extends LinearOpMode {
             sleep(30);
             robot.leftFlipper.setPosition(robot. LEFT_FLIPPER_CLOSED);
             robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
-        }
-        else {
+
+        } else
             robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
-        }
 
-        // use b button to toggle between open and closed, hold x button to open
+    }
 
-        if (sigDpadB.risingEdge(gamepad1.b))
-        {
-            flippers_closed_state = !flippers_closed_state;
-        }
+    private void updateForkliftMotor() {
 
-        if (gamepad1.x) {
-            robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
-            robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
-        }
-        else {
-            if (flippers_closed_state)
-            {
-                robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
-                robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
-            }
-            else
-            {
-                robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
-                robot.leftFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
-            }
-        }
+        if (gamepad1.y)
+            robot.liftMotor.setPower(1.0);  // Lift up, full speed
+        else if (gamepad1.a)
+            robot.liftMotor.setPower(-1.0); // Lower down, full speed
+        else
+            robot.liftMotor.setPower(0.0);  // Lift stop.
+
     }
 }
