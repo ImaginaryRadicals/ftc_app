@@ -33,9 +33,19 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import java.util.Vector;
 
 /**
  * This autonomous opmode will drive forward a specified distance, shoot 2 particles, and drive the
@@ -51,6 +61,7 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     Hardware_iRads robot = new Hardware_iRads();
+    private InteractiveInit interactiveInit; // Initialized in "initialize()" method.
     private InteractiveInit interactiveInit = new InteractiveInit(telemetry, gamepad1, this);
 
     private Utility utilLeftLaunchSpeed = new Utility(runtime, robot.leftLaunchMotor, 0.01); // Initialized in "initialize()" method.
@@ -100,6 +111,7 @@ public class iRadsSimpleAutoOp_interactiveInit extends LinearOpMode {
         resetEncoders();
 
         // Interactive init code:
+        interactiveInit = new InteractiveInit(telemetry,gamepad1,this);
         interactiveInit.menuInputLoop();  // Runtime Initialization Modification.
 
         if (robot.hardwareEnabled) {
