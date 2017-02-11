@@ -20,9 +20,12 @@ class VarOption<T>
     private ListIterator<T> current;
     public ArrayList<T> values = new ArrayList<>();
     public String name = new String();
+    private T var;
 
-    VarOption(String name, T... args)
+    VarOption(T variable, String name, T... args)
     {
+        var = variable;
+
         this.name = name;
 
         for(T arg : args) {
@@ -51,13 +54,18 @@ class VarOption<T>
         return value;
     }
 
+    public void apply()
+    {
+        var = value;
+    }
+
     @Override
     public String toString() {
         return name;
     }
 }
 
-public class InteractInit {
+public class InteractiveInit {
 
     Telemetry telemetry;
     Gamepad gamepad1;
@@ -72,6 +80,7 @@ public class InteractInit {
 
     private ArrayList<VarOption<Double>> double_options = new ArrayList<>();
     private ArrayList<VarOption<String>> string_options = new ArrayList<>();
+    private ArrayList<VarOption<Boolean>> boolean_options = new ArrayList<>();
 
     String margin = "       "; // 7 blank spaces
     String cursor = " >> "; // 4 character 'cursor'
@@ -79,16 +88,19 @@ public class InteractInit {
     private int cursor_location = 0;
 
     private int numOptions() {
-        return double_options.size() + string_options.size();
+        return double_options.size() + string_options.size() + boolean_options.size();
     }
 
     // Applies selected state to 
     private void apply()
     {
-        for (arg : double_options)
+        for (VarOption<Double> arg : double_options)
             arg.apply();
 
-        for (arg : string_options)
+        for (VarOption<String> arg : string_options)
+            arg.apply();
+
+        for (VarOption<Boolean> arg : boolean_options)
             arg.apply();
     }
 
@@ -102,6 +114,10 @@ public class InteractInit {
         {
             string_options.get(cursor_location).next();
         }
+        else if (cursor_location < boolean_options.size())
+        {
+            boolean_options.get(cursor_location).next();
+        }
     }
 
     private void prevOption()
@@ -114,16 +130,22 @@ public class InteractInit {
         {
             string_options.get(cursor_location).prev();
         }
+        else if (cursor_location < boolean_options.size())
+        {
+            boolean_options.get(cursor_location).prev();
+        }
     }
 
-    public InteractInit(Telemetry telemetry, Gamepad gamepad1, LinearOpMode opMode)
+    public InteractiveInit(Telemetry telemetry, Gamepad gamepad1, LinearOpMode opMode)
     {
         this.telemetry = telemetry;
         this.gamepad1 = gamepad1;
         this.opMode = opMode;
 
-        double_options.add(new VarOption<Double>("start_delay_seconds", 0.0, 5.0, 8.0, 10.0));
-        string_options.add(new VarOption<String>("performance", "dismal", "pretty good", "awesome"));
+        Double start_delay_seconds = new Double(0.0);
+        String nonsense = new String("nonsense");
+        double_options.add(new VarOption<Double>(start_delay_seconds, "start_delay_seconds", 0.0, 5.0, 8.0, 10.0));
+        string_options.add(new VarOption<String>(nonsense, "performance", "dismal", "pretty good", "awesome"));
     }
 
     /*
