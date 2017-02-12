@@ -58,7 +58,7 @@ public class Trace_Route_AutoOp extends LinearOpMode {
     private int launchSpeed = 1150;
     private boolean flippers_closed_state = false;
 
-    private Past_Driver_Inputs pastInputs = new Past_Driver_Inputs(gamepad1);
+    private Past_Driver_Inputs pastInputs = new Past_Driver_Inputs(gamepad1, runtime);
 
 
     @Override
@@ -80,7 +80,7 @@ public class Trace_Route_AutoOp extends LinearOpMode {
 
             updateMotors();
 
-            pastInputs.recordCurrentInput();
+            pastInputs.playBackPastInputs();
             
         }
     }
