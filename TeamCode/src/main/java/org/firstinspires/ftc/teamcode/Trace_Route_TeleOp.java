@@ -156,9 +156,9 @@ public class Trace_Route_TeleOp extends LinearOpMode {
         else
             manualControl.setSingleStickXY((gamepad1.left_stick_x * -1.0), (gamepad1.left_stick_y * -1.0));
 
-        //set motor power accordingly
-        robot.leftDriveMotor.setPower(manualControl.leftDriveMotorPower);
-        robot.rightDriveMotor.setPower(manualControl.rightDriveMotorPower);
+            //set motor power accordingly.  Cube the values for a more forgiving acceleration
+            robot.leftDriveMotor.setPower(Utility.expo(manualControl.leftDriveMotorPower, 3));
+            robot.rightDriveMotor.setPower(Utility.expo(manualControl.rightDriveMotorPower, 3));
 
     }
 
