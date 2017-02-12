@@ -91,7 +91,9 @@ public class Trace_Route_TeleOp extends LinearOpMode {
 
             updateMotors();
 
+            telemetry.addData("Input", "not recorded");
             pastInputs.recordCurrentInput();
+            telemetry.addData("Input", "recorded");
             
         }
     }

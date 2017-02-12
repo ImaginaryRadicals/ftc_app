@@ -55,17 +55,17 @@ public class Past_Driver_Inputs {
     public void recordCurrentInput() {
 
         //set the hashmap to the current input values
-        currentInput.put("joystickX", gamepad1.left_stick_x);
-        currentInput.put("joystickY", gamepad1.left_stick_y);
+        currentInput.put("joystickX", (double) gamepad1.left_stick_x);
+        currentInput.put("joystickY", (double) gamepad1.left_stick_y);
 
-        currentInput.put("A", gamepad1.a);
-        currentInput.put("B", gamepad1.b);
-        currentInput.put("X", gamepad1.x);
-        currentInput.put("Y", gamepad1.y);
-        currentInput.put("bumperLeft", gamepad1.left_bumper);
-        currentInput.put("bumperRight", gamepad1.right_bumper);
-        currentInput.put("dpadUp", gamepad1.dpad_up);
-        currentInput.put("dpadDown", gamepad1.dpad_down);
+        currentInput.put("A", (boolean) gamepad1.a);
+        currentInput.put("B", (boolean) gamepad1.b);
+        currentInput.put("X", (boolean) gamepad1.x);
+        currentInput.put("Y", (boolean) gamepad1.y);
+        currentInput.put("bumperLeft", (boolean) gamepad1.left_bumper);
+        currentInput.put("bumperRight", (boolean) gamepad1.right_bumper);
+        currentInput.put("dpadUp", (boolean) gamepad1.dpad_up);
+        currentInput.put("dpadDown", (boolean) gamepad1.dpad_down);
 
         currentInput.put("time", runtime);
 
@@ -91,14 +91,6 @@ public class Past_Driver_Inputs {
             lastTime = (double) pastInputs.get(i-1).get("time");
             nextTime = (double) pastInputs.get(i).get("time");
             interval = lastTime - nextTime;
-
-            //wait for the interval
-            //we may want this interval to be slightly shorter to account for lag
-            try {
-                Thread.sleep((long) interval);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
 
         }
     }
