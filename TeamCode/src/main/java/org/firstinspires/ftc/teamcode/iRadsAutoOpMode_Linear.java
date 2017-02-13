@@ -81,6 +81,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     boolean flippers_closed_state = false;
     boolean runningAutonomously = false;
+    boolean slowMode = false;
+    boolean backwardsDrive = false;
 
     @Override
     public void runOpMode()
@@ -220,29 +222,34 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
 
     public void calculateNextMotorState() {
 
-        //Drive Wheel Controls
+        //Drive at half speed using boolean "slowMode".
+        if (gamepad1.start) {
+            slowMode = !slowMode;
+        }
+        if (slowMode = true) {
+            // Left (single)stick control, Slow Mode.
+            nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower * 0.5;
+            nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower * 0.5;
+            telemetry.addData("magnitude", ManualControl.magnitude);
+            telemetry.addData("AngleDeg", ManualControl.angleDeg);
+        } else {
+            // Left (single)stick control, defalt.
+            nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
+            nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
+            telemetry.addData("magnitude", ManualControl.magnitude);
+            telemetry.addData("AngleDeg", ManualControl.angleDeg);
+        }
 
-        //Backwards One Stick Driving
-        if (gamepad1.right_trigger > 0.5) {
+        //Drive backwards using boolean "backwardsDrive".
+        if (gamepad1.back) {
+            backwardsDrive = !backwardsDrive;
+        }
+        if (backwardsDrive == true) {
             // Set x and y values to negative.
             ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
         } else
             ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
 
-        // Regular One Stick Driving w/ slow mode.
-        if (gamepad1.left_trigger > 0.5) {
-            // Left (single)stick control, Slow Mode.
-            nextMotorState.leftDriveMotor  = ManualControl.leftDriveMotorPower  *0.5;
-            nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower *0.5;
-            telemetry.addData("magnitude", ManualControl.magnitude);
-            telemetry.addData("AngleDeg", ManualControl.angleDeg);
-        } else {
-            // Left (single)stick control, defalt.
-            nextMotorState.leftDriveMotor  = ManualControl.leftDriveMotorPower;
-            nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
-            telemetry.addData("magnitude", ManualControl.magnitude);
-            telemetry.addData("AngleDeg", ManualControl.angleDeg);
-        }
 
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
         if (gamepad1.y) {
