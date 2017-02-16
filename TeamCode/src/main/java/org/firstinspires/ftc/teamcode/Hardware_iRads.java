@@ -115,8 +115,8 @@ public class Hardware_iRads
         leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
         rightLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);*/
-        leftDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

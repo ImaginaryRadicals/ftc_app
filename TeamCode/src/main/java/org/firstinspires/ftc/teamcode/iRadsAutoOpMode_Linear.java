@@ -223,10 +223,10 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     public void calculateNextMotorState() {
 
         //Drive at half speed using boolean "slowMode".
-        if (gamepad1.start) {
+        if (gamepad1.dpad_up) {
             slowMode = !slowMode;
         }
-        if (slowMode = true) {
+        if (slowMode == true) {
             // Left (single)stick control, Slow Mode.
             nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower * 0.5;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower * 0.5;
@@ -241,7 +241,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
 
         //Drive backwards using boolean "backwardsDrive".
-        if (gamepad1.back) {
+        if (gamepad1.dpad_down) {
             backwardsDrive = !backwardsDrive;
         }
         if (backwardsDrive == true) {
@@ -324,9 +324,12 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("Left Flipper", "%.2f", nextMotorState.leftFlipper);
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
         telemetry.addData("Ideal Launch Speed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
+        telemetry.addData("slowMode",nextMotorState.leftDriveMotor);
+        telemetry.addData("backwardsDrive",nextMotorState.rightDriveMotor);
         if (robot.hardwareEnabled) {
             telemetry.addData("Actual Launch Speed", "%.2f", utilLeftLaunchSpeed.getMotorTickRate());
         }
+
 
     } // calculateNextMotorState()
 
