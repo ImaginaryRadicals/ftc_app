@@ -233,7 +233,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
             telemetry.addData("magnitude", ManualControl.magnitude);
             telemetry.addData("AngleDeg", ManualControl.angleDeg);
         } else {
-            // Left (single)stick control, defalt.
+            // Left (single)stick control, default.
             nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
             telemetry.addData("magnitude", ManualControl.magnitude);
@@ -324,8 +324,6 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         telemetry.addData("Left Flipper", "%.2f", nextMotorState.leftFlipper);
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
         telemetry.addData("Ideal Launch Speed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
-        telemetry.addData("slowMode",nextMotorState.leftDriveMotor);
-        telemetry.addData("backwardsDrive",nextMotorState.rightDriveMotor);
         if (robot.hardwareEnabled) {
             telemetry.addData("Actual Launch Speed", "%.2f", utilLeftLaunchSpeed.getMotorTickRate());
         }
