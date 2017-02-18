@@ -15,7 +15,7 @@ public class PID
     public Double Kp = new Double(0.0); // Proportional gain
     public Double Ki = new Double(0.0); // Integral gain
     public Double Kd = new Double(0.0); // Derivative gain
-    public Double sample_time = new Double(1.0);
+    public Double integral_time = new Double(1.0);
 
     // pass in the current time point with the current error value
     public void addError(Double t, Double e)
@@ -23,7 +23,7 @@ public class PID
         time.add(t);
         error.add(e);
 
-        while (time.lastElement() - time.firstElement() > sample_time)
+        while (time.lastElement() - time.firstElement() > integral_time)
         {
             time.remove(0);
             error.remove(0);

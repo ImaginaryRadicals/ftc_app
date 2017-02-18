@@ -16,6 +16,18 @@ public class ControlPID
         this.target = target;
     }
 
+    public void setGains(Double Kp, Double Ki, Double Kd)
+    {
+        pid.Kp = Kp;
+        pid.Ki = Ki;
+        pid.Kd = Kd;
+    }
+
+    public void setIntegralTime(Double integral_time)
+    {
+        pid.integral_time = integral_time;
+    }
+
     public void update(Double t)
     {
         pid.addError(t, target - value);
