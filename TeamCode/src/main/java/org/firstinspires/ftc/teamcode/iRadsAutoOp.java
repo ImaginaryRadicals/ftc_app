@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Utilities.InteractiveInit;
  * that if one of the balls isn't launched properly, we can recover.
  * */
 
-@Autonomous(name="iRads Simple AutoOp w/ Interactive Init", group="iRads")
+@Autonomous(name="iRadsAutoOp", group="iRads")
 //@Disabled
 public class iRadsAutoOp extends LinearOpMode {
 
