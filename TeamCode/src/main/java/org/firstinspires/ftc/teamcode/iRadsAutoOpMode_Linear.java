@@ -73,6 +73,8 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     private Signal sigDpadDown              = new Signal();
     private Signal sigDpadB                 = new Signal();
     private Signal sigDpadBack              = new Signal();
+    private Signal sigLeftTrigger           = new Signal();
+    private Signal sigRightTrigger           = new Signal();
 
 
     double launchPower = 1.0; // Initial power of launcher.
@@ -223,7 +225,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     public void calculateNextMotorState() {
 
         //Drive at half speed using boolean "slowMode".
-        if (gamepad1.right_trigger > 0.5) {
+        if (sigLeftTrigger.risingEdge(gamepad1.left_trigger > 0.5)) {
             slowMode = !slowMode;
         }
         if (slowMode == true) {
@@ -241,12 +243,12 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
 
         //Drive backwards using boolean "backwardsDrive".
-        if (gamepad1.left_trigger > 0.5) {
+        if (sigRightTrigger.risingEdge(gamepad1.right_trigger > 0.5)) {
             backwardsDrive = !backwardsDrive;
         }
         if (backwardsDrive == true) {
             // Set x and y values to negative.
-            ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            ManualControl.setSingleStickXY(gamepad1.left_stick_y, gamepad1.left_stick_x);
         } else
             ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
 
