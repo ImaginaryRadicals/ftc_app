@@ -223,7 +223,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
     public void calculateNextMotorState() {
 
         //Drive at half speed using boolean "slowMode".
-        if (gamepad1.dpad_up) {
+        if (gamepad1.right_trigger > 0.5) {
             slowMode = !slowMode;
         }
         if (slowMode == true) {
@@ -241,7 +241,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
 
         //Drive backwards using boolean "backwardsDrive".
-        if (gamepad1.dpad_down) {
+        if (gamepad1.right_trigger > 0.5) {
             backwardsDrive = !backwardsDrive;
         }
         if (backwardsDrive == true) {
