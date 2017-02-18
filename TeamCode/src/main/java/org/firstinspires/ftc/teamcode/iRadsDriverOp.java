@@ -105,8 +105,7 @@ public class iRadsDriverOp extends LinearOpMode {
     // Initialization
     public void initialize()
     {
-        if (gamepad1 == null)
-            throw new RuntimeException("ERROR: You forgot to initialize gamepad1.");
+        telemetry.addData("Warning:", " You forgot to initialize gamepad1.");
 
         // If we can't find the hardware, print the hardware map error message and continue
         try

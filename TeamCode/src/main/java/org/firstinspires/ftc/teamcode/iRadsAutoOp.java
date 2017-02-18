@@ -75,8 +75,7 @@ public class iRadsAutoOp extends LinearOpMode {
 
     public void initialize() {
 
-        if (gamepad1 == null)
-            throw new RuntimeException("ERROR: You forgot to initialize gamepad1.");
+        telemetry.addData("Warning:", " You forgot to initialize gamepad1.");
 
         robot.init(hardwareMap);
         resetEncoders();
