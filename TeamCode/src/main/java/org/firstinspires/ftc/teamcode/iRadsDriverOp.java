@@ -56,12 +56,9 @@ import org.firstinspires.ftc.teamcode.Utilities.VisualNavigation;
 public class iRadsDriverOp extends LinearOpMode {
 
 
-    private VisualNavigation visualNav      = new VisualNavigation();
-    private EncoderNavigation encoderNav    = new EncoderNavigation();
     private ElapsedTime runtime             = new ElapsedTime();
     private NextMotorState nextMotorState   = new NextMotorState(); // Holds motor/servo cmds before sending.
     private Hardware_iRads robot            = new Hardware_iRads();   // use the class created to define iRads hardware
-    private InteractiveInit interactiveInit; // Initialized in "initialize()" method.
     private Utility utilLeftLaunchSpeed; // Initialized in "initialize()" method.
     private Signal sigDpadUp                = new Signal();
     private Signal sigDpadDown              = new Signal();
@@ -76,7 +73,6 @@ public class iRadsDriverOp extends LinearOpMode {
     double periodSec;
 
     boolean flippers_closed_state = false;
-    boolean runningAutonomously = false;
     boolean slowMode = false;
     boolean backwardsDrive = false;
 
@@ -89,10 +85,6 @@ public class iRadsDriverOp extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        /** Start tracking the data sets we care about. */
-        visualNav.visualTargets.activate();
-        telemetry.addData("Status", "visualTargets Activate");
-
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
@@ -100,31 +92,9 @@ public class iRadsDriverOp extends LinearOpMode {
             periodSec = robot.periodSec();
             telemetry.addData("Period", periodSec);
 
-            // Navigation Code.
-            visionUpdate();
-            encoderUpdate();
-
-
-
             // Robot behavior goes here:
-            //   toggle autonomous
-            if (sigDpadBack.risingEdge(gamepad1.back) && runningAutonomously) {
-                runningAutonomously = false;
-            } else if (sigDpadBack.risingEdge() && !runningAutonomously) {
-                telemetry.addData("runningAutonomously", "true");
-                runningAutonomously = true;
-            }
-
-            if (runningAutonomously) {
-                telemetry.addData("nextMotorState", "Autonomous");
-                calculateNextAutonomousMotorState();
-            } else {
-                telemetry.addData("nextMotorState", "Manual");
-                calculateNextMotorState();
-            }
+            calculateNextMotorState();
             motorUpdate();
-
-
 
             // Update at end of loop to display all telemetry data.
             telemetry.update();
@@ -135,7 +105,6 @@ public class iRadsDriverOp extends LinearOpMode {
     // Initialization
     public void initialize()
     {
-
 
         // If we can't find the hardware, print the hardware map error message and continue
         try
@@ -148,73 +117,8 @@ public class iRadsDriverOp extends LinearOpMode {
             robot.hardwareEnabled = false;
         }
 
-        /*
-        visualNav.initialize(runtime, telemetry); // Initialize Visual Navigation
-        encoderNav.initialize(robot,runtime,telemetry);
-
-        nextMotorState.initialize(robot, telemetry);
-        if(robot.hardwareEnabled) utilLeftLaunchSpeed = new Utility(runtime, robot.leftLaunchMotor, .01);
-        // Interactive Initialization Menu implementation.
-        interactiveInit = new InteractiveInit(telemetry,gamepad1,this);
-        interactiveInit.menuInputLoop();  // Runtime Initialization Modification.
-        if (robot.hardwareEnabled) {
-            if (interactiveInit.launchControl == InteractiveInit.LaunchControl.PID) {
-                robot.leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.rightLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            } else if (interactiveInit.launchControl == InteractiveInit.LaunchControl.POWER) {
-                robot.leftLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                robot.rightLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            }
-        } // robot.hardwareEnabled == true
-        encoderNav.setPosition(interactiveInit.startX,interactiveInit.startY,interactiveInit.startHeading);
-        interactiveInit.displayMenu(); // Show locked parameters.
-        telemetry.addData("Status", "Initialized");
-        // Debug initialization display:
-        if (interactiveInit.debugMode == InteractiveInit.DebugMode.ON) {
-            telemetry.addLine();
-            // Show all visual target goal names and coordinates.
-            for (int i = 0; i<interactiveInit.goalX.size(); i++) {
-                // Visual Target, robot position goal
-                telemetry.addLine(interactiveInit.beaconTargets.get(i).toString());
-                telemetry.addData("goalX",interactiveInit.goalX.get(i));
-                telemetry.addData("goalY",interactiveInit.goalY.get(i));
-                telemetry.addData("goalHeading",interactiveInit.goalHeading.get(i));
-            }
-            telemetry.addLine();
-            visualNav.debugDisplay(); // Show navigation transformations.
-        }
-        telemetry.update();
-
-        */
     }
 
-    public void visionUpdate()
-    {
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        visualNav.updateTracks(VisualNavigation.DisplayMode.SHOW_OUTPUT); // vuforiaTrackables loop
-        // output time since last location update.
-        telemetry.addData("trackAge", String.format("%.3f",this.visualNav.getTrackAge()));
-        telemetry.addData("X-value", visualNav.getX());
-        telemetry.addData("Y-value", visualNav.getY());
-        telemetry.addData("Heading", visualNav.getHeading());
-    }
-
-    public void encoderUpdate() {
-        // Attempt to update encoder position from visualNav:
-        if ( (visualNav.isNew) && (visualNav.getTrackAge() < 0.5) ) {
-            visualNav.isNew = false; // Encoder already used this solution.
-            encoderNav.setPosition(visualNav.getX(),visualNav.getY(),visualNav.getHeading());
-        } else {
-            encoderNav.setSteps();
-        }
-        telemetry.addData("eX",encoderNav.getX());
-        telemetry.addData("eY",encoderNav.getY());
-        telemetry.addData("eHeading",encoderNav.getHeading());
-        telemetry.addData("absLocAge",encoderNav.getAbsoluteLocalizationAge());
-        telemetry.addData("absLocDistance",encoderNav.getAbsolutePositionDistance_mm());
-        telemetry.addData("locConfidence",encoderNav.getConfidence());
-//        encoderNav.printResults();
-    }
 
     public void calculateNextMotorState() {
 
@@ -324,32 +228,8 @@ public class iRadsDriverOp extends LinearOpMode {
             telemetry.addData("Actual Launch Speed", "%.2f", utilLeftLaunchSpeed.getMotorTickRate());
         }
 
-
     } // calculateNextMotorState()
 
-    public void calculateNextAutonomousMotorState() {
-        telemetry.addData("Hey guys", "Running Autonomously!");
-        double autonomousGoalHeading = 90.0; // The robot will turn to this value in the auto mode
-        double autonomousGoalHeadingTolerance = 0.0;
-        double maxSpeed = 0.5;
-        double angleStartRampDown = 10; // Degrees from goalHeading.
-        double errorSignal = Math.abs(encoderNav.getHeading() - autonomousGoalHeading) / angleStartRampDown;
-        errorSignal = Range.clip(errorSignal, 0, 1);
-
-        if(encoderNav.getHeading() < (autonomousGoalHeading - autonomousGoalHeadingTolerance)) {
-
-            nextMotorState.leftDriveMotor = -maxSpeed * errorSignal;
-            nextMotorState.rightDriveMotor = maxSpeed * errorSignal;
-
-        } else if(encoderNav.getHeading() > autonomousGoalHeading + autonomousGoalHeadingTolerance) {
-
-            nextMotorState.leftDriveMotor = maxSpeed * errorSignal;
-            nextMotorState.rightDriveMotor = -maxSpeed * errorSignal;
-
-        } else {
-            telemetry.addData("Alert", "Heading is 0 correct.");
-        }
-    }
 
     public void motorUpdate()
     {
