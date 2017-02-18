@@ -241,7 +241,7 @@ public class iRadsAutoOpMode_Linear extends LinearOpMode {
         }
 
         //Drive backwards using boolean "backwardsDrive".
-        if (gamepad1.right_trigger > 0.5) {
+        if (gamepad1.left_trigger > 0.5) {
             backwardsDrive = !backwardsDrive;
         }
         if (backwardsDrive == true) {
