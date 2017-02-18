@@ -14,11 +14,18 @@ public class PID
     public Double Kp = new Double(0.0);
     public Double Ki = new Double(0.0);
     public Double Kd = new Double(0.0);
+    public Double sample_time = new Double(1.0);
 
     public void addError(Double t, Double e)
     {
         time.add(t);
         error.add(e);
+
+        while (time.lastElement() - time.firstElement() > sample_time)
+        {
+            time.remove(0);
+            error.remove(0);
+        }
     }
 
     public Double gain()
