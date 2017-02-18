@@ -1,4 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Utilities;
+import org.firstinspires.ftc.teamcode.*;
 
 import com.qualcomm.robotcore.util.Range;
 
@@ -9,14 +10,14 @@ import com.qualcomm.robotcore.util.Range;
 public class ManualControl {
 
     // Class outputs
-    static double leftDriveMotorPower = 0;
-    static double rightDriveMotorPower = 0;
-    static double magnitude;
-    static double angleDeg;
+    public static double leftDriveMotorPower = 0;
+    public static double rightDriveMotorPower = 0;
+    public static double magnitude;
+    public static double angleDeg;
 
 
     // singleStick control
-    static void setSingleStickXY(double xStick, double yStick) {
+    public static void setSingleStickXY(double xStick, double yStick) {
         yStick = -yStick; // flip y axis. -1 was forward.
         magnitude = Math.sqrt( Math.pow(xStick,2)  + Math.pow(yStick,2)  );
         magnitude = Range.clip(magnitude,-1,1);

@@ -1,4 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Utilities;
+import org.firstinspires.ftc.teamcode.*;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -144,9 +145,9 @@ public class InteractiveInit {
         this.gamepad1 = gamepad1;
         this.opMode = opMode;
 
-        double_options.add(new VarOption<Double>(opMode.startDelaySec, "startDelaySec", 0.0, 5.0, 10.0));
-        string_options.add(new VarOption<String>(opMode.teamColor, "teamColor", "Red", "Blue"));
-        boolean_options.add(new VarOption<Boolean>(opMode.autoOpMode, "autoOpMode", false, true));
+//        double_options.add(new VarOption<Double>(opMode.startDelaySec, "startDelaySec", 0.0, 5.0, 10.0));
+//        string_options.add(new VarOption<String>(opMode.teamColor, "teamColor", "Red", "Blue"));
+//        boolean_options.add(new VarOption<Boolean>(opMode.autoOpMode, "autoOpMode", false, true));
     }
 
     /*

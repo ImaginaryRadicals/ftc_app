@@ -31,6 +31,7 @@ TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
+import org.firstinspires.ftc.teamcode.Utilities.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -49,17 +50,13 @@ import java.util.Vector;
 
 /**
  * Linear Autonomous Op Mode for iRads Robot.
- * Currently, only vision is implemented. Efforts have been made to move Vuforia code to
- * the VisualNavigation class, which is instantiated as 'visualNav' in this OpMode.
- *
- * Hardware has been instantiated using the Hardware_iRads class, but has not been initialized.
- * To initialize, simply uncomment 'robot.init(hardwareMap)' in the initialization block below.
- *
+ * This Op Mode primarily serves as a test platform for
+ * both autonomous navigation and teleOp modes.
  */
 
-@Autonomous(name="iRads: AutoOp Vision Linear", group="iRads")  // @Autonomous(...) is the other common choice
+@TeleOp(name="iRads: TeleOp & Nav Testmode", group="iRads")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class iRadsAutoOpMode_Linear extends LinearOpMode {
+public class iRadsDevelopmentOpMode extends LinearOpMode {
 
 
     private VisualNavigation visualNav      = new VisualNavigation();
