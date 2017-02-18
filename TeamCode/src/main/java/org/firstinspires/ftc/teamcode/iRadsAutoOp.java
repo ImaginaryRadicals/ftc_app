@@ -28,6 +28,7 @@ public class iRadsAutoOp extends LinearOpMode {
     private InteractiveInit interactive; // Initialized in "initialize()" method.
 
     Double startDelaySec = new Double(0.0);
+    Double drivePowerLevel = new Double(0.5);
     String teamColor = new String("Red");
     String distanceFromGoal = new String("Near");
     Boolean autoOpMode = new Boolean(true);
@@ -74,12 +75,16 @@ public class iRadsAutoOp extends LinearOpMode {
 
     public void initialize() {
 
+        if (gamepad1 == null)
+            throw new RuntimeException("ERROR: You forgot to initialize gamepad1.");
+
         robot.init(hardwareMap);
         resetEncoders();
 
         interactive = new InteractiveInit(telemetry, gamepad1, this);
 
         interactive.addDouble(startDelaySec, "startDelaySec", 0.0, 5.0, 10.0);
+        interactive.addDouble(drivePowerLevel, "drivePowerLevel", 0.25, 0.5, 1.0);
         interactive.addString(teamColor, "teamColor", "Red", "Blue");
         interactive.addString(distanceFromGoal, "distanceFromGoal", "Near", "Far");
         interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
@@ -106,8 +111,8 @@ public class iRadsAutoOp extends LinearOpMode {
         /*It is important that the power is set before the target position.  If it is not, the robot
         * will attempt to reach its target position at a speed of zero, which is not that efficient.
         * */
-        robot.rightDriveMotor.setPower(1);
-        robot.leftDriveMotor.setPower(1);
+        robot.rightDriveMotor.setPower(drivePowerLevel);
+        robot.leftDriveMotor.setPower(drivePowerLevel);
 
         robot.leftDriveMotor.setTargetPosition(
                 mmToTicks(distance_mm)
