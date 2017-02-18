@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Utilities;
 import org.firstinspires.ftc.teamcode.*;
 
+import com.qualcomm.robotcore.eventloop.opmode.*;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -72,7 +74,7 @@ public class InteractiveInit {
 
     Telemetry telemetry;
     Gamepad gamepad1;
-    iRadsSimpleAutoOp_interactiveInit opMode;
+    LinearOpMode opMode;
     private boolean interactiveMode = true;
 
     private Signal sigDpadUp = new Signal();
@@ -139,15 +141,26 @@ public class InteractiveInit {
         }
     }
 
-    public InteractiveInit(Telemetry telemetry, Gamepad gamepad1, iRadsSimpleAutoOp_interactiveInit opMode)
+    public InteractiveInit(Telemetry telemetry, Gamepad gamepad1, LinearOpMode opMode)
     {
         this.telemetry = telemetry;
         this.gamepad1 = gamepad1;
         this.opMode = opMode;
+    }
 
-//        double_options.add(new VarOption<Double>(opMode.startDelaySec, "startDelaySec", 0.0, 5.0, 10.0));
-//        string_options.add(new VarOption<String>(opMode.teamColor, "teamColor", "Red", "Blue"));
-//        boolean_options.add(new VarOption<Boolean>(opMode.autoOpMode, "autoOpMode", false, true));
+    public void addDouble(Double var, String name, Double... args)
+    {
+        double_options.add(new VarOption<>(var, name, args));
+    }
+
+    public void addString(String var, String name, String... args)
+    {
+        string_options.add(new VarOption<>(var, name, args));
+    }
+
+    public void addBoolean(Boolean var, String name, Boolean... args)
+    {
+        boolean_options.add(new VarOption<>(var, name, args));
     }
 
     /*
