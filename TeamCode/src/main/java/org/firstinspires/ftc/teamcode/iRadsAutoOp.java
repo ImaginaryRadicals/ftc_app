@@ -32,16 +32,6 @@ public class iRadsAutoOp extends LinearOpMode {
     String distanceFromGoal = new String("Near");
     Boolean autoOpMode = new Boolean(true);
 
-    iRadsAutoOp()
-    {
-        interactive = new InteractiveInit(telemetry, gamepad1, this);
-
-        interactive.addDouble(startDelaySec, "startDelaySec", 0.0, 5.0, 10.0);
-        interactive.addString(teamColor, "teamColor", "Red", "Blue");
-        interactive.addString(distanceFromGoal, "distanceFromGoal", "Near", "Far");
-        interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
-    }
-
     @Override
     public void runOpMode() {
         initialize();
@@ -86,6 +76,13 @@ public class iRadsAutoOp extends LinearOpMode {
 
         robot.init(hardwareMap);
         resetEncoders();
+
+        interactive = new InteractiveInit(telemetry, gamepad1, this);
+
+        interactive.addDouble(startDelaySec, "startDelaySec", 0.0, 5.0, 10.0);
+        interactive.addString(teamColor, "teamColor", "Red", "Blue");
+        interactive.addString(distanceFromGoal, "distanceFromGoal", "Near", "Far");
+        interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
 
         interactive.menuInputLoop();
     }
