@@ -29,6 +29,7 @@ public class iRadsAutoOp extends LinearOpMode {
 
     Double startDelaySec = new Double(0.0);
     String teamColor = new String("Red");
+    String distanceFromGoal = new String("Near");
     Boolean autoOpMode = new Boolean(true);
 
     iRadsAutoOp()
@@ -37,6 +38,7 @@ public class iRadsAutoOp extends LinearOpMode {
 
         interactive.addDouble(startDelaySec, "startDelaySec", 0.0, 5.0, 10.0);
         interactive.addString(teamColor, "teamColor", "Red", "Blue");
+        interactive.addString(distanceFromGoal, "distanceFromGoal", "Near", "Far");
         interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
     }
 
@@ -69,7 +71,10 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         // drive forward again to knock off the cap ball and park on its platform
-        driveForward(2000);
+        if (distanceFromGoal == "Near")
+            driveForward(1500);
+        else
+            driveForward(2000);
 
         //tells the robot to keep doing what it is doing until the drive motors are finished
         while (robot.leftDriveMotor.isBusy()){
@@ -132,18 +137,14 @@ public class iRadsAutoOp extends LinearOpMode {
 
         //set proper max speeds based on InteractiveInit input
 
-        /*
-
-        if (interactiveInit.distanceFromGoal == InteractiveInit.DistanceFromGoal.NEAR) {
+        if (distanceFromGoal == "Near") {
             robot.leftLaunchMotor.setMaxSpeed(1050);
             robot.rightLaunchMotor.setMaxSpeed(1050);
-        } else */
-
+        } else
         {
             robot.leftLaunchMotor.setMaxSpeed(1150);
             robot.rightLaunchMotor.setMaxSpeed(1150);
         }
-
 
         //Open the flippers so we can shoot
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
