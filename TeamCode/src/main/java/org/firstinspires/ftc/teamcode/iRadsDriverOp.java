@@ -118,6 +118,9 @@ public class iRadsDriverOp extends LinearOpMode {
             robot.hardwareEnabled = false;
         }
 
+        
+        nextMotorState.initialize(robot, telemetry);
+        if(robot.hardwareEnabled) utilLeftLaunchSpeed = new Utility(runtime, robot.leftLaunchMotor, .01);
     }
 
 

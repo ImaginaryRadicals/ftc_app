@@ -56,8 +56,8 @@ public class NextMotorState {
         telemetry.addData("rightLaunchMotor", rightLaunchMotor);
         telemetry.addData("liftMotor", liftMotor);
         telemetry.addData("launchTrigger", launchTrigger);
-        telemetry.addData("leftTrigger", leftFlipper);
-        telemetry.addData("rightTrigger", rightFlipper);
+        telemetry.addData("leftFlipper", leftFlipper);
+        telemetry.addData("rightFlipper", rightFlipper);
 
     }
 
