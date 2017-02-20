@@ -34,6 +34,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -149,10 +151,17 @@ public class iRadsDriverOp extends LinearOpMode {
             backwardsDrive = !backwardsDrive;
         }
         if (backwardsDrive == true) {
-            // Set x and y values to negative.
+            robot.leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
             ManualControl.setSingleStickXY(gamepad1.left_stick_y, gamepad1.left_stick_x);
-        } else
-            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        } else {
+            robot.leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
+            robot.rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);
+            ManualControl.setSingleStickXY(gamepad1.left_stick_y, -gamepad1.left_stick_x);
+        }
+
+
+
 
 
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
