@@ -9,11 +9,13 @@ public class ControlPID
     private PID pid = new PID();
     private Double target = new Double(0.0);
     private Double value = new Double(0.0);
+    private Double control_param = new Double(0.0);
 
-    ControlPID(Double value, Double target)
+    public ControlPID(Double value, Double target, Double control_param)
     {
         this.value = value;
         this.target = target;
+        this.control_param = control_param;
     }
 
     public void setGains(Double Kp, Double Ki, Double Kd)
@@ -31,10 +33,6 @@ public class ControlPID
     public void update(Double t)
     {
         pid.addError(t, target - value);
-    }
-
-    public Double gain()
-    {
-        return pid.gain();
+        control_param = pid.gain();
     }
 }

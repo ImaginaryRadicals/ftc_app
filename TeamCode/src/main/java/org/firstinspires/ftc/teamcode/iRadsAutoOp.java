@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode;
+import org.firstinspires.ftc.teamcode.Utilities.*;
 
 /**
  * Created by Stephen on 2/18/17.
@@ -9,7 +10,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Utilities.ControlPID;
 import org.firstinspires.ftc.teamcode.Utilities.InteractiveInit;
+
+import java.util.Vector;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This autonomous opmode will drive forward a specified distance, shoot 2 particles, and drive the
@@ -31,7 +37,29 @@ public class iRadsAutoOp extends LinearOpMode {
     Double drivePowerLevel = new Double(0.5);
     String teamColor = new String("Red");
     String distanceFromGoal = new String("Near");
-    Boolean autoOpMode = new Boolean(true);
+    //Boolean autoOpMode = new Boolean(true);
+    Boolean launchWithPID = new Boolean(true);
+
+    Vector<Double> left_launcher_pos = new Vector<>();
+    Vector<Double> right_launcher_pos = new Vector<>();
+    Vector<Double> time = new Vector<>();
+
+    Double left_launcher_speed = new Double(0.0);
+    Double left_launch_power = new Double(1.0);
+    Double right_launcher_speed = new Double(0.0);
+    Double right_launch_power = new Double(1.0);
+    Double target_launch_speed = new Double(0.0);
+
+    private ControlPID left_pid; // instantiated in constructor
+    private ControlPID right_pid; // instantiated in constructor
+
+    iRadsAutoOp()
+    {
+        left_pid = new ControlPID(left_launcher_speed, target_launch_speed, left_launch_power);
+        left_pid.setGains(0.5, 0.1, 0.01);
+        right_pid = new ControlPID(right_launcher_speed, target_launch_speed, right_launch_power);
+        right_pid.setGains(0.5, 0.1, 0.01);
+    }
 
     @Override
     public void runOpMode() {
@@ -56,7 +84,11 @@ public class iRadsAutoOp extends LinearOpMode {
         sleep(3500); //stop for a little while longer so that the launch motors can finish getting up to speed
 
         //launch the two particles and pull power from the launch motors and close the flippers
-        launchBalls();
+        if (launchWithPID)
+            launchBalls();
+        else
+            launchBallsPID();
+
         setLaunchPower(0);
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
@@ -86,7 +118,8 @@ public class iRadsAutoOp extends LinearOpMode {
         interactive.addDouble(drivePowerLevel, "drivePowerLevel", 0.25, 0.5, 1.0);
         interactive.addString(teamColor, "teamColor", "Red", "Blue");
         interactive.addString(distanceFromGoal, "distanceFromGoal", "Near", "Far");
-        interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
+        //interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
+        interactive.addBoolean(launchWithPID, "launchWithPID", true, false);
 
         interactive.menuInputLoop();
     }
@@ -132,6 +165,70 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+    }
+
+    private void runLaunchMotors(AtomicBoolean run_launch_motors)
+    {
+        VectorMath vector_math = new VectorMath();
+
+        while (run_launch_motors.get())
+        {
+            left_launcher_pos.add((double)robot.leftDriveMotor.getCurrentPosition());
+            right_launcher_pos.add((double)robot.rightDriveMotor.getCurrentPosition());
+
+            left_launcher_speed = vector_math.derivative(time, left_launcher_pos);
+            right_launcher_speed = vector_math.derivative(time, right_launcher_pos);
+
+            left_pid.update(runtime.time());
+            right_pid.update(runtime.time());
+
+            telemetry.addData("left_launcher_speed: ", left_launcher_speed.toString());
+            telemetry.addData("right_launcher_speed: ", right_launcher_speed.toString());
+        }
+    }
+
+    public void launchBallsPID()
+    {
+        final AtomicBoolean run_launch_motors = new AtomicBoolean(true);
+
+        if (distanceFromGoal == "Near") {
+            target_launch_speed = 1050.0;
+        } else
+        {
+            target_launch_speed = 1150.0;
+        }
+
+        // Open the flippers so we can shoot
+        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_OPEN);
+        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_OPEN);
+        sleep(500);
+
+        // launch once
+        new Thread(new Runnable() {
+            public void run(){
+                runLaunchMotors(run_launch_motors);
+            }
+        }).start();
+
+        sleep(5000); // give the motors time to hit the target speed
+
+        // launch once
+        robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        sleep(500);
+        robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+        sleep(500);
+
+        // Close the flippers to prevent the second particle from escaping
+        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
+        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
+        sleep(5000);
+
+        // launch a second time
+        robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
+        sleep(500);
+        robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+
+        run_launch_motors.set(false);
     }
 
     void launchBalls(){
