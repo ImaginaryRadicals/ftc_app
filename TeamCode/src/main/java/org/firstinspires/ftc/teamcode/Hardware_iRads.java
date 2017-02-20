@@ -118,8 +118,8 @@ public class Hardware_iRads
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);*/
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightLaunchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Set ENCODER mode max speed (in Ticks per second)
