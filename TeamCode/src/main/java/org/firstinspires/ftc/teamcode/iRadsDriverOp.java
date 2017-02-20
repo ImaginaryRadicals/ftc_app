@@ -228,8 +228,19 @@ public class iRadsDriverOp extends LinearOpMode {
         telemetry.addData("Left Flipper", "%.2f", nextMotorState.leftFlipper);
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
         telemetry.addData("Ideal Launch Speed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
-        if (robot.hardwareEnabled) {
-            telemetry.addData("Actual Launch Speed", "%.2f", utilLeftLaunchSpeed.getMotorTickRate());
+        try {
+
+            if (robot.hardwareEnabled) {
+                telemetry.addData("Actual Launch Speed", "%.2f", utilLeftLaunchSpeed.getMotorTickRate());
+            }
+            
+
+        } catch (NullPointerException npe) {
+
+            telemetry.addData("error", "could not find launch motor tick rate");
+            telemetry.addLine();
+            telemetry.addData("here was the error", npe.getMessage());
+
         }
 
     } // calculateNextMotorState()
