@@ -43,7 +43,7 @@ public class Hardware_iRads
     public static boolean hardwareEnabled = true; // set false if hardware errors are encountered
 
     public static final double MID_SERVO            =  0.5 ;
-    public static final double INITIAL_LAUNCHER_TRIGGER_POS = 1.00;
+    public static final double INITIAL_LAUNCHER_TRIGGER_POS = 0.94;
     public static final double ELEVATED_LAUNCHER_TRIGGER_POS = 0.8;
 
     // public doubles for the left and right flipper
