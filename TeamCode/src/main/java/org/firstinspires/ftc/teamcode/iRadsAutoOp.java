@@ -184,6 +184,7 @@ public class iRadsAutoOp extends LinearOpMode {
 
             telemetry.addData("left_launcher_speed: ", left_launcher_speed.toString());
             telemetry.addData("right_launcher_speed: ", right_launcher_speed.toString());
+            telemetry.addData("target_launch_speed: ", target_launch_speed.toString());
         }
     }
 
