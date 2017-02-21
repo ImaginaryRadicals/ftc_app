@@ -33,12 +33,12 @@ public class iRadsAutoOp extends LinearOpMode {
     Hardware_iRads robot = new Hardware_iRads();
     private InteractiveInit interactive; // Initialized in "initialize()" method.
 
-    Double startDelaySec = new Double(0.0);
-    Double drivePowerLevel = new Double(0.5);
-    String teamColor = new String("Red");
-    String distanceFromGoal = new String("Near");
+    Mutable<Double> startDelaySec = new Mutable<Double>(0.0);
+    Mutable<Double> drivePowerLevel = new Mutable<Double>(0.5);
+    Mutable<String> teamColor = new Mutable<String>("Red");
+    Mutable<String> distanceFromGoal = new Mutable<String>("Near");
     //Boolean autoOpMode = new Boolean(true);
-    Boolean launchWithPID = new Boolean(true);
+    Mutable<Boolean> launchWithPID = new Mutable<Boolean>(true);
 
     Vector<Double> left_launcher_pos = new Vector<>();
     Vector<Double> right_launcher_pos = new Vector<>();
@@ -65,6 +65,8 @@ public class iRadsAutoOp extends LinearOpMode {
     public void runOpMode() {
         initialize();
         telemetry.addData("Status", "Initialized");
+        telemetry.addData("startDelaySec: ", startDelaySec.get().toString());
+        telemetry.addData("launchWithPID: ", launchWithPID.get().toString());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -77,14 +79,14 @@ public class iRadsAutoOp extends LinearOpMode {
         //sleep for the total length of the driver-input delay
         //it is possible that it might sleep so long that we go past 30 sec in the autonomous
 
-        sleep(startDelaySec.intValue());
+        sleep(startDelaySec.get().intValue());
 
         setLaunchPower(1);
 
         sleep(3500); //stop for a little while longer so that the launch motors can finish getting up to speed
 
         //launch the two particles and pull power from the launch motors and close the flippers
-        if (launchWithPID)
+        if (launchWithPID.get())
             launchBalls();
         else
             launchBallsPID();
@@ -94,7 +96,7 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         // drive forward again to knock off the cap ball and park on its platform
-        if (distanceFromGoal == "Near")
+        if (distanceFromGoal.get() == "Near")
             driveForward(1500);
         else
             driveForward(2000);
@@ -143,8 +145,8 @@ public class iRadsAutoOp extends LinearOpMode {
         /*It is important that the power is set before the target position.  If it is not, the robot
         * will attempt to reach its target position at a speed of zero, which is not that efficient.
         * */
-        robot.rightDriveMotor.setPower(drivePowerLevel);
-        robot.leftDriveMotor.setPower(drivePowerLevel);
+        robot.rightDriveMotor.setPower(drivePowerLevel.get());
+        robot.leftDriveMotor.setPower(drivePowerLevel.get());
 
         robot.leftDriveMotor.setTargetPosition(
                 mmToTicks(distance_mm)
@@ -193,7 +195,7 @@ public class iRadsAutoOp extends LinearOpMode {
     {
         final AtomicBoolean run_launch_motors = new AtomicBoolean(true);
 
-        if (distanceFromGoal == "Near") {
+        if (distanceFromGoal.get() == "Near") {
             target_launch_speed = 1050.0;
         } else
         {
@@ -237,7 +239,7 @@ public class iRadsAutoOp extends LinearOpMode {
 
         //set proper max speeds based on InteractiveInit input
 
-        if (distanceFromGoal == "Near") {
+        if (distanceFromGoal.get() == "Near") {
             robot.leftLaunchMotor.setMaxSpeed(1050);
             robot.rightLaunchMotor.setMaxSpeed(1050);
         } else

@@ -20,9 +20,9 @@ class VarOption<T>
     private ListIterator<T> current;
     public ArrayList<T> values = new ArrayList<>();
     public String name = new String();
-    private T var;
+    private Mutable<T> var;
 
-    VarOption(T variable, String name, T... args)
+    VarOption(Mutable<T> variable, String name, T... args)
     {
         var = variable;
 
@@ -61,7 +61,7 @@ class VarOption<T>
 
     public void apply()
     {
-        var = value;
+        var.set(value);
     }
 
     @Override
@@ -148,17 +148,17 @@ public class InteractiveInit {
         this.opMode = opMode;
     }
 
-    public void addDouble(Double var, String name, Double... args)
+    public void addDouble(Mutable<Double> var, String name, Double... args)
     {
         double_options.add(new VarOption<>(var, name, args));
     }
 
-    public void addString(String var, String name, String... args)
+    public void addString(Mutable<String> var, String name, String... args)
     {
         string_options.add(new VarOption<>(var, name, args));
     }
 
-    public void addBoolean(Boolean var, String name, Boolean... args)
+    public void addBoolean(Mutable<Boolean> var, String name, Boolean... args)
     {
         boolean_options.add(new VarOption<>(var, name, args));
     }
