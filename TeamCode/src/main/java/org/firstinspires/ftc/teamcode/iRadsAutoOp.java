@@ -312,14 +312,15 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
 
         // drive forward again to knock off the cap ball and park on its platform
-        if (distanceFromGoal.get() == "Near")
-            driveForward(1500);
-        else
-            driveForward(2000);
+        if (distanceFromGoal.get() == "Near") {
 
-        //tells the robot to keep doing what it is doing until the drive motors are finished
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
+            driveForward(1500);
+            sleep(3300);
+        } else {
+
+            driveForward(2000);
+            sleep(4400);
+
         }
 
     }
@@ -337,68 +338,49 @@ public class iRadsAutoOp extends LinearOpMode {
         if (distanceFromGoal.get() == "Far") {
 
             driveForward(800);
+            sleep(1800);
+
+            // orient towards corner vortex
+            if (teamColor.get() == "Red")       turn(49.66);
+            else if (teamColor.get() == "Blue") turn(-49.66);
+
+            sleep(350);
 
         } else {
 
             driveForward(610);
+            sleep(1500);
 
-        }
+            // orient towards corner vortex
+            if (teamColor.get() == "Red")       turn(90);
+            else if (teamColor.get() == "Blue") turn(-90);
 
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
-        }
+            sleep(700);
 
-        // orient towards corner vortex
-        if (teamColor.get() == "Red") {
-
-            turn(49.66);
-
-        } else if (teamColor.get() == "Blue") {
-
-            turn(-49.66);
-
-        }
-
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
         }
 
         //drive to corner vortex
         if (distanceFromGoal.get() == "Near") {
 
             driveForward(1725);
+            sleep(3800);
 
         } else if (distanceFromGoal.get() == "Far") {
 
             driveForward(950);
+            sleep(2100);
 
-        }
-
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
         }
 
         //turn into corner vortex
-        if (teamColor.get() == "Red") {
+        if (teamColor.get() == "Red")       turn(45);
+        else if (teamColor.get() == "Blue") turn(-45);
 
-            turn(45);
-            
-        } else if (teamColor.get() == "Blue") {
-
-            turn(-45);
-
-        }
-
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
-        }
+        sleep(300);
 
         //drive up the ramp
         driveForward(50);
-
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
-        }
+        sleep(1000);
 
     }
 
