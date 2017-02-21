@@ -37,6 +37,7 @@ public class iRadsAutoOp extends LinearOpMode {
     Mutable<Double> drivePowerLevel = new Mutable<Double>(0.5);
     Mutable<String> teamColor = new Mutable<String>("Red");
     Mutable<String> distanceFromGoal = new Mutable<String>("Near");
+    Mutable<String> destination = new Mutable<String>("Center Vortex");
     //Boolean autoOpMode = new Boolean(true);
     Mutable<Boolean> launchWithPID = new Mutable<Boolean>(false);
 
@@ -52,6 +53,8 @@ public class iRadsAutoOp extends LinearOpMode {
 
     private ControlPID left_pid; // instantiated in constructor
     private ControlPID right_pid; // instantiated in constructor
+
+    double turnDistance = 0.0;
 
     iRadsAutoOp()
     {
@@ -91,20 +94,16 @@ public class iRadsAutoOp extends LinearOpMode {
         else
             launchBalls();
 
-        setLaunchPower(0);
-        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
-        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
+        if (destination.get() == "Center Vortex") {
 
-        // drive forward again to knock off the cap ball and park on its platform
-        if (distanceFromGoal.get() == "Near")
-            driveForward(1500);
-        else
-            driveForward(2000);
+            driveToCenterVortex();
 
-        //tells the robot to keep doing what it is doing until the drive motors are finished
-        while (robot.leftDriveMotor.isBusy()){
-            sleep(50);
+        } else if (destination.get() == "Corner Vortex") {
+
+            driveToCornerVortex();
+            
         }
+
     }
 
     public void initialize() {
@@ -121,6 +120,7 @@ public class iRadsAutoOp extends LinearOpMode {
         interactive.addString(teamColor, "teamColor", "Red", "Blue");
         interactive.addString(distanceFromGoal, "distanceFromGoal", "Near", "Far");
         //interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
+        interactive.addString(destination, "destination", "Center Vortex", "Corner Vortex");
         interactive.addBoolean(launchWithPID, "launchWithPID", true, false);
 
         interactive.menuInputLoop();
@@ -154,6 +154,15 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.rightDriveMotor.setTargetPosition(
                 mmToTicks(distance_mm)
         );
+    }
+
+    void turn(double theta) {
+
+        // positive turns right, negative turns left.  Units are degrees
+        turnDistance = robot.WHEELBASE_WIDTH_MM * 3.14159 * theta / 360;
+        robot.leftDriveMotor.setTargetPosition((int) -turnDistance);
+        robot.rightDriveMotor.setTargetPosition((int) turnDistance);
+
     }
 
     void setLaunchPower(double launchPower) {
@@ -286,6 +295,75 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
         sleep(500);
         robot.launchTrigger.setPosition(robot.INITIAL_LAUNCHER_TRIGGER_POS);
+    }
+
+    void driveToCenterVortex() {
+
+        setLaunchPower(0);
+        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
+        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
+
+        // drive forward again to knock off the cap ball and park on its platform
+        if (distanceFromGoal.get() == "Near")
+            driveForward(1500);
+        else
+            driveForward(2000);
+
+        //tells the robot to keep doing what it is doing until the drive motors are finished
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
+        }
+
+    }
+
+    void driveToCornerVortex() {
+
+        // get off the wall
+        if (distanceFromGoal.get() == "Far") {
+
+            driveForward(800);
+
+        } else {
+
+            driveForward(610);
+
+        }
+
+        // orient towards corner vortex
+        if (teamColor.get() == "Red") {
+
+            turn(49.66);
+
+        } else if (teamColor.get() == "Blue") {
+
+            turn(-49.66);
+
+        }
+
+        //drive to corner vortex
+        if (distanceFromGoal.get() == "Near") {
+
+            driveForward(1725);
+
+        } else if (distanceFromGoal.get() == "Far") {
+
+            driveForward(950);
+
+        }
+
+        //turn into corner vortex
+        if (teamColor.get() == "Red") {
+
+            turn(45);
+        } else if (teamColor.get() == "Blue") {
+
+            turn(-45);
+
+        }
+
+        //drive up the ramp
+        driveForward(50);
+
     }
 
 }
