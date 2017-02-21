@@ -166,6 +166,9 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.leftDriveMotor.setTargetPosition((int) -turnDistance);
         robot.rightDriveMotor.setTargetPosition((int) turnDistance);
 
+        robot.rightDriveMotor.setPower(1);
+        robot.leftDriveMotor.setPower(1);
+
     }
 
     void setLaunchPower(double launchPower) {
