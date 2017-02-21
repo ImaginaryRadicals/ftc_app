@@ -158,6 +158,8 @@ public class iRadsAutoOp extends LinearOpMode {
 
     void turn(double theta) {
 
+        resetEncoders();
+
         // positive turns right, negative turns left.  Units are degrees
         turnDistance = robot.WHEELBASE_WIDTH_MM * 3.14159 * 25.4 * theta / 360;
         turnDistance = mmToTicks(turnDistance);
@@ -300,6 +302,8 @@ public class iRadsAutoOp extends LinearOpMode {
 
     void driveToCenterVortex() {
 
+        resetEncoders();
+
         setLaunchPower(0);
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
@@ -318,6 +322,8 @@ public class iRadsAutoOp extends LinearOpMode {
     }
 
     void driveToCornerVortex() {
+
+        resetEncoders();
 
         //cease launching
         setLaunchPower(0);
