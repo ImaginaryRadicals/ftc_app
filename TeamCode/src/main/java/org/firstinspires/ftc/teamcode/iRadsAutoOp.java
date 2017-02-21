@@ -38,17 +38,17 @@ public class iRadsAutoOp extends LinearOpMode {
     Mutable<String> teamColor = new Mutable<String>("Red");
     Mutable<String> distanceFromGoal = new Mutable<String>("Near");
     //Boolean autoOpMode = new Boolean(true);
-    Mutable<Boolean> launchWithPID = new Mutable<Boolean>(true);
+    Mutable<Boolean> launchWithPID = new Mutable<Boolean>(false);
 
     Vector<Double> left_launcher_pos = new Vector<>();
     Vector<Double> right_launcher_pos = new Vector<>();
     Vector<Double> time = new Vector<>();
 
-    Double left_launcher_speed = new Double(0.0);
-    Double left_launch_power = new Double(1.0);
-    Double right_launcher_speed = new Double(0.0);
-    Double right_launch_power = new Double(1.0);
-    Double target_launch_speed = new Double(0.0);
+    Mutable<Double> left_launcher_speed = new Mutable<>(0.0);
+    Mutable<Double> left_launch_power = new Mutable<>(1.0);
+    Mutable<Double> right_launcher_speed = new Mutable<>(0.0);
+    Mutable<Double> right_launch_power = new Mutable<>(1.0);
+    Mutable<Double> target_launch_speed = new Mutable<>(0.0);
 
     private ControlPID left_pid; // instantiated in constructor
     private ControlPID right_pid; // instantiated in constructor
@@ -87,9 +87,9 @@ public class iRadsAutoOp extends LinearOpMode {
 
         //launch the two particles and pull power from the launch motors and close the flippers
         if (launchWithPID.get())
-            launchBalls();
-        else
             launchBallsPID();
+        else
+            launchBalls();
 
         setLaunchPower(0);
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
@@ -178,8 +178,8 @@ public class iRadsAutoOp extends LinearOpMode {
             left_launcher_pos.add((double)robot.leftDriveMotor.getCurrentPosition());
             right_launcher_pos.add((double)robot.rightDriveMotor.getCurrentPosition());
 
-            left_launcher_speed = vector_math.derivative(time, left_launcher_pos);
-            right_launcher_speed = vector_math.derivative(time, right_launcher_pos);
+            left_launcher_speed.set(vector_math.derivative(time, left_launcher_pos));
+            right_launcher_speed.set(vector_math.derivative(time, right_launcher_pos));
 
             left_pid.update(runtime.time());
             right_pid.update(runtime.time());
@@ -196,10 +196,10 @@ public class iRadsAutoOp extends LinearOpMode {
         final AtomicBoolean run_launch_motors = new AtomicBoolean(true);
 
         if (distanceFromGoal.get() == "Near") {
-            target_launch_speed = 1050.0;
+            target_launch_speed.set(1050.0);
         } else
         {
-            target_launch_speed = 1150.0;
+            target_launch_speed.set(1150.0);
         }
 
         // Open the flippers so we can shoot

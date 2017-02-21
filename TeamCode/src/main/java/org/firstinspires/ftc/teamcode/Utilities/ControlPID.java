@@ -7,11 +7,11 @@ package org.firstinspires.ftc.teamcode.Utilities;
 public class ControlPID
 {
     private PID pid = new PID();
-    private Double target = new Double(0.0);
-    private Double value = new Double(0.0);
-    private Double control_param = new Double(0.0);
+    private Mutable<Double> target = new Mutable<>(0.0);
+    private Mutable<Double> value = new Mutable<>(0.0);
+    private Mutable<Double> control_param = new Mutable<>(0.0);
 
-    public ControlPID(Double value, Double target, Double control_param)
+    public ControlPID(Mutable<Double> value, Mutable<Double> target, Mutable<Double> control_param)
     {
         this.value = value;
         this.target = target;
@@ -32,7 +32,7 @@ public class ControlPID
 
     public void update(Double t)
     {
-        pid.addError(t, target - value);
-        control_param = pid.gain();
+        pid.addError(t, target.get() - value.get());
+        control_param.set(pid.gain());
     }
 }
