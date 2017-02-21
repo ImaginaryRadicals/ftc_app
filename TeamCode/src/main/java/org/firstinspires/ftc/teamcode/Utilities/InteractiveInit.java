@@ -36,7 +36,7 @@ class VarOption<T>
         current = values.listIterator();
         while (current.hasNext()) {
             value = current.next();
-            if (var == value)
+            if (var.get() == value)
                 break;
         }
     }
