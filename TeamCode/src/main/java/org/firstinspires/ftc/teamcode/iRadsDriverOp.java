@@ -34,6 +34,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -126,62 +128,108 @@ public class iRadsDriverOp extends LinearOpMode {
 
     public void calculateNextMotorState() {
 
-        //Drive at half speed using boolean "slowMode".
-        if (sigLeftTrigger.risingEdge(gamepad1.left_trigger > 0.5)) {
-            slowMode = !slowMode;
+        updateDriveMotors();
+        updateForklift();
+        updateLaunchMotors();
+        updateLaunchTrigger();
+        updateFlippers();
+        updateTelemetry();
+
+    } // calculateNextMotorState()
+
+
+    public void motorUpdate()
+    {
+        if (robot.hardwareEnabled)  nextMotorState.updateMotors();
+        else                        nextMotorState.print(); // Display commands if hardware is disabled.
+
+    }
+
+    private void updateDriveMotors() {
+
+        updateSlowDrive();
+        updateReverseDrive();
+
+    }
+
+    private void updateReverseDrive() {
+
+        //Drive backwards using boolean "backwardsDrive".
+        if (sigRightTrigger.risingEdge(gamepad1.right_trigger > 0.5))
+            backwardsDrive = !backwardsDrive;
+
+        if (backwardsDrive == true) {
+
+            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+
+        } else {
+
+            ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
+
         }
+
+    }
+
+    private void updateSlowDrive() {
+
+        //Drive at half speed using boolean "slowMode".
+        if (sigLeftTrigger.risingEdge(gamepad1.left_trigger > 0.5))     slowMode = !slowMode;
+
         if (slowMode == true) {
+
             // Left (single)stick control, Slow Mode.
             nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower * 0.5;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower * 0.5;
             telemetry.addData("magnitude", ManualControl.magnitude);
             telemetry.addData("AngleDeg", ManualControl.angleDeg);
+
         } else {
+
             // Left (single)stick control, default.
             nextMotorState.leftDriveMotor = ManualControl.leftDriveMotorPower;
             nextMotorState.rightDriveMotor = ManualControl.rightDriveMotorPower;
             telemetry.addData("magnitude", ManualControl.magnitude);
             telemetry.addData("AngleDeg", ManualControl.angleDeg);
+
         }
 
-        //Drive backwards using boolean "backwardsDrive".
-        if (sigRightTrigger.risingEdge(gamepad1.right_trigger > 0.5)) {
-            backwardsDrive = !backwardsDrive;
-        }
-        if (backwardsDrive == true) {
-            // Set x and y values to negative.
-            ManualControl.setSingleStickXY(gamepad1.left_stick_y, gamepad1.left_stick_x);
-        } else
-            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+    }
 
+    private void updateForklift() {
 
         // Use gamepad buttons to move the fork lift up (Y) and down (A)
-        if (gamepad1.y) {
-            nextMotorState.liftMotor = 1.0;  // Lift up, full speed
-        } else if (gamepad1.a) {
-            nextMotorState.liftMotor = -1.0; // Lift down, full speed
-        } else {
-            nextMotorState.liftMotor = 0.0;  // Lift stop.
-        }
+        if (gamepad1.y)         nextMotorState.liftMotor = 1.0;  // Lift up, full speed
+        else if (gamepad1.a)    nextMotorState.liftMotor = -1.0; // Lift down, full speed
+        else                    nextMotorState.liftMotor = 0.0;  // Lift stop.
+
+    }
+
+    private void updateLaunchMotors() {
 
         // Adjust launchPower with d-pad up/down
-        if (sigDpadUp.risingEdge(gamepad1.dpad_up)) {
-            launchPower += .05;
-        } else if (sigDpadDown.risingEdge(gamepad1.dpad_down)) {
-            launchPower -= .05;
-        }
+        if (sigDpadUp.risingEdge(gamepad1.dpad_up))             launchPower += .05;
+        else if (sigDpadDown.risingEdge(gamepad1.dpad_down))    launchPower -= .05;
+
         // Bound launchPower
         launchPower = Range.clip(launchPower, 0.0, 1.0);
 
         // hold left_bumper to activate launcher.
         if (gamepad1.left_bumper) {
+
             nextMotorState.leftLaunchMotor  = launchPower;
             nextMotorState.rightLaunchMotor = launchPower;
+
         }
         else {
+
             nextMotorState.leftLaunchMotor  = 0;
             nextMotorState.rightLaunchMotor = 0;
+
         }
+
+    }
+
+    private void updateLaunchTrigger() {
 
         // hold right_bumper to activate launch Trigger.
         if (gamepad1.right_bumper) {
@@ -198,29 +246,38 @@ public class iRadsDriverOp extends LinearOpMode {
             nextMotorState.launchTrigger  = robot.INITIAL_LAUNCHER_TRIGGER_POS;
         }
 
-        // use b button to toggle between open and closed, hold x button to open
+    }
 
-        if (sigDpadB.risingEdge(gamepad1.b))
-        {
-            flippers_closed_state = !flippers_closed_state;
-        }
+    private void updateFlippers() {
+
+        // use b button to toggle between open and closed, hold x button to open
+        if (sigDpadB.risingEdge(gamepad1.b))    flippers_closed_state = !flippers_closed_state;
 
         if (gamepad1.x) {
+
             nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_CLOSED;
             nextMotorState.leftFlipper   = robot.LEFT_FLIPPER_CLOSED;
+
         }
+
         else {
-            if (flippers_closed_state)
-            {
+
+            if (flippers_closed_state) {
+
                 nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_CLOSED;
                 nextMotorState.leftFlipper   = robot.LEFT_FLIPPER_CLOSED;
-            }
-            else
-            {
+
+            } else {
+
                 nextMotorState.rightFlipper  = robot.RIGHT_FLIPPER_OPEN;
                 nextMotorState.leftFlipper  = robot.RIGHT_FLIPPER_OPEN;
             }
+
         }
+
+    }
+
+    private void updateTelemetry() {
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", nextMotorState.leftDriveMotor);
@@ -228,12 +285,12 @@ public class iRadsDriverOp extends LinearOpMode {
         telemetry.addData("Left Flipper", "%.2f", nextMotorState.leftFlipper);
         telemetry.addData("Right Flipper", "%.2f", nextMotorState.rightFlipper);
         telemetry.addData("Ideal Launch Speed", "%.2f", nextMotorState.leftLaunchMotor*Hardware_iRads.MAX_LAUNCH_SPEED_TPS);
+
         try {
 
-            if (robot.hardwareEnabled) {
+            if (robot.hardwareEnabled)
                 telemetry.addData("Actual Launch Speed", "%.2f", utilLeftLaunchSpeed.getMotorTickRate());
-            }
-            
+
 
         } catch (NullPointerException npe) {
 
@@ -243,16 +300,6 @@ public class iRadsDriverOp extends LinearOpMode {
 
         }
 
-    } // calculateNextMotorState()
-
-
-    public void motorUpdate()
-    {
-        if (robot.hardwareEnabled) {
-            nextMotorState.updateMotors();
-        } else {
-            nextMotorState.print(); // Display commands if hardware is disabled.
-        }
-
     }
+
 } // Class
