@@ -22,4 +22,9 @@ public class Mutable<T> {
     {
         var = new_value;
     }
+
+    public String toString()
+    {
+        return var.toString();
+    }
 }

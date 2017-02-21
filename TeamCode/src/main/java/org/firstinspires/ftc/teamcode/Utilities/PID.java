@@ -23,7 +23,7 @@ public class PID
         time.add(t);
         error.add(e);
 
-        while (time.lastElement() - time.firstElement() > integral_time)
+        while ((time.size() > 3) && (time.lastElement() - time.firstElement() > integral_time))
         {
             time.remove(0);
             error.remove(0);

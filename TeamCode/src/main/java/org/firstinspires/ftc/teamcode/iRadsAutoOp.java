@@ -79,7 +79,7 @@ public class iRadsAutoOp extends LinearOpMode {
         //sleep for the total length of the driver-input delay
         //it is possible that it might sleep so long that we go past 30 sec in the autonomous
 
-        sleep(startDelaySec.get().intValue());
+        sleep((int)(1000.0 * startDelaySec.get()));
 
         setLaunchPower(1);
 
@@ -177,17 +177,25 @@ public class iRadsAutoOp extends LinearOpMode {
         {
             left_launcher_pos.add((double)robot.leftDriveMotor.getCurrentPosition());
             right_launcher_pos.add((double)robot.rightDriveMotor.getCurrentPosition());
+            time.add(runtime.seconds());
 
-            left_launcher_speed.set(vector_math.derivative(time, left_launcher_pos));
-            right_launcher_speed.set(vector_math.derivative(time, right_launcher_pos));
+            try {
+                telemetry.addData("Error: ", "derivative update");
+            }
+            catch (RuntimeException e)
+            {
+                left_launcher_speed.set(vector_math.derivative(time, left_launcher_pos));
+                right_launcher_speed.set(vector_math.derivative(time, right_launcher_pos));
+            }
 
-            left_pid.update(runtime.time());
-            right_pid.update(runtime.time());
-
-            telemetry.addData("left_launcher_speed: ", left_launcher_speed.toString());
-            telemetry.addData("right_launcher_speed: ", right_launcher_speed.toString());
-            telemetry.addData("target_launch_speed: ", target_launch_speed.toString());
-            telemetry.update();
+            try {
+                left_pid.update(runtime.time());
+                right_pid.update(runtime.time());
+            }
+            catch (RuntimeException e)
+            {
+                telemetry.addData("Error: ", "pid update");
+            }
         }
     }
 
@@ -216,6 +224,11 @@ public class iRadsAutoOp extends LinearOpMode {
 
         sleep(5000); // give the motors time to hit the target speed
 
+        telemetry.addData("left_launcher_speed: ", left_launcher_speed.toString());
+        telemetry.addData("right_launcher_speed: ", right_launcher_speed.toString());
+        telemetry.addData("target_launch_speed: ", target_launch_speed.toString());
+        telemetry.update();
+
         // launch once
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
         sleep(500);
@@ -226,6 +239,11 @@ public class iRadsAutoOp extends LinearOpMode {
         robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
         robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
         sleep(5000);
+
+        telemetry.addData("left_launcher_speed: ", left_launcher_speed.toString());
+        telemetry.addData("right_launcher_speed: ", right_launcher_speed.toString());
+        telemetry.addData("target_launch_speed: ", target_launch_speed.toString());
+        telemetry.update();
 
         // launch a second time
         robot.launchTrigger.setPosition(robot.ELEVATED_LAUNCHER_TRIGGER_POS);
