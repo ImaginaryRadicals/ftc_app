@@ -363,8 +363,32 @@ public class iRadsAutoOp extends LinearOpMode {
             sleep(50);
         }
 
-        }
+        // orient towards corner vortex
+        if (distanceFromGoal.get() == "Far") {
 
+            if (teamColor.get() == "Red") {
+
+                turn(49.66);
+
+            } else if (teamColor.get() == "Blue") {
+
+                turn(-49.66);
+
+            }
+
+        } else {
+
+            if (teamColor.get() == "Red") {
+
+                turn(90);
+
+            } else if (teamColor.get() == "Blue") {
+
+                turn(-90);
+
+            }
+
+        }
         while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
             sleep(50);
         }
