@@ -380,8 +380,7 @@ public class iRadsAutoOp extends LinearOpMode {
         sleep(300);
 
         //drive up the ramp
-        driveForward(50);
-        sleep(1000);
+        driveForward(500);
 
     }
 
