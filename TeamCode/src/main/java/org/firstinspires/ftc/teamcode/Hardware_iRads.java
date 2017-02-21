@@ -70,7 +70,8 @@ public class Hardware_iRads
     public static final int MAX_DRIVE_SPEED_TPS     =  1680 ; // Ticks per second
     public static final int LIFT_MAX_SPEED_TPS      =  1680 ; // Ticks per second
     public static final int LAUNCH_WHEEL_RPM        =  1100;   // Max RPM
-    public static final int MAX_LAUNCH_SPEED_TPS    =   (int) LAUNCH_WHEEL_STEPS_PER_ROT * LAUNCH_WHEEL_RPM / 60 ; // Ticks per second
+    public static final int MAX_LAUNCH_SPEED_TPS    =   1150; // Ticks per second
+//    public static final int MAX_LAUNCH_SPEED_TPS    =   (int) LAUNCH_WHEEL_STEPS_PER_ROT * LAUNCH_WHEEL_RPM / 60 ; // Ticks per second
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -95,8 +96,8 @@ public class Hardware_iRads
         rightLaunchMotor  = hwMap.dcMotor.get("rightLaunchMotor");
         liftMotor         = hwMap.dcMotor.get("liftMotor");
         // Set Motor Direction
-        leftDriveMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        leftDriveMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         leftLaunchMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightLaunchMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
@@ -111,11 +112,6 @@ public class Hardware_iRads
         // Set all motors to run with encoders.
         // Use RUN_WITHOUT_ENCODERS if encoders are NOT installed.
         // Use RUN_USING_ENCODERS if encoders ARE installed.
-        /*leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-        rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-        leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-        rightLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);*/
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftLaunchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -133,9 +129,7 @@ public class Hardware_iRads
         leftLaunchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rightLaunchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        // Set the max speed of the launch motors so that we don't go over 6 feet
-        leftLaunchMotor.setMaxSpeed(1150);
-        rightLaunchMotor.setMaxSpeed(1150);
+
 
 
         // Define and initialize ALL installed servos.
