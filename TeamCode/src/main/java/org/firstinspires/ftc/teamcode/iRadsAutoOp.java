@@ -322,6 +322,9 @@ public class iRadsAutoOp extends LinearOpMode {
             driveForward(2000);
             sleep(4400);
 
+        //tells the robot to keep doing what it is doing until the drive motors are finished
+        while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
+            sleep(50);
         }
 
     }
@@ -356,8 +359,14 @@ public class iRadsAutoOp extends LinearOpMode {
             if (teamColor.get() == "Red")       turn(90);
             else if (teamColor.get() == "Blue") turn(-90);
 
-            sleep(700);
+        while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
+            sleep(50);
+        }
 
+        }
+
+        while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
+            sleep(50);
         }
 
         //drive to corner vortex
@@ -373,14 +382,30 @@ public class iRadsAutoOp extends LinearOpMode {
 
         }
 
+        while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
+            sleep(50);
+        }
+
         //turn into corner vortex
         if (teamColor.get() == "Red")       turn(45);
         else if (teamColor.get() == "Blue") turn(-45);
 
         sleep(300);
 
+            turn(-45);
+
+        }
+
+        while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
+            sleep(50);
+        }
+
         //drive up the ramp
         driveForward(500);
+
+        while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
+            sleep(50);
+        }
 
     }
 
