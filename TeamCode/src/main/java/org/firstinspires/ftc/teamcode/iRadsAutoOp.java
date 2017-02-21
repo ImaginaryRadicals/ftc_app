@@ -161,7 +161,7 @@ public class iRadsAutoOp extends LinearOpMode {
         resetEncoders();
 
         // positive turns right, negative turns left.  Units are degrees
-        turnDistance = robot.WHEELBASE_WIDTH_MM * 3.14159 * 25.4 * theta / 360;
+        turnDistance = robot.WHEELBASE_WIDTH_MM * 3.14159 * theta / 360;
         turnDistance = mmToTicks(turnDistance);
         robot.leftDriveMotor.setTargetPosition((int) -turnDistance);
         robot.rightDriveMotor.setTargetPosition((int) turnDistance);
