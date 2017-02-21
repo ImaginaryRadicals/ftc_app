@@ -318,6 +318,11 @@ public class iRadsAutoOp extends LinearOpMode {
 
     void driveToCornerVortex() {
 
+        //cease launching
+        setLaunchPower(0);
+        robot.leftFlipper.setPosition(robot.LEFT_FLIPPER_CLOSED);
+        robot.rightFlipper.setPosition(robot.RIGHT_FLIPPER_CLOSED);
+
         // get off the wall
         if (distanceFromGoal.get() == "Far") {
 
@@ -327,6 +332,10 @@ public class iRadsAutoOp extends LinearOpMode {
 
             driveForward(610);
 
+        }
+
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
         }
 
         // orient towards corner vortex
@@ -340,6 +349,10 @@ public class iRadsAutoOp extends LinearOpMode {
 
         }
 
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
+        }
+
         //drive to corner vortex
         if (distanceFromGoal.get() == "Near") {
 
@@ -351,18 +364,31 @@ public class iRadsAutoOp extends LinearOpMode {
 
         }
 
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
+        }
+
         //turn into corner vortex
         if (teamColor.get() == "Red") {
 
             turn(45);
+            
         } else if (teamColor.get() == "Blue") {
 
             turn(-45);
 
         }
 
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
+        }
+
         //drive up the ramp
         driveForward(50);
+
+        while (robot.leftDriveMotor.isBusy()){
+            sleep(50);
+        }
 
     }
 
