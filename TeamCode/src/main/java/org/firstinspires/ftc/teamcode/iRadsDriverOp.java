@@ -151,14 +151,10 @@ public class iRadsDriverOp extends LinearOpMode {
             backwardsDrive = !backwardsDrive;
         }
         if (backwardsDrive == true) {
-            robot.leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-            robot.rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-            ManualControl.setSingleStickXY(gamepad1.left_stick_y, gamepad1.left_stick_x);
-        } else {
-            robot.leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
-            robot.rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);
-            ManualControl.setSingleStickXY(gamepad1.left_stick_y, -gamepad1.left_stick_x);
-        }
+            // Set x and y values to negative.
+            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, gamepad1.left_stick_y);
+        } else
+            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
 
 
 
