@@ -394,12 +394,12 @@ public class iRadsAutoOp extends LinearOpMode {
         }
 
         //drive to corner vortex
-        if (distanceFromGoal.get() == "Near") {
+        if (distanceFromGoal.get() == "Far") {
 
             driveForward(1725);
             sleep(3800);
 
-        } else if (distanceFromGoal.get() == "Far") {
+        } else {
 
             driveForward(950);
             sleep(2100);
