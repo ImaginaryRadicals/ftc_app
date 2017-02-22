@@ -358,22 +358,7 @@ public class iRadsAutoOp extends LinearOpMode {
             else if (teamColor.get() == "Blue") turn(-90);
 
         }
-
-        sleepWhileDriving();
-
-        // orient towards corner vortex
-        if (distanceFromGoal.get() == "Far") {
-
-            if (teamColor.get() == "Red")       turn(49.66);
-            else if (teamColor.get() == "Blue") turn(-49.66);
-
-        } else {
-
-            if (teamColor.get() == "Red")       turn(90);
-            else if (teamColor.get() == "Blue") turn(-90);
-
-        }
-
+        
         sleepWhileDriving();
 
         //drive to corner vortex
