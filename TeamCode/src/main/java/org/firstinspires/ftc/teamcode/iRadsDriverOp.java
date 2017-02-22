@@ -160,11 +160,11 @@ public class iRadsDriverOp extends LinearOpMode {
 
         if (backwardsDrive == true) {
 
-            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+            ManualControl.setSingleStickXY(gamepad1.left_stick_x, -gamepad1.left_stick_y);
 
         } else {
 
-            ManualControl.setSingleStickXY(-gamepad1.left_stick_x, gamepad1.left_stick_y);
+            ManualControl.setSingleStickXY(gamepad1.left_stick_x, gamepad1.left_stick_y);
 
         }
 
