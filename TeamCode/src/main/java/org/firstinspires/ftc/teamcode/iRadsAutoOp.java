@@ -163,7 +163,7 @@ public class iRadsAutoOp extends LinearOpMode {
         // positive turns right, negative turns left.  Units are degrees
         turnDistance = robot.WHEELBASE_WIDTH_MM * 3.14159 * theta / 360;
         turnDistance = mmToTicks(turnDistance);
-        turnDistance *= 1.7;
+        turnDistance *= 1.5;
         robot.leftDriveMotor.setTargetPosition((int) -turnDistance);
         robot.rightDriveMotor.setTargetPosition((int) turnDistance);
 
@@ -358,7 +358,7 @@ public class iRadsAutoOp extends LinearOpMode {
             else if (teamColor.get() == "Blue") turn(-90);
 
         }
-        
+
         sleepWhileDriving();
 
         //drive to corner vortex
