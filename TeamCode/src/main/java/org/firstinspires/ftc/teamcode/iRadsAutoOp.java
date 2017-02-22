@@ -322,6 +322,8 @@ public class iRadsAutoOp extends LinearOpMode {
             driveForward(2000);
             sleep(4400);
 
+        }
+
         //tells the robot to keep doing what it is doing until the drive motors are finished
         while (robot.leftDriveMotor.isBusy() && robot.rightDriveMotor.isBusy()){
             sleep(50);
