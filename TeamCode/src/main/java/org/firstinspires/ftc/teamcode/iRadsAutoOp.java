@@ -274,8 +274,8 @@ public class iRadsAutoOp extends LinearOpMode {
         //set proper max speeds based on InteractiveInit input
 
         if (distanceFromGoal.get() == "Near") {
-            robot.leftLaunchMotor.setMaxSpeed(1050);
-            robot.rightLaunchMotor.setMaxSpeed(1050);
+            robot.leftLaunchMotor.setMaxSpeed(1000);
+            robot.rightLaunchMotor.setMaxSpeed(1000);
         } else
         {
             robot.leftLaunchMotor.setMaxSpeed(1150);
