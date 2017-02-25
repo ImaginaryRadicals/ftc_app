@@ -220,10 +220,10 @@ public class iRadsAutoOp extends LinearOpMode {
         final AtomicBoolean run_launch_motors = new AtomicBoolean(true);
 
         if (distanceFromGoal.get() == "Near") {
-            target_launch_speed.set(1050.0);
+            target_launch_speed.set(1000.0);
         } else
         {
-            target_launch_speed.set(1150.0);
+            target_launch_speed.set(1100.0);
         }
 
         // Open the flippers so we can shoot
@@ -278,8 +278,8 @@ public class iRadsAutoOp extends LinearOpMode {
             robot.rightLaunchMotor.setMaxSpeed(1000);
         } else
         {
-            robot.leftLaunchMotor.setMaxSpeed(1150);
-            robot.rightLaunchMotor.setMaxSpeed(1150);
+            robot.leftLaunchMotor.setMaxSpeed(1100);
+            robot.rightLaunchMotor.setMaxSpeed(1100);
         }
 
         //Open the flippers so we can shoot
