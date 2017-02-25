@@ -163,7 +163,7 @@ public class iRadsAutoOp extends LinearOpMode {
         // positive turns right, negative turns left.  Units are degrees
         turnDistance = robot.WHEELBASE_WIDTH_MM * 3.14159 * theta / 360;
         turnDistance = mmToTicks(turnDistance);
-        turnDistance *= 1.5;
+        turnDistance *= 1.15;
         robot.leftDriveMotor.setTargetPosition((int) -turnDistance);
         robot.rightDriveMotor.setTargetPosition((int) turnDistance);
 
@@ -220,7 +220,7 @@ public class iRadsAutoOp extends LinearOpMode {
         final AtomicBoolean run_launch_motors = new AtomicBoolean(true);
 
         if (distanceFromGoal.get() == "Near") {
-            target_launch_speed.set(1000.0);
+            target_launch_speed.set(950.0);
         } else
         {
             target_launch_speed.set(1100.0);
@@ -274,8 +274,8 @@ public class iRadsAutoOp extends LinearOpMode {
         //set proper max speeds based on InteractiveInit input
 
         if (distanceFromGoal.get() == "Near") {
-            robot.leftLaunchMotor.setMaxSpeed(1000);
-            robot.rightLaunchMotor.setMaxSpeed(1000);
+            robot.leftLaunchMotor.setMaxSpeed(950);
+            robot.rightLaunchMotor.setMaxSpeed(950);
         } else
         {
             robot.leftLaunchMotor.setMaxSpeed(1100);

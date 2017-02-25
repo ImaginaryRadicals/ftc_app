@@ -48,11 +48,11 @@ public class Hardware_iRads
 
     // public doubles for the left and right flipper
     public static final double INITIAL_LEFT_FLIPPER_POS = 0.66;
-    public static final double INITIAL_RIGHT_FLIPPER_POS = 0.66;
+    public static final double INITIAL_RIGHT_FLIPPER_POS = 0.86;
     public static final double LEFT_FLIPPER_OPEN = 0.0;
     public static final double LEFT_FLIPPER_CLOSED = 0.66;
     public static final double RIGHT_FLIPPER_OPEN = 0.0;
-    public static final double RIGHT_FLIPPER_CLOSED = 0.66;
+    public static final double RIGHT_FLIPPER_CLOSED = 0.86;
 
     public static final double LAUNCH_WHEEL_DIAMETER_INCHES =  4;
     public static final double DRIVE_WHEEL_DIAMETER_INCHES  =  4;
