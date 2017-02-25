@@ -70,7 +70,7 @@ public class iRadsDriverOp extends LinearOpMode {
     private Signal sigRightTrigger           = new Signal();
 
 
-    double launchPower = 1.0; // Initial power of launcher.
+    double launchPower = robot.INITIAL_LAUNCH_SPEED / Hardware_iRads.MAX_LAUNCH_SPEED_TPS; // Initial power of launcher.
     double expoGain = 5.0;  // 1 = no expo
     double periodSec;
 
