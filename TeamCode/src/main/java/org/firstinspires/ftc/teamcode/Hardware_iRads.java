@@ -47,10 +47,10 @@ public class Hardware_iRads
     public static final double ELEVATED_LAUNCHER_TRIGGER_POS = 0.7;
 
     // public doubles for the left and right flipper
-    public static final double INITIAL_LEFT_FLIPPER_POS = 0.40;
+    public static final double INITIAL_LEFT_FLIPPER_POS = 0.66;
     public static final double INITIAL_RIGHT_FLIPPER_POS = 0.40;
     public static final double LEFT_FLIPPER_OPEN = 0.0;
-    public static final double LEFT_FLIPPER_CLOSED = 0.40;
+    public static final double LEFT_FLIPPER_CLOSED = 0.66;
     public static final double RIGHT_FLIPPER_OPEN = 0.0;
     public static final double RIGHT_FLIPPER_CLOSED = 0.40;
 
