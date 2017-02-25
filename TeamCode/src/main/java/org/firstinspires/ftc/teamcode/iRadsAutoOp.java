@@ -120,7 +120,7 @@ public class iRadsAutoOp extends LinearOpMode {
         interactive.addString(teamColor, "teamColor", "Red", "Blue");
         interactive.addString(distanceFromGoal, "distanceFromGoal", "Near", "Far");
         //interactive.addBoolean(autoOpMode, "autoOpMode", false, true);
-        interactive.addString(destination, "destination", "Center Vortex", "Corner Vortex");
+        interactive.addString(destination, "destination", "Center Vortex", "Corner Vortex", "None");
         interactive.addBoolean(launchWithPID, "launchWithPID", true, false);
 
         interactive.menuInputLoop();
