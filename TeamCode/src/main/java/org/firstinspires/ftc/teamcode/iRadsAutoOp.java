@@ -223,7 +223,7 @@ public class iRadsAutoOp extends LinearOpMode {
             target_launch_speed.set(950.0);
         } else
         {
-            target_launch_speed.set(1100.0);
+            target_launch_speed.set(1000.0);
         }
 
         // Open the flippers so we can shoot
@@ -278,8 +278,8 @@ public class iRadsAutoOp extends LinearOpMode {
             robot.rightLaunchMotor.setMaxSpeed(950);
         } else
         {
-            robot.leftLaunchMotor.setMaxSpeed(1100);
-            robot.rightLaunchMotor.setMaxSpeed(1100);
+            robot.leftLaunchMotor.setMaxSpeed(1140);
+            robot.rightLaunchMotor.setMaxSpeed(1140);
         }
 
         //Open the flippers so we can shoot

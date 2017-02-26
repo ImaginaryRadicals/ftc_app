@@ -210,9 +210,9 @@ public class iRadsDriverOp extends LinearOpMode {
         if (sigDpadUp.risingEdge(gamepad1.dpad_up))             launchPower += .05;
         else if (sigDpadDown.risingEdge(gamepad1.dpad_down))    launchPower -= .05;
 
-        if (utilLeftLaunchSpeed.getMotorTickRate() < 920)
+        if (utilLeftLaunchSpeed.getMotorTickRate() < 900)
             launchPower += 0.0001;
-        else if (utilLeftLaunchSpeed.getMotorTickRate() > 1000)
+        else if (utilLeftLaunchSpeed.getMotorTickRate() > 980)
             launchPower -= 0.0001;
 
         // Bound launchPower
